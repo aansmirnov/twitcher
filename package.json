@@ -8,7 +8,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "publish": "electron-forge publish",
-    "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
+    "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "tailwind:dev": "npx tailwindcss -i ./src/index.css -o ./public/styles.css --watch"
   },
   "keywords": [],
   "author": {
@@ -35,6 +36,7 @@
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
     "electron": "25.2.0",
+    "tailwindcss": "^3.3.2",
     "wait-on": "^7.0.1"
   },
   "browserslist": {
