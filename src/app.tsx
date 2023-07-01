@@ -1,5 +1,1 @@
-export const App = () => (
-    <div>
-        text
-    </div>
-);
+export const App = () => <div>text</div>;
