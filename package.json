@@ -9,7 +9,8 @@
     "build": "react-scripts build",
     "publish": "electron-forge publish",
     "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "tailwind:dev": "npx tailwindcss -i ./src/index.css -o ./public/styles.css --watch"
+    "tailwind:dev": "npx tailwindcss -w ./src/index.css -o ./public/styles.css",
+    "tailwind:build": "npx tailwindcss ./src/index.css -o ./public/styles.css"
   },
   "keywords": [],
   "author": {
