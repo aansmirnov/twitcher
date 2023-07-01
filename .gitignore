@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Tailwindcss
+public/styles.css
