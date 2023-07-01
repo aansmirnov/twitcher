@@ -3,13 +3,12 @@
   "productName": "twitcher",
   "version": "1.0.0",
   "description": "Twitch Client",
-  "main": "src/index.js",
+  "main": "electron/index.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "keywords": [],
   "author": {
@@ -18,7 +17,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "typescript": "*"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.2.1",
@@ -27,6 +30,23 @@
     "@electron-forge/maker-squirrel": "^6.2.1",
     "@electron-forge/maker-zip": "^6.2.1",
     "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
-    "electron": "25.2.0"
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "25.2.0",
+    "wait-on": "^7.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
