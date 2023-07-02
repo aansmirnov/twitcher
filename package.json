@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -34,9 +35,13 @@
     "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
     "electron": "25.2.0",
+    "eslint": "^8.0.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
     "tailwindcss": "^3.3.2",
     "wait-on": "^7.0.1"
   },
