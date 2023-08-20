@@ -6,6 +6,7 @@
     "extends": [
         "plugin:jsx-a11y/recommended"
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "ecmaFeatures": {
@@ -16,6 +17,7 @@
     },
     "plugins": [
         "react",
+        "react-hooks",
         "jsx-a11y"
     ],
     "rules": {
@@ -24,10 +26,12 @@
         "indent": [2, 4],
         "react/jsx-indent": [2, 4],
         "react/jsx-indent-props": [2, 4],
+        "react-hooks/exhaustive-deps": 2,
         "padding-line-between-statements": 2,
         "no-trailing-spaces": 2,
         "padded-blocks": [2, "never"],
         "no-console": "error",
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "quotes": [2, "single", { "avoidEscape": true }]
     }
 }
