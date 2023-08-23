@@ -34,6 +34,8 @@
                 "caughtErrors": "all"
             }
         ],
+        "@typescript-eslint/keyword-spacing": [2, { "after": true, "before": true }],
+        "@typescript-eslint/no-empty-function": "off",
 
         "react/jsx-indent": [2, 4],
         "react/jsx-indent-props": [2, 4],
@@ -47,7 +49,15 @@
         "semi-spacing": ["error", { "before": false, "after": true }],
         "quotes": [2, "single", { "avoidEscape": true }],
         "no-use-before-define": "off",
-        "arrow-spacing": ["error", { "after": true, "before": true }],
-        "indent": [2, 4]
+        "arrow-spacing": "error",
+        "indent": [2, 4],
+        "keyword-spacing": "off",
+        "no-multi-spaces": "error",
+        "no-empty-function": "off",
+        "block-spacing": "error",
+        "object-curly-spacing": [2, "always"],
+        "space-before-blocks": "error",
+        "key-spacing": "error",
+        "space-infix-ops": "error"
     }
 }
