@@ -1,7 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Config } from 'src/types';
 import { apiAuth } from 'src/api';
-import { CLIENT_ID, CLIENT_SECRET } from 'src/consts';
+import { AUTH_TOKEN, CLIENT_ID, CLIENT_SECRET } from 'src/consts';
 
 type ConfigScopeProps = {
     children: React.ReactNode;
@@ -11,17 +11,20 @@ type ConfigScopeContextType = {
     config?: Config;
     loading: boolean;
     getAccessToken: (authCode: string) => void;
+    canSendRequests: boolean;
 }
 
 const ConfigScopeContext = createContext<ConfigScopeContextType>({
     config: undefined,
     loading: false,
-    getAccessToken: () => null
+    getAccessToken: () => null,
+    canSendRequests: false,
 });
 
 export const ConfigScope = ({ children }: ConfigScopeProps) => {
     const [config, setConfig] = useState<Config>();
     const [loading, setLoading] = useState(true);
+    const canSendRequests = useMemo(() => Boolean(config && AUTH_TOKEN), [config]);
 
     const updateConfigState = (newConfig: Config) => {
         setConfig(newConfig);
@@ -61,19 +64,24 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
 
             if (configFromLocalStorage) {
                 const parsedConfig = JSON.parse(configFromLocalStorage) as Config;
-                refreshToken(parsedConfig.refresh_token);
+                const expiredAt = new Date().setSeconds(parsedConfig.expires_in);
 
-                return;
+                if (Date.now() > expiredAt) {
+                    refreshToken(parsedConfig.refresh_token);
+                    return;
+                }
+                setConfig(parsedConfig);
             }
 
             setLoading(false);
         }
-    }, [config, refreshToken]);
+    }, [config, loading, refreshToken]);
 
     return (
         <ConfigScopeContext.Provider value={{
             config,
             loading,
+            canSendRequests,
             getAccessToken
         }}>
             {children}

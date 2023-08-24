@@ -1,10 +1,12 @@
-import { useConfigScope } from 'src/scopes';
-import { CenteredWrapper, LoginWithTwitch, Spinner } from 'src/components';
+import { useConfigScope, useCurrentUserScope } from 'src/scopes';
+import { CenteredWrapper, LoginWithTwitch, Spinner, Header } from 'src/components';
 
 export const TwitcherView = () => {
-    const { loading, config } = useConfigScope();
+    const { loading: configLoading, config } = useConfigScope();
+    const { loading: userLoading } = useCurrentUserScope();
+    const isLoading = userLoading || configLoading;
 
-    if (loading) {
+    if (isLoading) {
         return (
             <CenteredWrapper>
                 <Spinner />
@@ -12,7 +14,7 @@ export const TwitcherView = () => {
         );
     }
 
-    if (!loading && !config) {
+    if (!isLoading && !config) {
         return (
             <CenteredWrapper>
                 <LoginWithTwitch />
@@ -21,6 +23,8 @@ export const TwitcherView = () => {
     }
 
     return (
-        <div>auth done</div>
+        <div>
+            <Header />
+        </div>
     );
 };

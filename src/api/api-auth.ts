@@ -22,7 +22,7 @@ export const apiAuth = new ApiAuth(
     axios.create({
         baseURL: TWITCH_TOKEN_URL,
         headers: {
-            'Content-Type':'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded',
         }
     })
 );

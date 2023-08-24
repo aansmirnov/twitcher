@@ -3,7 +3,7 @@ import { ScopeComposer } from 'src/scopes';
 
 export const App = () => {
     return (
-        <div className="bg-gray-900 h-screen">
+        <div className="bg-gray-800 h-screen">
             <ScopeComposer>
                 <TwitcherView />
             </ScopeComposer>

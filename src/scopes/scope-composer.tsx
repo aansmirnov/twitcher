@@ -1,4 +1,5 @@
 import { ConfigScope } from './config-scope';
+import { CurrentUserScope } from './current-user-scope';
 
 type ScopeComposerProps = {
     children: React.ReactNode;
@@ -6,6 +7,8 @@ type ScopeComposerProps = {
 
 export const ScopeComposer = ({ children }: ScopeComposerProps) => (
     <ConfigScope>
-        { children }
+        <CurrentUserScope>
+            { children }
+        </CurrentUserScope>
     </ConfigScope>
 );
