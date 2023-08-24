@@ -40,6 +40,7 @@
         "react/jsx-indent": [2, 4],
         "react/jsx-indent-props": [2, 4],
         "react-hooks/exhaustive-deps": 2,
+        "react/jsx-key": 2,
 
         "padding-line-between-statements": 2,
         "no-trailing-spaces": 2,
