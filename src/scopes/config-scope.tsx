@@ -27,8 +27,10 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
     const canSendRequests = useMemo(() => Boolean(config && AUTH_TOKEN), [config]);
 
     const updateConfigState = (newConfig: Config) => {
-        setConfig(newConfig);
-        localStorage.setItem('twitcher_config', JSON.stringify(newConfig));
+        const cfg = { ...newConfig, expired_at: new Date().setSeconds(newConfig.expires_in) };
+
+        setConfig(cfg);
+        localStorage.setItem('twitcher_config', JSON.stringify(cfg));
     };
     const getAccessToken = useCallback((authCode: string) => {
         setLoading(true);
@@ -64,9 +66,8 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
 
             if (configFromLocalStorage) {
                 const parsedConfig = JSON.parse(configFromLocalStorage) as Config;
-                const expiredAt = new Date().setSeconds(parsedConfig.expires_in);
 
-                if (Date.now() > expiredAt) {
+                if (Date.now() > parsedConfig.expired_at) {
                     refreshToken(parsedConfig.refresh_token);
                     return;
                 }

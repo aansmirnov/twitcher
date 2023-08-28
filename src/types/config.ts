@@ -4,4 +4,5 @@ export type Config = {
     refresh_token: string;
     scope: string[];
     token_type: string;
+    expired_at: number;
 };
