@@ -55,7 +55,7 @@
         "quotes": [2, "single", { "avoidEscape": true }],
         "no-use-before-define": "off",
         "arrow-spacing": "error",
-        "indent": [2, 4],
+        "indent": [2, 4, { "SwitchCase": 1 }],
         "keyword-spacing": "off",
         "no-multi-spaces": "error",
         "no-empty-function": "off",
@@ -63,6 +63,7 @@
         "object-curly-spacing": [2, "always"],
         "space-before-blocks": "error",
         "key-spacing": "error",
-        "space-infix-ops": "error"
+        "space-infix-ops": "error",
+        "no-fallthrough": "error"
     }
 }
