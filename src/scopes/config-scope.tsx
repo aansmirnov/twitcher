@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Config } from 'src/types';
 import { apiAuth } from 'src/api';
-import { AUTH_TOKEN, CLIENT_ID, CLIENT_SECRET } from 'src/consts';
+import { AUTH_TOKEN, CLIENT_ID, CLIENT_SECRET, TWITCHER_CONFIG } from 'src/consts';
 
 type ConfigScopeProps = {
     children: React.ReactNode;
@@ -30,7 +30,7 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
         const cfg = { ...newConfig, expired_at: new Date().setSeconds(newConfig.expires_in) };
 
         setConfig(cfg);
-        localStorage.setItem('twitcher_config', JSON.stringify(cfg));
+        localStorage.setItem(TWITCHER_CONFIG, JSON.stringify(cfg));
     };
     const getAccessToken = useCallback((authCode: string) => {
         setLoading(true);
@@ -48,6 +48,7 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
     }, []);
     const refreshToken = useCallback((token: string) => {
         setLoading(true);
+        localStorage.removeItem(TWITCHER_CONFIG);
 
         apiAuth
             .refreshToken({
@@ -62,7 +63,7 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
 
     useEffect(() => {
         if (!config) {
-            const configFromLocalStorage = localStorage.getItem('twitcher_config');
+            const configFromLocalStorage = localStorage.getItem(TWITCHER_CONFIG);
 
             if (configFromLocalStorage) {
                 const parsedConfig = JSON.parse(configFromLocalStorage) as Config;

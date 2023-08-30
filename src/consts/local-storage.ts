@@ -1,0 +1,1 @@
+export const TWITCHER_CONFIG = 'twitcher_config';
