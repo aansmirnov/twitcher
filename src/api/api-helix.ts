@@ -1,5 +1,13 @@
 import axios from 'axios';
-import { GetUsersOut, GetUsersIn, GetChannelsInformationIn, GetChannelsInformationOut, UpdateChannelInformationIn } from 'src/types';
+import {
+    GetUsersOut,
+    GetUsersIn,
+    GetChannelsInformationIn,
+    GetChannelsInformationOut,
+    UpdateChannelInformationIn,
+    GetGamesIn,
+    GetGamesOut
+} from 'src/types';
 import { ApiRequest } from './api-request';
 import { AUTH_TOKEN, CLIENT_ID, TWITCH_HELIX_URL } from 'src/consts';
 
@@ -7,6 +15,7 @@ interface IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut>;
     getChannelsInformation(params: GetChannelsInformationIn): Promise<GetChannelsInformationOut>;
     updateChannelInformation(params: UpdateChannelInformationIn): Promise<void>;
+    getGames(params: GetGamesIn): Promise<GetGamesOut>
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -21,6 +30,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
     updateChannelInformation(params: UpdateChannelInformationIn): Promise<void> {
         const { broadcaster_id, ...body } = params;
         return this.provider.patch('/channels', body, { params: { broadcaster_id } } );
+    }
+
+    getGames(params: GetGamesIn): Promise<GetGamesOut> {
+        return this.provider.get('/games', { params });
     }
 }
 
