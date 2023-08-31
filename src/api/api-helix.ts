@@ -5,8 +5,8 @@ import {
     GetChannelsInformationIn,
     GetChannelsInformationOut,
     UpdateChannelInformationIn,
-    GetGamesIn,
-    GetGamesOut
+    GetCategoriesIn,
+    GetCategoriesOut
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { AUTH_TOKEN, CLIENT_ID, TWITCH_HELIX_URL } from 'src/consts';
@@ -15,7 +15,7 @@ interface IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut>;
     getChannelsInformation(params: GetChannelsInformationIn): Promise<GetChannelsInformationOut>;
     updateChannelInformation(params: UpdateChannelInformationIn): Promise<void>;
-    getGames(params: GetGamesIn): Promise<GetGamesOut>
+    getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -32,8 +32,8 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         return this.provider.patch('/channels', body, { params: { broadcaster_id } } );
     }
 
-    getGames(params: GetGamesIn): Promise<GetGamesOut> {
-        return this.provider.get('/games', { params });
+    getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut> {
+        return this.provider.get('/search/categories', { params });
     }
 }
 
