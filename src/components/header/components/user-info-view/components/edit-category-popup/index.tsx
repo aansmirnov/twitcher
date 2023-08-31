@@ -41,8 +41,8 @@ export const EditCategoryPopup = ({ onClose, categoryName, onSave }: EditCategor
     };
 
     return (
-        <Popup>
-            <div className='flex flex-col gap-4' onClick={hide}>
+        <Popup onPopupClick={hide}>
+            <div className='flex flex-col gap-4'>
                 <h2 className='font-bold text-2xl'>Change category</h2>
                 <div className='group relative'>
                     <Input onClick={handleInputClick} value={categoryTitle} onChange={handleChangeInput} />
