@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useConfigScope } from 'src/scopes';
 import { TwitchIcon } from 'src/icons';
 import { authorizeUrl } from './authorize-url';
+import { Button } from 'src/components/ui';
 
 export const LoginWithTwitch = () => {
     const { getAccessToken } = useConfigScope();
@@ -22,14 +23,9 @@ export const LoginWithTwitch = () => {
     }, [getAccessToken, queryCode]);
 
     return (
-        <section>
-            <button
-                onClick={goToAuthPath}
-                className='flex gap-2 items-center text-white bg-purple-500 p-4 rounded-xl transition duration-120 ease-out hover:ease-in hover:bg-purple-400'
-            >
-                <TwitchIcon />
-                Login with Twitch
-            </button>
-        </section>
+        <Button size="xl" variant='primary' onClick={goToAuthPath} className='flex gap-2 items-center'>
+            <TwitchIcon />
+            Login with Twitch
+        </Button>
     );
 };

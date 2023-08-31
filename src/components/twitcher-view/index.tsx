@@ -1,5 +1,6 @@
 import { useConfigScope, useCurrentUserScope } from 'src/scopes';
-import { CenteredWrapper, LoginWithTwitch, Spinner, Header } from 'src/components';
+import { CenteredWrapper, LoginWithTwitch, Header } from 'src/components';
+import { Spinner } from 'src/components/ui';
 
 export const TwitcherView = () => {
     const { loading: configLoading, config } = useConfigScope();

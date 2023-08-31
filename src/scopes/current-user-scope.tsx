@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { apiHelix } from 'src/api';
 import { useConfigScope } from 'src/scopes';
-import { ChannelInformation, User } from 'src/types';
+import { ChannelInformation, UpdateChannelInformation, User } from 'src/types';
 
 type CurrentUserScopeProps = {
     children: React.ReactNode;
@@ -11,12 +11,14 @@ type CurrentUserScopeContextType = {
     loading: boolean;
     currentUser?: User;
     currentUserChannelInfo?: ChannelInformation;
+    updateChannelInformation: (body: UpdateChannelInformation, callback: VoidFunction) => void;
 }
 
 const CurrentUserScopeContext = createContext<CurrentUserScopeContextType>({
     loading: false,
     currentUser: undefined,
     currentUserChannelInfo: undefined,
+    updateChannelInformation: () => null
 });
 
 export const CurrentUserScope = ({ children }: CurrentUserScopeProps) => {
@@ -42,6 +44,17 @@ export const CurrentUserScope = ({ children }: CurrentUserScopeProps) => {
             })
             .finally(() => setLoading(false));
     }, [getCurrentUserChannelInfo]);
+    const updateChannelInformation = useCallback((body: UpdateChannelInformation, callback: VoidFunction) => {
+        if (currentUser) {
+            apiHelix.updateChannelInformation({
+                broadcaster_id: currentUser.id,
+                ...body
+            }).then(() => {
+                setCurrentUserChanneInfo((prev) => ({ ...prev as ChannelInformation, ...body }));
+                callback();
+            });
+        }
+    }, [currentUser]);
 
     useEffect(() => {
         if (canSendRequests) {
@@ -54,7 +67,8 @@ export const CurrentUserScope = ({ children }: CurrentUserScopeProps) => {
         <CurrentUserScopeContext.Provider value={{
             loading,
             currentUser,
-            currentUserChannelInfo
+            currentUserChannelInfo,
+            updateChannelInformation
         }}>
             {children}
         </CurrentUserScopeContext.Provider>
