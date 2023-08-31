@@ -4,7 +4,7 @@ import { UpdateChannelInformation } from 'src/types';
 
 type EditTitlePopupProps = {
     onClose: VoidFunction;
-    onSave: (body: UpdateChannelInformation) => void;
+    onSave: (body: UpdateChannelInformation, callback: VoidFunction) => void;
     title: string;
 }
 
@@ -23,11 +23,11 @@ export const EditTitlePopup = ({ onClose, title, onSave }: EditTitlePopupProps) 
     };
 
     const handleSave = () => {
-        onSave({ title: value });
+        onSave({ title: value }, onClose);
     };
 
     return (
-        <Popup onClose={onClose}>
+        <Popup>
             <div className='flex flex-col gap-4'>
                 <h2 className='font-bold text-2xl'>Change title</h2>
                 <div className='flex flex-col gap-1'>

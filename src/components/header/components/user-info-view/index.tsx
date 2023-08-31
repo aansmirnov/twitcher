@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { useVisibilityState } from 'src/hooks';
 import { VerifiedPartnerIcon } from 'src/icons';
 import { ChannelInformation, UpdateChannelInformation, User } from 'src/types';
-import { EditGamePopup, EditTitlePopup } from './components';
+import { EditCategoryPopup, EditTitlePopup } from './components';
 import { useCurrentUserScope } from 'src/scopes';
 
 type UserInfoViewProps = {
@@ -16,11 +16,11 @@ export const UserInfoView = ({ currentUser, currentUserChannelInfo }: UserInfoVi
     const hasTags = tags.length > 0;
 
     const [isEditTitlePopupVisible, { show: showEditTitlePopup, hide: hideEditTitlePopup }] = useVisibilityState();
-    const [isEditGamePopupVisible, { show: showEditGamePopup, hide: hideEditGamePopup }] = useVisibilityState();
+    const [isEditCategoryPopupVisible, { show: showEditCategoryPopup, hide: hideEditCategoryPopup }] = useVisibilityState();
     const { updateChannelInformation } = useCurrentUserScope();
 
-    const handleUpdateChannelTitle = (body: UpdateChannelInformation) => {
-        updateChannelInformation(body, hideEditTitlePopup);
+    const handleUpdateChannel = (body: UpdateChannelInformation, callback: VoidFunction) => {
+        updateChannelInformation(body, callback);
     };
 
     return (
@@ -35,7 +35,7 @@ export const UserInfoView = ({ currentUser, currentUserChannelInfo }: UserInfoVi
                     </div>
                     <div className='flex flex-col'>
                         <h2 onClick={showEditTitlePopup} className='w-fit text-sm text-white font-semibold cursor-pointer hover:text-gray-300'>{title}</h2>
-                        <span onClick={showEditGamePopup} className='text-sm text-purple-400 cursor-pointer hover:text-purple-500'>{game_name}</span>
+                        <span onClick={showEditCategoryPopup} className='text-sm text-purple-400 cursor-pointer hover:text-purple-500'>{game_name}</span>
                         { hasTags && (
                             <div className='flex flex-wrap gap-1 mt-2'>
                                 { tags.map((tag) => (
@@ -46,8 +46,8 @@ export const UserInfoView = ({ currentUser, currentUserChannelInfo }: UserInfoVi
                     </div>
                 </div>
             </div>
-            { isEditTitlePopupVisible && <EditTitlePopup onSave={handleUpdateChannelTitle} title={title} onClose={hideEditTitlePopup} /> }
-            { isEditGamePopupVisible && <EditGamePopup onClose={hideEditGamePopup} /> }
+            { isEditTitlePopupVisible && <EditTitlePopup onSave={handleUpdateChannel} title={title} onClose={hideEditTitlePopup} /> }
+            { isEditCategoryPopupVisible && <EditCategoryPopup onSave={handleUpdateChannel} categoryName={game_name} onClose={hideEditCategoryPopup} /> }
         </Fragment>
     );
 };
