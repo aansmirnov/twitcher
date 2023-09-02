@@ -1,16 +1,21 @@
-import { CollapseIcon, EditIcon, UserIcon } from 'src/icons';
+import { CollapseIcon, EditIcon } from 'src/icons';
+import { IconHoverTip, ChannelViewers } from 'src/components/header/components';
 
-export const ChanngelActions = () => {
+type ChannelActionsProps = {
+    onHideHeader: VoidFunction;
+}
+
+export const ChannelActions = ({ onHideHeader }: ChannelActionsProps) => {
     return (
         <div className="flex flex-col justify-center gap-3 w-[65px]">
+            <ChannelViewers />
             <div className='flex'>
-                <UserIcon />
-                { /** TODO: Add real counter. */ }
-                <span className='text-red-400'>999</span>
-            </div>
-            <div className='flex'>
-                <EditIcon />
-                <CollapseIcon />
+                <IconHoverTip text='Edit'>
+                    <EditIcon className='w-8 h-8 text-white hover:cursor-pointer hover:text-gray-300' />
+                </IconHoverTip>
+                <IconHoverTip text='Hide'>
+                    <CollapseIcon className='w-8 h-8 text-white hover:cursor-pointer hover:text-gray-300' onClick={onHideHeader} />
+                </IconHoverTip>
             </div>
         </div>
     );

@@ -1,11 +1,15 @@
-export const UserIcon = () => (
+import { SVGProps } from 'react';
+
+type UserIconProps = SVGProps<SVGSVGElement>;
+
+export const UserIcon = (props: UserIconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 32 32"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-8 h-8 text-red-400">
+        {...props}>
         <path
             strokeLinecap="round"
             strokeLinejoin="round"

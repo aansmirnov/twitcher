@@ -1,11 +1,15 @@
-export const EditIcon = () => (
+import { SVGProps } from 'react';
+
+type EditIconProps = SVGProps<SVGSVGElement>;
+
+export const EditIcon = (props: EditIconProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 32 32"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-8 h-8 text-white hover:cursor-pointer hover:text-gray-300"
+        {...props}
     >
         <path
             strokeLinecap="round"
