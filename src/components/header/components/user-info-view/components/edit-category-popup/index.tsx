@@ -49,8 +49,8 @@ export const EditCategoryPopup = ({ onClose, categoryName, onSave }: EditCategor
                     <div className='absolute w-full max-h-[300px] top-[52px] left-0 bg-white rounded-xl shadow shadow-gray-500/50 overflow-y-scroll hover:cursor-pointer'>
                         { hasCategories && isCategoryListVisible && categories.map((category) => (
                             <div onClick={() => handleSelectCategory(category.name, category.id)} key={category.id} className='flex p-4 gap-2 items-center hover:bg-gray-200'>
-                                <img className='w-8 h-8' src={category.box_art_url} alt={category.name} />
-                                <span>{category.name}</span>
+                                <img className='w-8 h-10' src={category.box_art_url} alt={category.name} />
+                                <span className='truncate'>{category.name}</span>
                             </div>
                         )) }
                     </div>

@@ -25,7 +25,7 @@ export const UserInfoView = ({ currentUser, currentUserChannelInfo }: UserInfoVi
 
     return (
         <Fragment>
-            <div className='flex gap-3'>
+            <div className='flex gap-3 w-full'>
                 {/** TODO: When stream goes live, change ring color to accent. */}
                 <img className='h-16 w-16 rounded-full ring-2 ring-gray-500 mt-[8px]' src={profile_image_url} alt={display_name} />
                 <div className='flex flex-col'>
