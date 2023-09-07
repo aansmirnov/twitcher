@@ -27,7 +27,7 @@ export const EditTitlePopup = ({ onClose, title, onSave }: EditTitlePopupProps) 
     };
 
     return (
-        <Popup>
+        <Popup onClose={onClose}>
             <div className='flex flex-col gap-4'>
                 <h2 className='font-bold text-2xl'>Change title</h2>
                 <div className='flex flex-col gap-1'>

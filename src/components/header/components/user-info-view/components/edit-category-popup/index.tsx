@@ -1,7 +1,7 @@
 import { Button, Input, Popup } from 'src/components/ui';
 import { useSearchCategory } from './use-search-category';
 import { useVisibilityState } from 'src/hooks';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useLayoutEffect, useRef, useState } from 'react';
 import { UpdateChannelInformation } from 'src/types';
 
 type EditCategoryPopupProps = {
@@ -14,6 +14,7 @@ export const EditCategoryPopup = ({ onClose, categoryName, onSave }: EditCategor
     const { categoryTitle, handleChangeTitle, categories, hasCategories } = useSearchCategory(categoryName);
     const [isCategoryListVisible, { show, hide }] = useVisibilityState();
     const [categoryID, setCategoryID] = useState<string>();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleInputClick = (e: MouseEvent<HTMLInputElement> ) => {
         e.stopPropagation();
@@ -40,12 +41,27 @@ export const EditCategoryPopup = ({ onClose, categoryName, onSave }: EditCategor
         onClose();
     };
 
+    useLayoutEffect(() => {
+        const onClickOutside = (event: Event) => {
+            const taget = event.target as Element;
+
+            if (isCategoryListVisible && taget && !inputRef.current?.contains(taget)) {
+                hide();
+            }
+        };
+
+        window.addEventListener('click', onClickOutside);
+        return () => {
+            window.removeEventListener('click', onClickOutside);
+        };
+    }, [hide, isCategoryListVisible]);
+
     return (
-        <Popup onPopupClick={hide}>
+        <Popup onClose={onClose}>
             <div className='flex flex-col gap-4'>
                 <h2 className='font-bold text-2xl'>Change category</h2>
                 <div className='group relative'>
-                    <Input onClick={handleInputClick} value={categoryTitle} onChange={handleChangeInput} />
+                    <Input ref={inputRef} onClick={handleInputClick} value={categoryTitle} onChange={handleChangeInput} />
                     <div className='absolute w-full max-h-[300px] top-[52px] left-0 bg-white rounded-xl shadow shadow-gray-500/50 overflow-y-scroll hover:cursor-pointer'>
                         { hasCategories && isCategoryListVisible && categories.map((category) => (
                             <div onClick={() => handleSelectCategory(category.name, category.id)} key={category.id} className='flex p-4 gap-2 items-center hover:bg-gray-200'>
