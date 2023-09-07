@@ -4,6 +4,7 @@ import { VerifiedPartnerIcon } from 'src/icons';
 import { ChannelInformation, UpdateChannelInformation, User } from 'src/types';
 import { EditCategoryPopup, EditTitlePopup } from './components';
 import { useCurrentUserScope } from 'src/scopes';
+import { TagsList } from 'src/components';
 
 type UserInfoViewProps = {
     currentUser: User;
@@ -36,13 +37,7 @@ export const UserInfoView = ({ currentUser, currentUserChannelInfo }: UserInfoVi
                     <div className='flex flex-col'>
                         <h2 onClick={showEditTitlePopup} className='w-fit text-sm text-white font-semibold cursor-pointer hover:text-gray-300'>{title}</h2>
                         <span onClick={showEditCategoryPopup} className='text-sm text-purple-400 cursor-pointer hover:text-purple-500'>{game_name}</span>
-                        { hasTags && (
-                            <div className='flex flex-wrap gap-1 mt-2'>
-                                { tags.map((tag) => (
-                                    <span key={tag} className='text-xs font-semibold text-gray-300 px-2 py-1 bg-zinc-700 rounded-full'>{tag}</span>
-                                ))}
-                            </div>
-                        ) }
+                        { hasTags && <TagsList tags={tags} /> }
                     </div>
                 </div>
             </div>
