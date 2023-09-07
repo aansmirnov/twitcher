@@ -29,7 +29,7 @@ export const EditTitlePopup = ({ onClose, title, onSave }: EditTitlePopupProps) 
     return (
         <Popup onClose={onClose}>
             <div className='flex flex-col gap-4'>
-                <h2 className='font-bold text-2xl'>Change title</h2>
+                <h2 className='font-bold text-2xl'>Change Title</h2>
                 <div className='flex flex-col gap-1'>
                     <Input value={value} onChange={(e) => handleChangeTitle(e.target.value)} />
                     <span className='text-sm text-right text-gray-500'>{titleCount}/{LIMIT}</span>
