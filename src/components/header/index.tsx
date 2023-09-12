@@ -23,7 +23,7 @@ export const Header = () => {
     return (
         <div className='flex justify-between p-4 border-b-2 border-gray-600'>
             <UserInfoView currentUser={currentUser} currentUserChannelInfo={currentUserChannelInfo} />
-            <ChannelActions onHideHeader={hideHeader} />
+            <ChannelActions onHideHeader={hideHeader} currentUserChannelInfo={currentUserChannelInfo} />
         </div>
     );
 };

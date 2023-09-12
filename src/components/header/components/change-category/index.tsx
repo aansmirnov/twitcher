@@ -3,12 +3,14 @@ import { Input } from 'src/components/ui';
 import { useSearchCategory } from './use-search-category';
 import { useVisibilityState } from 'src/hooks';
 
-type ChangeCategoryProps = {
+export type ChangeCategoryProps = {
     categoryName: string;
     handleSelectCategory: (categoryName: string, categoryId: string) => void;
+    clearable?: boolean;
+    onClear?: VoidFunction;
 }
 
-export const ChangeCategory = ({ categoryName, handleSelectCategory }: ChangeCategoryProps) => {
+export const ChangeCategory = ({ categoryName, handleSelectCategory, onClear, clearable = false }: ChangeCategoryProps) => {
     const { categoryTitle, handleChangeTitle, categories, hasCategories } = useSearchCategory(categoryName);
     const [isCategoryListVisible, { show, hide }] = useVisibilityState();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -30,6 +32,11 @@ export const ChangeCategory = ({ categoryName, handleSelectCategory }: ChangeCat
         handleSelectCategory(categoryName, categoryId);
     };
 
+    const handleClear = () => {
+        handleChangeTitle('');
+        onClear?.();
+    };
+
     useLayoutEffect(() => {
         const onClickOutside = (event: Event) => {
             const taget = event.target as Element;
@@ -47,7 +54,14 @@ export const ChangeCategory = ({ categoryName, handleSelectCategory }: ChangeCat
 
     return (
         <div className='group relative'>
-            <Input ref={inputRef} onClick={handleInputClick} value={categoryTitle} onChange={handleChangeInput} />
+            <Input
+                onClear={handleClear}
+                clearable={clearable}
+                ref={inputRef}
+                onClick={handleInputClick}
+                value={categoryTitle}
+                onChange={handleChangeInput}
+            />
             <div className='absolute w-full max-h-[300px] top-[52px] left-0 bg-white rounded-xl shadow shadow-gray-500/50 overflow-y-scroll hover:cursor-pointer'>
                 { hasCategories && isCategoryListVisible && categories.map((category) => (
                     <div onClick={() => handleSelect(category.name, category.id)} key={category.id} className='flex p-4 gap-2 items-center hover:bg-gray-200'>
