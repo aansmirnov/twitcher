@@ -8,9 +8,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "publish": "electron-forge publish",
-    "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "tailwind:dev": "npx tailwindcss -w ./src/index.css -o ./public/styles.css",
-    "tailwind:build": "npx tailwindcss ./src/index.css -o ./public/styles.css"
+    "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "keywords": [],
   "author": {
@@ -45,7 +43,6 @@
     "eslint": "^8.0.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
-    "tailwindcss": "^3.3.2",
     "wait-on": "^7.0.1"
   },
   "browserslist": {
