@@ -1,6 +1,7 @@
 import { useCurrentUserScope } from 'src/scopes';
 import { ChannelActions, HiddenHeader, UserInfoView } from './components';
 import { useVisibilityState } from 'src/hooks';
+import { Box, Divider, Flex, Spacer } from '@chakra-ui/react';
 
 export const Header = () => {
     const { currentUser, currentUserChannelInfo } = useCurrentUserScope();
@@ -21,9 +22,13 @@ export const Header = () => {
     }
 
     return (
-        <div className='flex justify-between p-4 border-b-2 border-gray-600'>
-            <UserInfoView currentUser={currentUser} currentUserChannelInfo={currentUserChannelInfo} />
-            <ChannelActions onHideHeader={hideHeader} currentUserChannelInfo={currentUserChannelInfo} />
-        </div>
+        <Box>
+            <Flex p={4}>
+                <UserInfoView currentUser={currentUser} currentUserChannelInfo={currentUserChannelInfo} />
+                <Spacer />
+                <ChannelActions onHideHeader={hideHeader} currentUserChannelInfo={currentUserChannelInfo} />
+            </Flex>
+            <Divider />
+        </Box>
     );
 };

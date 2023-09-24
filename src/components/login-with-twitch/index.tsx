@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useConfigScope } from 'src/scopes';
-import { TwitchIcon } from 'src/icons';
 import { authorizeUrl } from './authorize-url';
-import { Button } from 'src/components/ui';
+import { Button, Text } from '@chakra-ui/react';
+import { TwitchIcon } from 'src/icons';
 
 export const LoginWithTwitch = () => {
     const { getAccessToken } = useConfigScope();
@@ -22,10 +22,11 @@ export const LoginWithTwitch = () => {
         }
     }, [getAccessToken, queryCode]);
 
+
     return (
-        <Button size="xl" variant='primary' onClick={goToAuthPath} className='flex gap-2 items-center'>
-            <TwitchIcon />
-            Login with Twitch
+        <Button colorScheme='purple' onClick={goToAuthPath}>
+            <TwitchIcon mr={2} color='white' />
+            <Text color='white'>Login with Twitch</Text>
         </Button>
     );
 };

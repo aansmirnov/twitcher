@@ -1,9 +1,10 @@
-import { CollapseIcon, EditIcon } from 'src/icons';
-import { IconHoverTip, ChannelViewers } from 'src/components/header/components';
-import { useVisibilityState } from 'src/hooks';
 import { Fragment } from 'react';
+import { ChannelViewers } from 'src/components/header/components';
+import { useVisibilityState } from 'src/hooks';
 import { EditPopup } from './components';
 import { ChannelInformation } from 'src/types';
+import { EditIcon, UpDownIcon } from '@chakra-ui/icons';
+import { Flex, Tooltip } from '@chakra-ui/react';
 
 type ChannelActionsProps = {
     onHideHeader: VoidFunction;
@@ -12,21 +13,21 @@ type ChannelActionsProps = {
 
 export const ChannelActions = ({ onHideHeader, currentUserChannelInfo }: ChannelActionsProps) => {
     const [isEditPopupVisible, { show, hide }] = useVisibilityState();
+
     return (
         <Fragment>
-            <div className="flex flex-col justify-center gap-3 w-[65px]">
+            <Flex flexDirection='column' justifyContent='space-around'>
                 <ChannelViewers />
-                <div className='flex'>
-                    <IconHoverTip text='Edit'>
-                        <EditIcon onClick={show} className='w-8 h-8 text-white hover:cursor-pointer hover:text-gray-300' />
-                    </IconHoverTip>
-                    <IconHoverTip text='Hide'>
-                        <CollapseIcon className='w-8 h-8 text-white hover:cursor-pointer hover:text-gray-300' onClick={onHideHeader} />
-                    </IconHoverTip>
-                </div>
-            </div>
-
-            { isEditPopupVisible && <EditPopup currentUserChannelInfo={currentUserChannelInfo} onClose={hide} /> }
+                <Flex alignItems='center' gap={4}>
+                    <Tooltip borderRadius='lg' placement='bottom' label='Edit'>
+                        <EditIcon cursor='pointer' _hover={{ color: 'gray.300' }} color='white' onClick={show} />
+                    </Tooltip>
+                    <Tooltip borderRadius='lg' placement='bottom' label='Hide'>
+                        <UpDownIcon cursor='pointer' _hover={{ color: 'gray.300' }} color='white' onClick={onHideHeader} />
+                    </Tooltip>
+                </Flex>
+            </Flex>
+            { isEditPopupVisible && <EditPopup isOpen={isEditPopupVisible} currentUserChannelInfo={currentUserChannelInfo} onClose={hide} />}
         </Fragment>
     );
 };

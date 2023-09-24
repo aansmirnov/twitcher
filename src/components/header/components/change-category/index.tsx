@@ -1,75 +1,38 @@
-import { useRef, MouseEvent, ChangeEvent, useLayoutEffect } from 'react';
-import { Input } from 'src/components/ui';
+import { Select } from 'chakra-react-select';
 import { useSearchCategory } from './use-search-category';
-import { useVisibilityState } from 'src/hooks';
+import { Flex, Img, Text } from '@chakra-ui/react';
+import { Option } from 'src/types';
 
 export type ChangeCategoryProps = {
-    categoryName: string;
     handleSelectCategory: (categoryName: string, categoryId: string) => void;
-    clearable?: boolean;
-    onClear?: VoidFunction;
+    currentCategory: Option & { image: string; };
 }
 
-export const ChangeCategory = ({ categoryName, handleSelectCategory, onClear, clearable = false }: ChangeCategoryProps) => {
-    const { categoryTitle, handleChangeTitle, categories, hasCategories } = useSearchCategory(categoryName);
-    const [isCategoryListVisible, { show, hide }] = useVisibilityState();
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    const handleInputClick = (e: MouseEvent<HTMLInputElement> ) => {
-        e.stopPropagation();
-        show();
-    };
-
-    const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-        handleChangeTitle(e.target.value);
-        if (!isCategoryListVisible) {
-            show();
-        }
-    };
-
-    const handleSelect = (categoryName: string, categoryId: string): void => {
-        handleChangeTitle(categoryName);
-        handleSelectCategory(categoryName, categoryId);
-    };
-
-    const handleClear = () => {
-        handleChangeTitle('');
-        onClear?.();
-    };
-
-    useLayoutEffect(() => {
-        const onClickOutside = (event: Event) => {
-            const taget = event.target as Element;
-
-            if (isCategoryListVisible && taget && !inputRef.current?.contains(taget)) {
-                hide();
-            }
-        };
-
-        window.addEventListener('click', onClickOutside);
-        return () => {
-            window.removeEventListener('click', onClickOutside);
-        };
-    }, [hide, isCategoryListVisible]);
+export const ChangeCategory = ({ handleSelectCategory, currentCategory }: ChangeCategoryProps) => {
+    const { state, handleChangeTitle, categories, hasCategories, handleChange } = useSearchCategory(currentCategory);
 
     return (
-        <div className='group relative'>
-            <Input
-                onClear={handleClear}
-                clearable={clearable}
-                ref={inputRef}
-                onClick={handleInputClick}
-                value={categoryTitle}
-                onChange={handleChangeInput}
-            />
-            <div className='absolute w-full max-h-[300px] top-[52px] left-0 bg-white rounded-xl shadow shadow-gray-500/50 overflow-y-scroll hover:cursor-pointer'>
-                { hasCategories && isCategoryListVisible && categories.map((category) => (
-                    <div onClick={() => handleSelect(category.name, category.id)} key={category.id} className='flex p-4 gap-2 items-center hover:bg-gray-200'>
-                        <img className='w-8 h-10' src={category.box_art_url} alt={category.name} />
-                        <span className='truncate'>{category.name}</span>
-                    </div>
-                )) }
-            </div>
-        </div>
+        <Select
+            variant='filled'
+            value={state}
+            onInputChange={handleChangeTitle}
+            onChange={(e): void => {
+                // '0' for delete category
+                handleChange({ value: e?.value ?? '0', label: e?.label ?? '', image: e?.image ?? '' });
+                handleSelectCategory(e?.label ?? '', e?.value ?? '');
+            }}
+            noOptionsMessage={() => hasCategories ? 'Searching...' : 'No results found'}
+            options={categories}
+            formatOptionLabel={(option) => (
+                <Flex alignItems='center' gap={2}>
+                    { option.image && <Img w={8} h={10} src={option.image} /> }
+                    <Text noOfLines={2}>{option.label}</Text>
+                </Flex>
+            )}
+            isSearchable
+            isClearable
+            placeholder='Search for a category'
+            maxMenuHeight={240}
+        />
     );
 };

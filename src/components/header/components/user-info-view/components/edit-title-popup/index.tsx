@@ -1,5 +1,17 @@
 import { useState } from 'react';
-import { Button, Input, Popup } from 'src/components/ui';
+import {
+    Button,
+    Flex,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text
+} from '@chakra-ui/react';
 import { TITLE_LIMIT } from 'src/consts';
 import { UpdateChannelInformation } from 'src/types';
 
@@ -7,9 +19,10 @@ type EditTitlePopupProps = {
     onClose: VoidFunction;
     onSave: (body: UpdateChannelInformation, callback: VoidFunction) => void;
     title: string;
+    isOpen: boolean;
 }
 
-export const EditTitlePopup = ({ onClose, title, onSave }: EditTitlePopupProps) => {
+export const EditTitlePopup = ({ onClose, title, onSave, isOpen }: EditTitlePopupProps) => {
     const [value, setValue] = useState(title);
     const titleCount = value.length;
 
@@ -26,18 +39,24 @@ export const EditTitlePopup = ({ onClose, title, onSave }: EditTitlePopupProps) 
     };
 
     return (
-        <Popup onClose={onClose}>
-            <div className='flex flex-col gap-4'>
-                <h2 className='font-bold text-2xl'>Change Title</h2>
-                <div className='flex flex-col gap-1'>
-                    <Input value={value} onChange={(e) => handleChangeTitle(e.target.value)} />
-                    <span className='text-sm text-right text-gray-500'>{titleCount}/{TITLE_LIMIT}</span>
-                </div>
-                <div className='flex gap-2'>
-                    <Button variant='primary' onClick={handleSave}>Save</Button>
-                    <Button variant='secondary' onClick={onClose}>Close</Button>
-                </div>
-            </div>
-        </Popup>
+        <Modal colorScheme='whiteAlpha' onClose={onClose} isOpen={isOpen} isCentered motionPreset='slideInBottom'>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Change Title</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                    <Flex direction='column' gap={1}>
+                        <Input focusBorderColor='purple.500' variant='filled' value={value} onChange={(e) => handleChangeTitle(e.target.value)} />
+                        <Text fontSize='sm' textAlign='right' color='gray.600'>{titleCount}/{TITLE_LIMIT}</Text>
+                    </Flex>
+                </ModalBody>
+                <ModalFooter>
+                    <Flex gap={2}>
+                        <Button colorScheme='gray' onClick={onClose}>Close</Button>
+                        <Button colorScheme='purple' onClick={handleSave}>Save</Button>
+                    </Flex>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
     );
 };

@@ -1,9 +1,11 @@
 import { UserIcon } from 'src/icons';
 
+import { Flex, Text } from '@chakra-ui/react';
+
 export const ChannelViewers = () => (
-    <div className='flex items-center'>
-        <UserIcon className='w-8 h-8 text-red-400 mt-2' />
+    <Flex gap={2} alignItems='center'>
+        <UserIcon w={4} h={4} color='red.500' />
         { /** TODO: Add real counter. */ }
-        <span className='text-red-400'>999</span>
-    </div>
+        <Text color='red.500'>999</Text>
+    </Flex>
 );

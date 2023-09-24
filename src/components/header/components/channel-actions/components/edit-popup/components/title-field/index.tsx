@@ -1,4 +1,4 @@
-import { Input } from 'src/components/ui';
+import { Flex, Input, Text } from '@chakra-ui/react';
 import { TITLE_LIMIT } from 'src/consts';
 import { FieldName } from '../field-name';
 
@@ -19,10 +19,10 @@ export const TitleField = ({ channelTitle, onChange }: TitleFieldProps) => {
     };
 
     return (
-        <div className='flex flex-col gap-1'>
+        <Flex flexDirection='column' gap={1}>
             <FieldName text='Title' />
-            <Input value={channelTitle} onChange={(e) => handleChange(e.target.value)} />
-            <span className='text-sm text-right text-gray-500'>{titleCount}/{TITLE_LIMIT}</span>
-        </div>
+            <Input variant='filled' value={channelTitle} onChange={(e) => handleChange(e.target.value)} />
+            <Text fontSize='sm' color='gray.500' textAlign='right'>{titleCount}/{TITLE_LIMIT}</Text>
+        </Flex>
     );
 };

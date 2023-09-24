@@ -1,9 +1,11 @@
+import { Center } from '@chakra-ui/react';
+
 type CenteredWrapperProps = {
     children: React.ReactNode;
 }
 
 export const CenteredWrapper = ({ children }: CenteredWrapperProps) => (
-    <div className='flex items-center justify-center h-screen'>
+    <Center h='inherit'>
         {children}
-    </div>
+    </Center>
 );

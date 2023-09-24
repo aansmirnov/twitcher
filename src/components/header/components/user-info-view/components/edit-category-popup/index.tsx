@@ -1,16 +1,28 @@
 import { useState } from 'react';
-import { Button, Popup } from 'src/components/ui';
+import {
+    Button,
+    Flex,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay
+} from '@chakra-ui/react';
 import { UpdateChannelInformation } from 'src/types';
 import { ChangeCategory } from 'src/components/header/components';
 
 type EditCategoryPopupProps = {
     onClose: VoidFunction;
     categoryName: string;
+    categoryId: string;
+    isOpen: boolean;
     onSave: (body: UpdateChannelInformation, callback: VoidFunction) => void;
 }
 
-export const EditCategoryPopup = ({ onClose, categoryName, onSave }: EditCategoryPopupProps) => {
-    const [categoryID, setCategoryID] = useState<string>();
+export const EditCategoryPopup = ({ onClose, categoryName, categoryId, isOpen, onSave }: EditCategoryPopupProps) => {
+    const [categoryID, setCategoryID] = useState(categoryId);
     const [selectedCategoryName, setSelectedCategoryName] = useState(categoryName);
 
     const handleSelectCategory = (categoryName: string, categoryId: string) => {
@@ -19,23 +31,26 @@ export const EditCategoryPopup = ({ onClose, categoryName, onSave }: EditCategor
     };
 
     const handleSave = () => {
-        if (categoryID) {
-            onSave({ game_id: categoryID, game_name: selectedCategoryName }, onClose);
-            return;
-        }
-        onClose();
+        onSave({ game_id: categoryID, game_name: selectedCategoryName }, onClose);
     };
 
     return (
-        <Popup onClose={onClose}>
-            <div className='flex flex-col gap-4'>
-                <h2 className='font-bold text-2xl'>Change Category</h2>
-                <ChangeCategory handleSelectCategory={handleSelectCategory} categoryName={categoryName} />
-                <div className='flex gap-2'>
-                    <Button variant='primary' onClick={handleSave}>Save</Button>
-                    <Button variant='secondary' onClick={onClose}>Close</Button>
-                </div>
-            </div>
-        </Popup>
+        <Modal colorScheme='whiteAlpha' onClose={onClose} isOpen={isOpen} isCentered motionPreset='slideInBottom'>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Change Category</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                    <ChangeCategory currentCategory={{ label: categoryName, value: categoryId, image: '' }} handleSelectCategory={handleSelectCategory} />
+                </ModalBody>
+                <ModalFooter>
+                    <Flex gap={2}>
+                        <Button colorScheme='gray' onClick={onClose}>Close</Button>
+                        <Button colorScheme='purple' onClick={handleSave}>Save</Button>
+                    </Flex>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+
     );
 };

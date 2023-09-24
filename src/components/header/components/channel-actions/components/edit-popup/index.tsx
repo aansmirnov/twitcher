@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Button, Popup } from 'src/components/ui';
+import {
+    Button,
+    Flex,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay
+} from '@chakra-ui/react';
 import { ChannelInformation } from 'src/types';
 import { BrandedContentField, CategoryField, TagsField, TitleField } from './components';
 import { useCurrentUserScope } from 'src/scopes';
@@ -7,24 +17,20 @@ import { useCurrentUserScope } from 'src/scopes';
 type EditPopupProps = {
     onClose: VoidFunction;
     currentUserChannelInfo: ChannelInformation;
+    isOpen: boolean;
 }
 
-export const EditPopup = ({ onClose, currentUserChannelInfo: { title, game_name, game_id, is_branded_content, tags } }: EditPopupProps) => {
+export const EditPopup = ({ onClose, currentUserChannelInfo: { title, game_name, game_id, is_branded_content, tags }, isOpen }: EditPopupProps) => {
     const [channelTitle, setChannelTitle] = useState(title);
-    const [categoryID, setCategoryID] = useState<string>();
-    const [selectedCategoryName, setSelectedCategoryName] = useState(game_name);
+    const [categoryID, setCategoryID] = useState(game_id);
+    const [categoryName, setCategoryName] = useState(game_name);
     const [isBrandedContent, setIsBrandedContent] = useState(is_branded_content);
     const [selectedTags, setSelectedTags] = useState(tags);
     const { updateChannelInformation } = useCurrentUserScope();
 
     const handleSelectCategory = (categoryName: string, categoryId: string) => {
-        setSelectedCategoryName(categoryName);
+        setCategoryName(categoryName);
         setCategoryID(categoryId);
-    };
-
-    const handleClearCategoryField = () => {
-        setSelectedCategoryName('');
-        setCategoryID(undefined);
     };
 
     const handleChangeTag = (value: string) => {
@@ -38,32 +44,37 @@ export const EditPopup = ({ onClose, currentUserChannelInfo: { title, game_name,
     const handleSave = () => {
         updateChannelInformation({
             title: channelTitle,
-            game_name: selectedCategoryName,
-            // '0' for delete category
-            game_id: selectedCategoryName.length > 0 ? categoryID ?? game_id : '0',
+            game_name: categoryName,
+            game_id: categoryID,
             is_branded_content: isBrandedContent,
             tags: selectedTags,
         }, onClose);
     };
 
     return (
-        <Popup onClose={onClose}>
-            <h2 className='font-bold text-2xl'>Broadcast Options</h2>
-            <div className='mt-4 flex flex-col gap-4'>
-                <TitleField onChange={setChannelTitle} channelTitle={channelTitle} />
-                <CategoryField
-                    clearable={selectedCategoryName.length > 0}
-                    onClear={handleClearCategoryField}
-                    handleSelectCategory={handleSelectCategory}
-                    categoryName={selectedCategoryName}
-                />
-                <TagsField onDelete={handleDeleteTag} tags={selectedTags} onChange={handleChangeTag} />
-                <BrandedContentField onChange={setIsBrandedContent} checked={isBrandedContent} />
-            </div>
-            <div className='flex gap-2 mt-6'>
-                <Button onClick={handleSave}>Save</Button>
-                <Button variant="secondary" onClick={onClose}>Close</Button>
-            </div>
-        </Popup>
+        <Modal colorScheme='whiteAlpha' onClose={onClose} isOpen={isOpen} isCentered motionPreset='slideInBottom'>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Broadcast Options</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                    <Flex flexDirection='column' gap={4}>
+                        <TitleField onChange={setChannelTitle} channelTitle={channelTitle} />
+                        <CategoryField
+                            handleSelectCategory={handleSelectCategory}
+                            currentCategory={{ value: game_id, label: game_name, image: '' }}
+                        />
+                        <TagsField onDelete={handleDeleteTag} tags={selectedTags} onChange={handleChangeTag} />
+                        <BrandedContentField onChange={setIsBrandedContent} checked={isBrandedContent} />
+                    </Flex>
+                </ModalBody>
+                <ModalFooter>
+                    <Flex gap={2}>
+                        <Button colorScheme='gray' onClick={onClose}>Close</Button>
+                        <Button colorScheme='purple' onClick={handleSave}>Save</Button>
+                    </Flex>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
     );
 };
