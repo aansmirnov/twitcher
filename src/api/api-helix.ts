@@ -9,7 +9,9 @@ import {
     GetCategoriesOut,
     ClearChatIn,
     GetChatSettingsIn,
-    GetChatSettingsOut
+    GetChatSettingsOut,
+    UpdateChatSettingsIn,
+    UpdateChatSettingsOut
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { AUTH_TOKEN, CLIENT_ID, TWITCH_HELIX_URL } from 'src/consts';
@@ -21,6 +23,7 @@ interface IApiHelix {
     getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut>;
     clearChat(params: ClearChatIn): Promise<void>;
     getChatSettings(params: GetChatSettingsIn): Promise<GetChatSettingsOut>;
+    updateChatSettings(body: UpdateChatSettingsIn): Promise<UpdateChatSettingsOut>
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -47,6 +50,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     getChatSettings(params: GetChatSettingsIn): Promise<GetChatSettingsOut> {
         return this.provider.get('/chat/settings', { params });
+    }
+
+    updateChatSettings({ params, body }: UpdateChatSettingsIn): Promise<GetChatSettingsOut> {
+        return this.provider.patch('/chat/settings', body , { params });
     }
 }
 
