@@ -15,6 +15,7 @@ export const authorizeUrl = () => {
         'openid',
         'moderator:manage:chat_settings',
         'moderator:manage:banned_users',
+        'moderator:manage:chat_messages',
         'channel:manage:broadcast',
     ].join(' '));
     path += `&scope=${scope}`;

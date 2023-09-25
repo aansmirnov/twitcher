@@ -1,8 +1,11 @@
-import { Fragment } from 'react';
 import { useConfigScope, useCurrentUserScope } from 'src/scopes';
-import { LoginWithTwitch, Header } from 'src/components';
-import { CenteredWrapper } from 'src/components';
-import { Spinner } from '@chakra-ui/react';
+import {
+    LoginWithTwitch,
+    Header,
+    CenteredWrapper,
+    Footer
+} from 'src/components';
+import { Flex, Spinner } from '@chakra-ui/react';
 
 export const TwitcherView = () => {
     const { loading: configLoading, config } = useConfigScope();
@@ -26,8 +29,12 @@ export const TwitcherView = () => {
     }
 
     return (
-        <Fragment>
+        <Flex height='inherit' flexDirection='column' justifyContent='space-between'>
             <Header />
-        </Fragment>
+            <Flex flexDirection='column' gap={8}>
+                <div>chat</div>
+                <Footer />
+            </Flex>
+        </Flex>
     );
 };

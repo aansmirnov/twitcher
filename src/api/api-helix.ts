@@ -6,7 +6,8 @@ import {
     GetChannelsInformationOut,
     UpdateChannelInformationIn,
     GetCategoriesIn,
-    GetCategoriesOut
+    GetCategoriesOut,
+    ClearChatIn
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { AUTH_TOKEN, CLIENT_ID, TWITCH_HELIX_URL } from 'src/consts';
@@ -16,6 +17,7 @@ interface IApiHelix {
     getChannelsInformation(params: GetChannelsInformationIn): Promise<GetChannelsInformationOut>;
     updateChannelInformation(params: UpdateChannelInformationIn): Promise<void>;
     getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut>;
+    clearChat(params: ClearChatIn): Promise<void>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -34,6 +36,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut> {
         return this.provider.get('/search/categories', { params });
+    }
+
+    clearChat(params: ClearChatIn): Promise<void> {
+        return this.provider.delete('/moderation/chat', { params });
     }
 }
 

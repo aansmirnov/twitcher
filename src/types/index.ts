@@ -4,3 +4,4 @@ export * from './users';
 export * from './channels';
 export * from './categories';
 export * from './option';
+export * from './chat';
