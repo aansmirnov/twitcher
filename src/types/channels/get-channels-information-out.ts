@@ -1,5 +1,4 @@
+import { Result } from 'src/types';
 import { ChannelInformation } from './channel-information';
 
-export type GetChannelsInformationOut = {
-    data: ChannelInformation[];
-}
+export type GetChannelsInformationOut = Result<ChannelInformation[]>;

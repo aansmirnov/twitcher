@@ -1,5 +1,4 @@
+import { Result } from 'src/types';
 import { User } from './user';
 
-export type GetUsersOut = {
-   data: User[];
-}
+export type GetUsersOut = Result<User[]>;
