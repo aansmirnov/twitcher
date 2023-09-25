@@ -10,7 +10,7 @@ type HiddenHeaderProps = {
 
 export const HiddenHeader = ({ channelTitle, channelCategory, onShowHeader }: HiddenHeaderProps) => (
     <Box>
-        <Flex justifyContent='space-around' p={4} alignItems='center'>
+        <Flex justifyContent='space-around' p={4} alignItems='center' gap={2}>
             <Text color='white' fontWeight='semibold' noOfLines={1}>{channelTitle}</Text>
             <Text color='purple.300' fontWeight='semibold' noOfLines={1}>{channelCategory}</Text>
             <ChannelViewers />
