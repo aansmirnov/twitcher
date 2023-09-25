@@ -6,7 +6,7 @@ export const ChatActions = () => {
     const { handleClearChat } = useChatActions();
 
     return (
-        <Flex gap={4} p={4}>
+        <Flex gap={4}>
             <Tooltip borderRadius='lg' placement='top' label='Clear Chat'>
                 <DeleteIcon color='white' cursor='pointer' _hover={{ color: 'gray.300' }} onClick={handleClearChat} />
             </Tooltip>

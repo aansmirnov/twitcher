@@ -1,11 +1,14 @@
-import { Box, Divider } from '@chakra-ui/react';
-import { ChatActions } from './components';
+import { Box, Divider, Flex } from '@chakra-ui/react';
+import { ChatActions, SendMessageForm } from './components';
 
 export const Footer = () => {
     return (
         <Box>
             <Divider />
-            <ChatActions />
+            <Flex gap={4} p={4} alignItems='center'>
+                <ChatActions />
+                <SendMessageForm />
+            </Flex>
         </Box>
     );
 };
