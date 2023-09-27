@@ -19,7 +19,7 @@ export const ChangeCategory = ({ handleSelectCategory, currentCategory }: Change
             onChange={(e): void => {
                 // '0' for delete category
                 handleChange({ value: e?.value ?? '0', label: e?.label ?? '', image: e?.image ?? '' });
-                handleSelectCategory(e?.label ?? '', e?.value ?? '');
+                handleSelectCategory(e?.label ?? '', e?.value?.toString() ?? '');
             }}
             noOptionsMessage={() => hasCategories ? 'Searching...' : 'No results found'}
             options={categories}

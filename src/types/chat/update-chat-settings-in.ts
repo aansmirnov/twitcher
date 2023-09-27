@@ -9,5 +9,5 @@ export type UpdateChatSettingsIn = {
     /**
      * Request body
      */
-    body: Omit<ChatSettings, 'broadcaster_id' | 'moderator_id'>;
+    body: Partial<Omit<ChatSettings, 'broadcaster_id' | 'moderator_id'>>;
 }
