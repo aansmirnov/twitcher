@@ -41,11 +41,8 @@ export const useChatActions = (): UseChatActionsReturnType => {
             })
             .then(({ data }) => {
                 setChatSettings(data[0]);
-            })
-            .catch(() => {
-                toast({ description: 'Something went wrong :(', duration: 1000, status: 'error' });
             });
-    }, [toast, userID]);
+    }, [userID]);
 
     useEffect(() => {
         if (!isSendRequest && userID) {

@@ -1,4 +1,5 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { useToast } from '@chakra-ui/react';
+import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 export class ApiRequest {
     provider: AxiosInstance;
@@ -12,8 +13,9 @@ export class ApiRequest {
 
         this.provider.interceptors.response.use((response: AxiosResponse) => {
             return response.data;
-        }, (error) => {
-            throw error;
+        }, (error: AxiosError) => {
+            const toast = useToast();
+            toast({ status: 'error', duration: 1000, description: error.message });
         });
     }
 }
