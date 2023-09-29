@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { ChannelViewers } from 'src/components/header/components';
-import { useVisibilityState } from 'src/hooks';
+import { UseChannelInformationReturnType, useVisibilityState } from 'src/hooks';
 import { EditPopup } from './components';
 import { ChannelInformation } from 'src/types';
 import { EditIcon, UpDownIcon } from '@chakra-ui/icons';
@@ -9,9 +9,9 @@ import { Flex, Tooltip } from '@chakra-ui/react';
 type ChannelActionsProps = {
     onHideHeader: VoidFunction;
     currentUserChannelInfo: ChannelInformation;
-}
+} & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>
 
-export const ChannelActions = ({ onHideHeader, currentUserChannelInfo }: ChannelActionsProps) => {
+export const ChannelActions = ({ onHideHeader, currentUserChannelInfo, updateChannelInformation }: ChannelActionsProps) => {
     const [isEditPopupVisible, { show, hide }] = useVisibilityState();
 
     return (
@@ -27,7 +27,14 @@ export const ChannelActions = ({ onHideHeader, currentUserChannelInfo }: Channel
                     </Tooltip>
                 </Flex>
             </Flex>
-            { isEditPopupVisible && <EditPopup isOpen={isEditPopupVisible} currentUserChannelInfo={currentUserChannelInfo} onClose={hide} />}
+            { isEditPopupVisible && (
+                <EditPopup
+                    updateChannelInformation={updateChannelInformation}
+                    isOpen={isEditPopupVisible}
+                    currentUserChannelInfo={currentUserChannelInfo}
+                    onClose={hide}
+                />
+            )}
         </Fragment>
     );
 };

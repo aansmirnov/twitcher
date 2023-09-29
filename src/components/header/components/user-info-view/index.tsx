@@ -1,24 +1,22 @@
 import { Fragment } from 'react';
-import { useVisibilityState } from 'src/hooks';
+import { UseChannelInformationReturnType, useVisibilityState } from 'src/hooks';
 import { ChannelInformation, UpdateChannelInformation, User } from 'src/types';
 import { EditCategoryPopup, EditTitlePopup } from './components';
-import { useCurrentUserScope } from 'src/scopes';
 import { Avatar, Flex, Tag, Text } from '@chakra-ui/react';
 import { VerifiedPartnerIcon } from 'src/icons';
 
 type UserInfoViewProps = {
     currentUser: User;
     currentUserChannelInfo: ChannelInformation;
-}
+} & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>
 
-export const UserInfoView = ({ currentUser, currentUserChannelInfo }: UserInfoViewProps) => {
+export const UserInfoView = ({ currentUser, currentUserChannelInfo, updateChannelInformation }: UserInfoViewProps) => {
     const { profile_image_url, display_name, broadcaster_type } = currentUser;
     const { tags, title, game_name, game_id } = currentUserChannelInfo;
     const hasTags = tags.length > 0;
 
     const [isEditTitlePopupVisible, { show: showEditTitlePopup, hide: hideEditTitlePopup }] = useVisibilityState();
     const [isEditCategoryPopupVisible, { show: showEditCategoryPopup, hide: hideEditCategoryPopup }] = useVisibilityState();
-    const { updateChannelInformation } = useCurrentUserScope();
 
     const handleUpdateChannel = (body: UpdateChannelInformation, callback: VoidFunction) => {
         updateChannelInformation(body, callback);

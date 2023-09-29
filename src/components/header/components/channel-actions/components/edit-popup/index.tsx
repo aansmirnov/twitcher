@@ -12,21 +12,20 @@ import {
 } from '@chakra-ui/react';
 import { ChannelInformation } from 'src/types';
 import { BrandedContentField, CategoryField, TagsField, TitleField } from './components';
-import { useCurrentUserScope } from 'src/scopes';
+import { UseChannelInformationReturnType } from 'src/hooks';
 
 type EditPopupProps = {
     onClose: VoidFunction;
     currentUserChannelInfo: ChannelInformation;
     isOpen: boolean;
-}
+} & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>
 
-export const EditPopup = ({ onClose, currentUserChannelInfo: { title, game_name, game_id, is_branded_content, tags }, isOpen }: EditPopupProps) => {
+export const EditPopup = ({ onClose, currentUserChannelInfo: { title, game_name, game_id, is_branded_content, tags }, isOpen, updateChannelInformation }: EditPopupProps) => {
     const [channelTitle, setChannelTitle] = useState(title);
     const [categoryID, setCategoryID] = useState(game_id);
     const [categoryName, setCategoryName] = useState(game_name);
     const [isBrandedContent, setIsBrandedContent] = useState(is_branded_content);
     const [selectedTags, setSelectedTags] = useState(tags);
-    const { updateChannelInformation } = useCurrentUserScope();
 
     const handleSelectCategory = (categoryName: string, categoryId: string) => {
         setCategoryName(categoryName);

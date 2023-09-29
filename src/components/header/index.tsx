@@ -1,22 +1,22 @@
-import { useCurrentUserScope } from 'src/scopes';
 import { ChannelActions, HiddenHeader, UserInfoView } from './components';
-import { useVisibilityState } from 'src/hooks';
+import { UseChannelInformationReturnType, useVisibilityState } from 'src/hooks';
 import { Box, Divider, Flex, Spacer } from '@chakra-ui/react';
+import { ChannelInformation, User } from 'src/types';
 
-export const Header = () => {
-    const { currentUser, currentUserChannelInfo } = useCurrentUserScope();
+type HeaderProps = {
+    currentUser: User;
+    channelInformation: ChannelInformation;
+} & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>;
+
+export const Header = ({ currentUser, channelInformation, updateChannelInformation }: HeaderProps) => {
     const [isHeaderVisible, { show: showHeader, hide: hideHeader }] = useVisibilityState(true);
-
-    if (!currentUser || !currentUserChannelInfo) {
-        return null;
-    }
 
     if (!isHeaderVisible) {
         return (
             <HiddenHeader
                 onShowHeader={showHeader}
-                channelTitle={currentUserChannelInfo.title}
-                channelCategory={currentUserChannelInfo.game_name}
+                channelTitle={channelInformation.title}
+                channelCategory={channelInformation.game_name}
             />
         );
     }
@@ -24,9 +24,17 @@ export const Header = () => {
     return (
         <Box>
             <Flex p={4}>
-                <UserInfoView currentUser={currentUser} currentUserChannelInfo={currentUserChannelInfo} />
+                <UserInfoView
+                    currentUser={currentUser}
+                    updateChannelInformation={updateChannelInformation}
+                    currentUserChannelInfo={channelInformation}
+                />
                 <Spacer />
-                <ChannelActions onHideHeader={hideHeader} currentUserChannelInfo={currentUserChannelInfo} />
+                <ChannelActions
+                    updateChannelInformation={updateChannelInformation}
+                    onHideHeader={hideHeader}
+                    currentUserChannelInfo={channelInformation}
+                />
             </Flex>
             <Divider />
         </Box>

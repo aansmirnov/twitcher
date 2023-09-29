@@ -6,11 +6,13 @@ import {
     Footer
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
+import { useChannelInformation } from 'src/hooks';
 
 export const TwitcherView = () => {
     const { loading: configLoading, config } = useConfigScope();
-    const { loading: userLoading } = useCurrentUserScope();
-    const isLoading = userLoading || configLoading;
+    const { loading: userLoading, currentUser } = useCurrentUserScope();
+    const { loading: channelInfoLoading, channelInformation, updateChannelInformation } = useChannelInformation();
+    const isLoading = userLoading || configLoading || channelInfoLoading || !currentUser || !channelInformation;
 
     if (isLoading) {
         return (
@@ -30,7 +32,11 @@ export const TwitcherView = () => {
 
     return (
         <Flex height='inherit' flexDirection='column' justifyContent='space-between'>
-            <Header />
+            <Header
+                currentUser={currentUser}
+                channelInformation={channelInformation}
+                updateChannelInformation={updateChannelInformation}
+            />
             <Flex flexDirection='column' gap={8}>
                 <div>chat</div>
                 <Footer />
