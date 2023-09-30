@@ -25,7 +25,11 @@ class CurrentUserStore {
                     this.currentUser = user;
                 });
             })
-            .finally(() => this.loading = false);
+            .finally(() => {
+                runInAction(() => {
+                    this.loading = false;
+                });
+            });
     };
 }
 

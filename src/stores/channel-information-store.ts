@@ -26,7 +26,11 @@ class ChannelInformationStore {
                     this.channelInformation = channelInfo;
                 });
             })
-            .finally(() => this.loading = false);
+            .finally(() => {
+                runInAction(() => {
+                    this.loading = false;
+                });
+            });
     };
 
     updateChannelInformation = (body: UpdateChannelInformationIn, callback: VoidFunction) => {
