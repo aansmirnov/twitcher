@@ -1,52 +1,32 @@
-import { useCallback, useEffect, useState } from 'react';
-import { apiHelix } from 'src/api';
-import { useCurrentUserScope } from 'src/scopes';
-import { ChannelInformation, UpdateChannelInformation } from 'src/types';
+import { useEffect } from 'react';
+import { ChannelInformation, UpdateChannelInformationIn } from 'src/types';
+import { useCurrentUserStore, useChannelInformationStore } from 'src/stores';
 
 export type UseChannelInformationReturnType = {
+    updateChannelInformation: (body: UpdateChannelInformationIn, callback: VoidFunction) => void;
     channelInformation?: ChannelInformation;
-    updateChannelInformation: (body: UpdateChannelInformation, callback: VoidFunction) => void;
     loading: boolean;
 }
 
 export const useChannelInformation = (): UseChannelInformationReturnType => {
-    const [channelInformation, setChannelInformation] = useState<ChannelInformation>();
-    const [loading, setLoading] = useState(true);
-    const { currentUser } = useCurrentUserScope();
+    const { currentUser } = useCurrentUserStore;
+    const { getChannelInformation, loading, channelInformation, updateChannelInformation } = useChannelInformationStore;
 
-    const getChannelInfo = useCallback((userID: string) => {
-        apiHelix
-            .getChannelsInformation({ broadcaster_id: [userID] })
-            .then(({ data }) => {
-                const [channelInfo] = data;
-
-                setChannelInformation(channelInfo);
-                setLoading(false);
-            });
-    }, []);
-
-    const updateChannelInformation = (body: UpdateChannelInformation, callback: VoidFunction) => {
+    const updateChannelInfo = (body: UpdateChannelInformationIn, callback: VoidFunction) => {
         if (currentUser) {
-            apiHelix.updateChannelInformation({
-                broadcaster_id: currentUser.id,
-                ...body
-            }).then(() => {
-                setChannelInformation((prev) => ({ ...prev as ChannelInformation, ...body }));
-                callback();
-            });
+            updateChannelInformation({ ...body, broadcaster_id: currentUser.id }, callback);
         }
     };
 
     useEffect(() => {
-        if (currentUser) {
-            getChannelInfo(currentUser.id);
+        if (currentUser && !channelInformation) {
+            getChannelInformation(currentUser.id);
         }
-    }, [currentUser, getChannelInfo]);
-
+    },[channelInformation, currentUser, getChannelInformation]);
 
     return {
+        updateChannelInformation: updateChannelInfo,
         channelInformation,
-        updateChannelInformation,
         loading
     };
 };

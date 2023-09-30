@@ -1,12 +1,13 @@
 import { DeleteIcon, SettingsIcon } from '@chakra-ui/icons';
 import { Flex, Tooltip } from '@chakra-ui/react';
-import { useChatActions } from './use-chat-actions';
 import { Fragment } from 'react';
 import { useVisibilityState } from 'src/hooks';
+import { useChatActions } from './use-chat-actions';
 import { EditChatSettings } from './components';
+import { observer } from 'mobx-react';
 
-export const ChatActions = () => {
-    const { handleClearChat, chatSettings, handleUpdateChatSettings } = useChatActions();
+export const ChatActions = observer(() => {
+    const { chatSettings, handleClearChat, handleUpdateChatSettings } = useChatActions();
     const [isVisible, { show, hide }] = useVisibilityState();
     const isPopupVisible = chatSettings && isVisible;
 
@@ -23,4 +24,4 @@ export const ChatActions = () => {
             { isPopupVisible && <EditChatSettings handleUpdateChatSettings={handleUpdateChatSettings} chatSettings={chatSettings} onClose={hide} isOpen={isVisible} /> }
         </Fragment>
     );
-};
+});

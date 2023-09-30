@@ -1,40 +1,20 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Config } from 'src/types';
+import { useCallback, useEffect, useState } from 'react';
 import { apiAuth } from 'src/api';
-import { AUTH_TOKEN, CLIENT_ID, CLIENT_SECRET, TWITCHER_CONFIG } from 'src/consts';
+import { CLIENT_ID, CLIENT_SECRET, TWITCHER_ACCESS_TOKEN, TWITCHER_CONFIG } from 'src/consts';
+import { Config } from 'src/types';
 
-type ConfigScopeProps = {
-    children: React.ReactNode;
-}
-
-type ConfigScopeContextType = {
-    config?: Config;
-    loading: boolean;
-    getAccessToken: (authCode: string) => void;
-    canSendRequests: boolean;
-}
-
-const ConfigScopeContext = createContext<ConfigScopeContextType>({
-    config: undefined,
-    loading: false,
-    getAccessToken: () => null,
-    canSendRequests: false,
-});
-
-export const ConfigScope = ({ children }: ConfigScopeProps) => {
+export const useTwitcherConfig = () => {
     const [config, setConfig] = useState<Config>();
     const [loading, setLoading] = useState(true);
-    const canSendRequests = useMemo(() => Boolean(config && AUTH_TOKEN), [config]);
 
     const updateConfigState = (newConfig: Config) => {
         const cfg = { ...newConfig, expired_at: new Date().setSeconds(newConfig.expires_in) };
 
         setConfig(cfg);
         localStorage.setItem(TWITCHER_CONFIG, JSON.stringify(cfg));
+        localStorage.setItem(TWITCHER_ACCESS_TOKEN, cfg.access_token);
     };
     const getAccessToken = useCallback((authCode: string) => {
-        setLoading(true);
-
         apiAuth
             .getAccessToken({
                 code: authCode,
@@ -48,6 +28,7 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
     }, []);
     const refreshToken = useCallback((token: string) => {
         setLoading(true);
+        localStorage.removeItem(TWITCHER_ACCESS_TOKEN);
         localStorage.removeItem(TWITCHER_CONFIG);
 
         apiAuth
@@ -74,21 +55,13 @@ export const ConfigScope = ({ children }: ConfigScopeProps) => {
                 }
                 setConfig(parsedConfig);
             }
-
             setLoading(false);
         }
     }, [config, loading, refreshToken]);
 
-    return (
-        <ConfigScopeContext.Provider value={{
-            config,
-            loading,
-            canSendRequests,
-            getAccessToken
-        }}>
-            {children}
-        </ConfigScopeContext.Provider>
-    );
+    return {
+        getAccessToken,
+        loading,
+        config
+    };
 };
-
-export const useConfigScope = () => useContext(ConfigScopeContext);

@@ -1,11 +1,13 @@
 import { useEffect, useMemo } from 'react';
-import { useConfigScope } from 'src/scopes';
 import { authorizeUrl } from './authorize-url';
 import { Button, Text } from '@chakra-ui/react';
 import { TwitchIcon } from 'src/icons';
 
-export const LoginWithTwitch = () => {
-    const { getAccessToken } = useConfigScope();
+type LoginWithTwitchProps = {
+    getAccessToken: (authCode: string) => void;
+}
+
+export const LoginWithTwitch = ({ getAccessToken }: LoginWithTwitchProps) => {
     const queryCode = useMemo(() => {
         const url = new URL(window.location.href);
         return url.searchParams.get('code');

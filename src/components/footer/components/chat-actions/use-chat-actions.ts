@@ -1,63 +1,49 @@
 import { useToast } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { apiHelix } from 'src/api';
-import { useCurrentUserScope } from 'src/scopes';
+import { useChatSettingsStore, useCurrentUserStore } from 'src/stores';
 import { ChatSettings, UpdateChatSettingsIn } from 'src/types';
 
 type UseChatActionsReturnType = {
+    getChatSettings: (userID: string) => void;
     handleClearChat: VoidFunction;
     handleUpdateChatSettings: (body: UpdateChatSettingsIn['body']) => void;
     chatSettings?: ChatSettings;
 }
 
 export const useChatActions = (): UseChatActionsReturnType => {
-    const [isSendRequest, setIsSendRequest] = useState(false);
-    const [chatSettings, setChatSettings] = useState<ChatSettings>();
-    const { currentUser } = useCurrentUserScope();
     const toast = useToast();
-    const userID = currentUser?.id;
+    const { currentUser } = useCurrentUserStore;
+    const { chatSettings, getChatSettings, updateChatSettings } = useChatSettingsStore;
 
     const handleClearChat = useCallback(() => {
-        if (!userID) {
+        if (!currentUser) {
             return;
         }
 
         apiHelix
-            .clearChat({ broadcaster_id: userID, moderator_id: userID })
+            .clearChat({ broadcaster_id: currentUser.id, moderator_id: currentUser.id })
             .then(() => {
                 toast({ description: 'Chat successfully cleared', duration: 1000, status: 'success' });
             });
-    }, [userID, toast]);
+    }, [currentUser, toast]);
 
     const handleUpdateChatSettings = useCallback((body: UpdateChatSettingsIn['body']) => {
-        if (!userID) {
+        if (!currentUser) {
             return;
         }
 
-        apiHelix
-            .updateChatSettings({
-                params: { broadcaster_id: userID, moderator_id: userID },
-                body
-            })
-            .then(({ data }) => {
-                setChatSettings(data[0]);
-            });
-    }, [userID]);
+        updateChatSettings(currentUser.id, body);
+    }, [currentUser, updateChatSettings]);
 
     useEffect(() => {
-        if (!isSendRequest && userID) {
-            apiHelix
-                .getChatSettings({ broadcaster_id: userID })
-                .then(({ data }) => {
-                    if (data.length === 1) {
-                        setChatSettings(data[0]);
-                    }
-                })
-                .finally(() => setIsSendRequest(true));
+        if (currentUser && !chatSettings) {
+            getChatSettings(currentUser.id);
         }
-    }, [userID, isSendRequest]);
+    }, [chatSettings, currentUser, getChatSettings]);
 
     return {
+        getChatSettings,
         handleClearChat,
         handleUpdateChatSettings,
         chatSettings,

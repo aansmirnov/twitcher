@@ -1,4 +1,4 @@
-import { useConfigScope, useCurrentUserScope } from 'src/scopes';
+import { observer } from 'mobx-react';
 import {
     LoginWithTwitch,
     Header,
@@ -6,13 +6,13 @@ import {
     Footer
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
-import { useChannelInformation } from 'src/hooks';
+import { useChannelInformation, useCurrentUser, useTwitcherConfig } from 'src/hooks';
 
-export const TwitcherView = () => {
-    const { loading: configLoading, config } = useConfigScope();
-    const { loading: userLoading, currentUser } = useCurrentUserScope();
+export const TwitcherView = observer(() => {
+    const { loading: configLoading, config, getAccessToken } = useTwitcherConfig();
+    const { loading: userLoading, currentUser } = useCurrentUser();
     const { loading: channelInfoLoading, channelInformation, updateChannelInformation } = useChannelInformation();
-    const isLoading = userLoading || configLoading || channelInfoLoading || !currentUser || !channelInformation;
+    const isLoading = userLoading || configLoading || channelInfoLoading;
 
     if (isLoading) {
         return (
@@ -25,9 +25,13 @@ export const TwitcherView = () => {
     if (!isLoading && !config) {
         return (
             <CenteredWrapper>
-                <LoginWithTwitch />
+                <LoginWithTwitch getAccessToken={getAccessToken} />
             </CenteredWrapper>
         );
+    }
+
+    if (!currentUser || !channelInformation) {
+        return null;
     }
 
     return (
@@ -43,4 +47,4 @@ export const TwitcherView = () => {
             </Flex>
         </Flex>
     );
-};
+});

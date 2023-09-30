@@ -10,7 +10,7 @@ import {
     ModalHeader,
     ModalOverlay
 } from '@chakra-ui/react';
-import { UpdateChannelInformation } from 'src/types';
+import { UpdateChannelInformationIn } from 'src/types';
 import { ChangeCategory } from 'src/components/header/components';
 
 type EditCategoryPopupProps = {
@@ -18,7 +18,7 @@ type EditCategoryPopupProps = {
     categoryName: string;
     categoryId: string;
     isOpen: boolean;
-    onSave: (body: UpdateChannelInformation, callback: VoidFunction) => void;
+    onSave: (body: UpdateChannelInformationIn, callback: VoidFunction) => void;
 }
 
 export const EditCategoryPopup = ({ onClose, categoryName, categoryId, isOpen, onSave }: EditCategoryPopupProps) => {

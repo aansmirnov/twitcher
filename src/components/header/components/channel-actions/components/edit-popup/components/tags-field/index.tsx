@@ -36,7 +36,7 @@ export const TagsField = ({ tags, onChange, onDelete }: TagsFieldProps) => {
         <Flex gap={1} flexDirection='column'>
             <FieldName text='Tags' />
             <Flex gap={1} mb={2}>
-                <Input variant='filled' onKeyDown={(e) => {
+                <Input focusBorderColor='purple.500' variant='filled' onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                         handleAddTag();
                     }

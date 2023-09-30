@@ -14,6 +14,7 @@ export const ChangeCategory = ({ handleSelectCategory, currentCategory }: Change
     return (
         <Select
             variant='filled'
+            focusBorderColor='purple.500'
             value={state}
             onInputChange={handleChangeTitle}
             onChange={(e): void => {

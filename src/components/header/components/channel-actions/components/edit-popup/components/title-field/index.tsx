@@ -21,7 +21,7 @@ export const TitleField = ({ channelTitle, onChange }: TitleFieldProps) => {
     return (
         <Flex flexDirection='column' gap={1}>
             <FieldName text='Title' />
-            <Input variant='filled' value={channelTitle} onChange={(e) => handleChange(e.target.value)} />
+            <Input focusBorderColor='purple.500' variant='filled' value={channelTitle} onChange={(e) => handleChange(e.target.value)} />
             <Text fontSize='sm' color='gray.500' textAlign='right'>{titleCount}/{TITLE_LIMIT}</Text>
         </Flex>
     );

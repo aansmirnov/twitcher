@@ -14,7 +14,7 @@ import {
     UpdateChatSettingsOut
 } from 'src/types';
 import { ApiRequest } from './api-request';
-import { AUTH_TOKEN, CLIENT_ID, TWITCH_HELIX_URL } from 'src/consts';
+import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
 
 interface IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut>;
@@ -61,7 +61,7 @@ export const apiHelix = new ApiHelix(
     axios.create({
         baseURL: TWITCH_HELIX_URL,
         headers: {
-            'Authorization': `Bearer ${AUTH_TOKEN}`,
+            'Authorization': `Bearer ${localStorage.getItem(TWITCHER_ACCESS_TOKEN)}`,
             'Client-Id': CLIENT_ID,
             'Content-Type': 'application/json'
         }

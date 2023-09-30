@@ -76,13 +76,13 @@ export const EditChatSettings = ({ onClose, isOpen, chatSettings, handleUpdateCh
                         <Grid templateColumns='repeat(2, 1fr)'>
                             <GridItem>Emotes-Only Chat</GridItem>
                             <GridItem>
-                                <Switch checked={chatSettings.emote_mode} onChange={(e) => onChange({ emote_mode: e.target.checked })} />
+                                <Switch isChecked={chatSettings.emote_mode} onChange={(e) => onChange({ emote_mode: e.target.checked })} />
                             </GridItem>
                         </Grid>
                         <Grid templateColumns='repeat(2, 1fr)'>
                             <GridItem>Subscriber-Only Chat</GridItem>
                             <GridItem>
-                                <Switch checked={chatSettings.subscriber_mode} onChange={(e) => onChange({ subscriber_mode: e.target.checked })} />
+                                <Switch isChecked={chatSettings.subscriber_mode} onChange={(e) => onChange({ subscriber_mode: e.target.checked })} />
                             </GridItem>
                         </Grid>
                     </Flex>

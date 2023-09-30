@@ -13,11 +13,11 @@ import {
     Text
 } from '@chakra-ui/react';
 import { TITLE_LIMIT } from 'src/consts';
-import { UpdateChannelInformation } from 'src/types';
+import { UpdateChannelInformationIn } from 'src/types';
 
 type EditTitlePopupProps = {
     onClose: VoidFunction;
-    onSave: (body: UpdateChannelInformation, callback: VoidFunction) => void;
+    onSave: (body: UpdateChannelInformationIn, callback: VoidFunction) => void;
     title: string;
     isOpen: boolean;
 }

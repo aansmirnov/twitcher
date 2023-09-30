@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { UseChannelInformationReturnType, useVisibilityState } from 'src/hooks';
-import { ChannelInformation, UpdateChannelInformation, User } from 'src/types';
+import { ChannelInformation, UpdateChannelInformationIn, User } from 'src/types';
 import { EditCategoryPopup, EditTitlePopup } from './components';
 import { Avatar, Flex, Tag, Text } from '@chakra-ui/react';
 import { VerifiedPartnerIcon } from 'src/icons';
@@ -18,7 +18,7 @@ export const UserInfoView = ({ currentUser, currentUserChannelInfo, updateChanne
     const [isEditTitlePopupVisible, { show: showEditTitlePopup, hide: hideEditTitlePopup }] = useVisibilityState();
     const [isEditCategoryPopupVisible, { show: showEditCategoryPopup, hide: hideEditCategoryPopup }] = useVisibilityState();
 
-    const handleUpdateChannel = (body: UpdateChannelInformation, callback: VoidFunction) => {
+    const handleUpdateChannel = (body: UpdateChannelInformationIn, callback: VoidFunction) => {
         updateChannelInformation(body, callback);
     };
 
