@@ -6,13 +6,14 @@ import {
     Footer
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
-import { useChannelInformation, useCurrentUser, useTwitcherConfig } from 'src/hooks';
+import { useChannelInformation, useChatEvents, useCurrentUser, useTwitcherConfig } from 'src/hooks';
 
 export const TwitcherView = observer(() => {
     const { loading: configLoading, config, getAccessToken } = useTwitcherConfig();
     const { loading: userLoading, currentUser } = useCurrentUser();
     const { loading: channelInfoLoading, channelInformation, updateChannelInformation } = useChannelInformation();
-    const isLoading = userLoading || configLoading || channelInfoLoading;
+    const { loading: chatEventsLoading } = useChatEvents();
+    const isLoading = userLoading || configLoading || channelInfoLoading || chatEventsLoading;
 
     if (isLoading) {
         return (

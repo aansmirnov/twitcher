@@ -13,6 +13,8 @@ export const authorizeUrl = () => {
     // You must URL encode the list.
     const scope = encodeURIComponent([
         'openid',
+        'chat:read',
+        'chat:edit',
         'moderator:manage:chat_settings',
         'moderator:manage:banned_users',
         'moderator:manage:chat_messages',
