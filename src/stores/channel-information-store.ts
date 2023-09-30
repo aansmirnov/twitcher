@@ -9,7 +9,7 @@ class ChannelInformationStore {
     constructor() {
         makeObservable(this, {
             loading: observable,
-            channelInformation: observable.ref,
+            channelInformation: observable,
             getChannelInformation: action,
             updateChannelInformation: action
         });

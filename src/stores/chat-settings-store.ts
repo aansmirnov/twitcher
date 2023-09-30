@@ -9,7 +9,7 @@ class ChatSettingsStore {
     constructor() {
         makeObservable(this, {
             loading: observable,
-            chatSettings: observable.ref,
+            chatSettings: observable,
             getChatSettings: action,
             updateChatSettings: action
         });
