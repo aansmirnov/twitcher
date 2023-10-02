@@ -6,3 +6,4 @@ export * from './categories';
 export * from './option';
 export * from './chat';
 export * from './result';
+export * from './twitch-irc-message';
