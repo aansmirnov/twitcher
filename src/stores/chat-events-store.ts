@@ -12,7 +12,8 @@ class ChatEventsStore {
         makeObservable(this, {
             isInitialized: observable,
             loading: observable,
-            createConnection: action
+            createConnection: action,
+            sendMessage: action,
         });
     }
 
@@ -30,7 +31,7 @@ class ChatEventsStore {
     };
 
     connectToChat = () => {
-        if (!this.websocket) {
+        if (!this.websocket || !this.userLogin) {
             throw Error('Failed to connect to chat.');
         }
 
@@ -56,6 +57,14 @@ class ChatEventsStore {
                 console.log(parsedMessage);
             });
         };
+    };
+
+    sendMessage = (message: string) => {
+        if (!this.websocket || !this.userLogin) {
+            throw Error('Failed to sent message.');
+        }
+
+        this.websocket.send(`PRIVMSG #${this.userLogin} :${message}`);
     };
 }
 
