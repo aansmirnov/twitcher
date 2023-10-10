@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useChatEventsStoreContext, useCurrentUserStore } from 'src/stores';
+import { useChatEventsStoreContext, useCurrentUserStoreContext } from 'src/stores';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 type UseSendMessageReturnType = {
@@ -10,7 +10,7 @@ export const useSendMessage = (): UseSendMessageReturnType => {
     const [isConnectionInitialized, setIsConnectionInitialized] = useState(false);
     const [websocket, setWebsockt] = useState<WebSocket>();
     const { createConnection, connectToChat } = useChatEventsStoreContext();
-    const { currentUser } = useCurrentUserStore;
+    const { currentUser } = useCurrentUserStoreContext();
 
     const listenMessages = useCallback((socket: WebSocket) => {
         socket.onmessage = (event) => {

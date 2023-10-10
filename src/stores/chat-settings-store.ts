@@ -1,4 +1,5 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
+import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { ChatSettings, UpdateChatSettingsIn } from 'src/types';
 
@@ -44,4 +45,5 @@ class ChatSettingsStore {
     };
 }
 
-export const useChatSettingsStore = new ChatSettingsStore();
+const context = createContext(new ChatSettingsStore());
+export const useChatSettingsStoreContext = () => useContext(context);

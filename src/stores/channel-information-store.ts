@@ -1,4 +1,5 @@
 import { makeObservable, runInAction, observable, action } from 'mobx';
+import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { ChannelInformation, UpdateChannelInformationIn } from 'src/types';
 
@@ -45,4 +46,5 @@ class ChannelInformationStore {
     };
 }
 
-export const useChannelInformationStore = new ChannelInformationStore();
+const context = createContext(new ChannelInformationStore());
+export const useChannelInforamtionStoreContext = () => useContext(context);

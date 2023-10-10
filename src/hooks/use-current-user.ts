@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { TWITCHER_CONFIG } from 'src/consts';
-import { useCurrentUserStore } from 'src/stores';
+import { useCurrentUserStoreContext } from 'src/stores';
 import { Config, User } from 'src/types';
 
 type UseCurrentUserReturnType = {
@@ -9,7 +9,7 @@ type UseCurrentUserReturnType = {
 }
 
 export const useCurrentUser = (): UseCurrentUserReturnType => {
-    const { getCurrentUser, loading, currentUser } = useCurrentUserStore;
+    const { getCurrentUser, loading, currentUser } = useCurrentUserStoreContext();
     const configFromLocalStorage = useMemo(() => localStorage.getItem(TWITCHER_CONFIG), []);
 
     useEffect(() => {

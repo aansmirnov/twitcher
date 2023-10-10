@@ -1,4 +1,5 @@
 import { makeObservable, runInAction, observable, action } from 'mobx';
+import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { User } from 'src/types';
 
@@ -33,4 +34,5 @@ class CurrentUserStore {
     };
 }
 
-export const useCurrentUserStore = new CurrentUserStore();
+const context = createContext(new CurrentUserStore());
+export const useCurrentUserStoreContext = () => useContext(context);
