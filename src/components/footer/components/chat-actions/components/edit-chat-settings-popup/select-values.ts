@@ -12,7 +12,6 @@ export const FOLLOWER_MODE_DURATION_VALUES: Option[] = [
     { value: '', label: 'OFF (Remove followers-only restriction)' }
 ];
 
-FOLLOWER_MODE_DURATION_VALUES[0].value = 10;
 export const FOLLOWER_MODE_DURATION_LABEL_BY_VALUE: {[x: string | number]: string} = {
     [0]: '0 minutes (Any followers)' ,
     [10]: '10 minutes (Most used)' ,

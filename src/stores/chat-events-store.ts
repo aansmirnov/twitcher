@@ -1,71 +1,87 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
+import { createContext, useContext } from 'react';
 import { TWITCHER_ACCESS_TOKEN } from 'src/consts';
+import { TwitchIrcMessage } from 'src/types';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 class ChatEventsStore {
     isInitialized = false;
     loading = false;
+    messages: TwitchIrcMessage[] = [];
+
     private userLogin: string | undefined;
-    private websocket: WebSocket | undefined;
 
     constructor() {
         makeObservable(this, {
             isInitialized: observable,
             loading: observable,
+            messages: observable,
             createConnection: action,
-            sendMessage: action,
+            connectToChat: action,
         });
     }
 
-    createConnection = (userLogin: string) => {
-        this.loading = true;
-        this.websocket = new WebSocket('wss://irc-ws.chat.twitch.tv:443');
+    createConnection = (userLogin: string, shouldListenMessages = false) => {
+        this.loading = shouldListenMessages;
+        const websocket = new WebSocket('wss://irc-ws.chat.twitch.tv:443');
 
-        this.websocket.onopen = () => {
-            this.isInitialized = true;
-            this.loading = false;
-            this.userLogin = userLogin;
+        if (shouldListenMessages) {
+            websocket.onopen = () => {
+                runInAction(() => {
+                    this.isInitialized = true;
+                    this.loading = false;
+                    this.userLogin = userLogin;
+                });
 
-            this.connectToChat();
-        };
-    };
-
-    connectToChat = () => {
-        if (!this.websocket || !this.userLogin) {
-            throw Error('Failed to connect to chat.');
+                this.connectToChat(websocket);
+                this.listenMessages(websocket);
+            };
         }
 
-        this.websocket.send('CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands');
-        this.websocket.send(`PASS oauth:${localStorage.getItem(TWITCHER_ACCESS_TOKEN)}`);
-        this.websocket.send(`NICK ${this.userLogin}`);
-        this.websocket.send(`JOIN #${this.userLogin}`);
-
-        this.listenMessages();
+        return websocket;
     };
 
-    listenMessages = () => {
-        if (!this.websocket) {
-            throw Error('Failed to listen messages.');
-        }
+    connectToChat = (websocket: WebSocket) => {
+        websocket.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
+        websocket.send(`PASS oauth:${localStorage.getItem(TWITCHER_ACCESS_TOKEN)}`);
+        websocket.send(`NICK ${this.userLogin}`);
+        websocket.send(`JOIN #${this.userLogin}`);
+    };
 
-        this.websocket.onmessage = (event) => {
+    listenMessages = (websocket: WebSocket) => {
+        websocket.onmessage = (event) => {
             const message = (event.data as string).split('\r\n').filter((it): it is string => it.length > 0);
-
             message.forEach((it) => {
                 const parsedMessage = parseTwitchIrcMessage(it);
-                // eslint-disable-next-line no-console
-                console.log(parsedMessage);
+
+                if (!parsedMessage) {
+                    return;
+                }
+
+                // TODO: Handle "Notice" case.
+                switch (parsedMessage.command?.command) {
+                    case 'PRIVMSG': {
+                        runInAction(() => {
+                            this.messages.unshift(parsedMessage);
+                        });
+                        break;
+                    }
+                    case 'PING': {
+                        websocket.send(`PONG ${parsedMessage.parameters}`);
+                        break;
+                    }
+                    case 'CLEARCHAT': {
+                        runInAction(() => {
+                            this.messages = [];
+                        });
+                        break;
+                    }
+                    default: { break; }
+                }
             });
         };
     };
-
-    sendMessage = (message: string) => {
-        if (!this.websocket || !this.userLogin) {
-            throw Error('Failed to sent message.');
-        }
-
-        this.websocket.send(`PRIVMSG #${this.userLogin} :${message}`);
-    };
 }
 
-export const useChatEventsStore = new ChatEventsStore();
+const context = createContext(new ChatEventsStore());
+export const useChatEventsStoreContext = () => useContext(context);

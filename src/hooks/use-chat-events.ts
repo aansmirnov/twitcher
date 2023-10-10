@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useChatEventsStore, useCurrentUserStore } from 'src/stores';
+import { useChatEventsStoreContext, useCurrentUserStore } from 'src/stores';
 
 type UseChatEventsReturnType = {
     isInitialized: boolean;
@@ -8,11 +8,11 @@ type UseChatEventsReturnType = {
 
 export const useChatEvents = (): UseChatEventsReturnType => {
     const { currentUser } = useCurrentUserStore;
-    const { createConnection, isInitialized, loading } = useChatEventsStore;
+    const { createConnection, isInitialized, loading } = useChatEventsStoreContext();
 
     useEffect(() => {
         if (!isInitialized && currentUser) {
-            createConnection(currentUser.login);
+            createConnection(currentUser.login, true);
         }
     }, [createConnection, currentUser, isInitialized]);
 

@@ -3,7 +3,8 @@ import {
     LoginWithTwitch,
     Header,
     CenteredWrapper,
-    Footer
+    Footer,
+    ChatMessages
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
 import { useChannelInformation, useChatEvents, useCurrentUser, useTwitcherConfig } from 'src/hooks';
@@ -42,10 +43,8 @@ export const TwitcherView = observer(() => {
                 channelInformation={channelInformation}
                 updateChannelInformation={updateChannelInformation}
             />
-            <Flex flexDirection='column' gap={8}>
-                <div>chat</div>
-                <Footer />
-            </Flex>
+            <ChatMessages />
+            <Footer />
         </Flex>
     );
 });

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Button, Flex, Input } from '@chakra-ui/react';
-import { useChatEventsStore } from 'src/stores';
+import { useSendMessage } from './use-send-message';
 
 export const SendMessageForm = () => {
     const [value, setValue] = useState('');
-    const { sendMessage } = useChatEventsStore;
+    const { sendMessage } = useSendMessage();
+    const isDisabled = value.trim().length > 500;
 
     const handleSendMessage = () => {
         if (!value.trim().length) {
@@ -21,7 +22,7 @@ export const SendMessageForm = () => {
                 size='sm'
                 value={value}
                 onKeyDown={(e) => {
-                    if (e.code === 'Enter') {
+                    if (e.code === 'Enter' && !isDisabled) {
                         handleSendMessage();
                     }
                 }}
@@ -29,7 +30,7 @@ export const SendMessageForm = () => {
                 placeholder='Send a message'
                 variant='filled'
             />
-            <Button size='sm' colorScheme='purple' onClick={handleSendMessage}>Chat</Button>
+            <Button isDisabled={isDisabled} size='sm' colorScheme='purple' onClick={handleSendMessage}>Chat</Button>
         </Flex>
     );
 };

@@ -75,6 +75,10 @@ export function parseTags(tags: string): Tags | null {
                 dictParsedTags['userID'] = tagValue;
                 break;
             }
+            case 'display-name': {
+                dictParsedTags['displayName'] = tagValue;
+                break;
+            }
             default:
                 if (tagsToIgnore[parsedTag[0]]) {
                     break;
