@@ -7,14 +7,14 @@ import {
     ChatMessages
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
-import { useChannelInformation, useChatEvents, useCurrentUser, useTwitcherConfig } from 'src/hooks';
+import { useTwitcherConfigStoreContext } from 'src/stores';
+import { useChannelInformation, useChatEvents } from 'src/hooks';
 
 export const TwitcherView = observer(() => {
-    const { loading: configLoading, config, getAccessToken } = useTwitcherConfig();
-    const { loading: userLoading, currentUser } = useCurrentUser();
+    const { loading: configLoading, config, getAccessToken, currentUser } = useTwitcherConfigStoreContext();
     const { loading: channelInfoLoading, channelInformation, updateChannelInformation } = useChannelInformation();
     const { loading: chatEventsLoading } = useChatEvents();
-    const isLoading = userLoading || configLoading || channelInfoLoading || chatEventsLoading;
+    const isLoading = configLoading || channelInfoLoading || chatEventsLoading;
 
     if (isLoading) {
         return (
@@ -24,7 +24,7 @@ export const TwitcherView = observer(() => {
         );
     }
 
-    if (!isLoading && !config) {
+    if (!config && !isLoading) {
         return (
             <CenteredWrapper>
                 <LoginWithTwitch getAccessToken={getAccessToken} />
