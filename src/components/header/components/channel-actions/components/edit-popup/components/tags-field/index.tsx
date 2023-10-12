@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Input, Spacer, Tag, TagCloseButton, Text } from '@chakra-ui/react';
-import { TAG_LIMIT } from 'src/consts';
+import { Button, Flex, Input, Tag, TagCloseButton, Text } from '@chakra-ui/react';
 import { FieldName } from '../field-name';
 
 type TagsFieldProps = {
@@ -52,8 +51,6 @@ export const TagsField = ({ tags, onChange, onDelete }: TagsFieldProps) => {
                         </Tag>
                     )) }
                 </Flex>
-                <Spacer />
-                <Text color='gray.500' fontSize='sm'>{tagName.length}/{TAG_LIMIT}</Text>
             </Flex>
             <Text color='black' fontWeight='medium' fontSize='xs' className='text-xs font-medium text-black'>Add up to 10 tags. Each tag can be 25 characters long with no spaces or special characters.</Text>
         </Flex>
