@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Flex, Input, Tag, TagCloseButton, Text } from '@chakra-ui/react';
 import { FieldName } from '../field-name';
+import { TAG_NAME_LIMIT, TAG_COUNT_LIMIT } from 'src/consts';
 
 type TagsFieldProps = {
     tags: string[];
@@ -12,7 +13,7 @@ export const TagsField = ({ tags, onChange, onDelete }: TagsFieldProps) => {
     const [tagName, setTagName] = useState('');
 
     const handleAddTag = () => {
-        if (tags.length === 10) {
+        if (tags.length === TAG_COUNT_LIMIT) {
             return;
         }
 
@@ -25,7 +26,7 @@ export const TagsField = ({ tags, onChange, onDelete }: TagsFieldProps) => {
     };
 
     const handleChangeTagName = (value: string) => {
-        if (value.trim().length > 25) {
+        if (value.trim().length > TAG_NAME_LIMIT) {
             return;
         }
         setTagName(value);
@@ -52,7 +53,7 @@ export const TagsField = ({ tags, onChange, onDelete }: TagsFieldProps) => {
                     )) }
                 </Flex>
             </Flex>
-            <Text color='black' fontWeight='medium' fontSize='xs' className='text-xs font-medium text-black'>Add up to 10 tags. Each tag can be 25 characters long with no spaces or special characters.</Text>
+            <Text color='black' fontWeight='medium' fontSize='xs' className='text-xs font-medium text-black'>Add up to {TAG_COUNT_LIMIT} tags. Each tag can be {TAG_NAME_LIMIT} characters long with no spaces or special characters.</Text>
         </Flex>
     );
 };
