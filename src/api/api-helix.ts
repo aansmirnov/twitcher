@@ -30,7 +30,8 @@ interface IApiHelix {
 
 class ApiHelix extends ApiRequest implements IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut> {
-        return this.provider.get('/users', { params });
+        const headers = params?.accessToken ? { 'Authorization': params.accessToken } : undefined;
+        return this.provider.get('/users', { params, headers });
     }
 
     getChannelsInformation(params: GetChannelsInformationIn): Promise<GetChannelsInformationOut> {
