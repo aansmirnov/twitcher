@@ -1,0 +1,24 @@
+import { Flex, Image, Text, Tooltip } from '@chakra-ui/react';
+import { TwitchIrcMessage } from 'src/types';
+
+type UserMessageRendererProps = {
+    message: TwitchIrcMessage;
+    badgesURL?: Array<{ name?: string; url?: string }>;
+}
+
+export const UserMessageRenderer = ({ message, badgesURL }: UserMessageRendererProps) => {
+    return (
+        <Flex px={4} alignItems='center'>
+            { badgesURL && badgesURL.map((it) => (
+                <Flex key={it.url} gap={1}>
+                    <Tooltip borderRadius='lg' placement='top' label={it.name}>
+                        <Image src={it.url} />
+                    </Tooltip>
+                </Flex>
+            )) }
+            <Text ml={badgesURL ? '2' : '0'} color={message.tags?.color ?? 'gray.300'}>{message.tags?.displayName}</Text>
+            <Text color='white' mr={2}>:</Text>
+            <Text color='white'>{message?.parameters}</Text>
+        </Flex>
+    );
+};

@@ -1,11 +1,14 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { observer } from 'mobx-react';
 import { useChatEventsStoreContext } from 'src/stores';
+import { useChat } from './use-chat';
+import { UserMessageRenderer } from './components';
 
 export const ChatMessages = observer(() => {
     const { messages } = useChatEventsStoreContext();
+    const { badgesMapBySetID } = useChat();
 
-    if (!messages.length) {
+    if (!messages.length || !Object.keys(badgesMapBySetID).length) {
         return null;
     }
 
@@ -16,12 +19,21 @@ export const ChatMessages = observer(() => {
                     // TODO: Handle it.
                 }
 
+                const badges = Object.keys(it.tags?.badges || {});
+                const badgesURL = badges.map((badge: string) => {
+                    const currentBadge = badgesMapBySetID[badge];
+
+                    if (!currentBadge) {
+                        return {};
+                    }
+
+                    return {
+                        name: currentBadge.versions.title,
+                        url: currentBadge.versions.image_url_1x,
+                    };
+                });
                 return (
-                    <Flex key={`${it.parameters}-${index}`} px={4} alignItems='center'>
-                        <Text color={it.tags?.color ?? 'gray.300'}>{it.tags?.displayName}</Text>
-                        <Text color='white' mr={2}>:</Text>
-                        <Text color='white'>{it?.parameters}</Text>
-                    </Flex>
+                    <UserMessageRenderer key={`${it.parameters}-${index}`} message={it} badgesURL={badgesURL} />
                 );
             }) }
         </Flex>
