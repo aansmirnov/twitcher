@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useChatStoreContext } from 'src/stores';
+import { useChatStoreContext, useTwitcherConfigStoreContext } from 'src/stores';
 import { BadgesMapBySetID } from 'src/types';
 
 type UseChatReturnType = {
@@ -7,15 +7,16 @@ type UseChatReturnType = {
 }
 
 export const useChat = (): UseChatReturnType => {
+    const { currentUser } = useTwitcherConfigStoreContext();
     const { getBadges, badgesMapBySetID } = useChatStoreContext();
 
     useEffect(() => {
-        if (Object.keys(badgesMapBySetID).length > 0) {
+        if (!currentUser || Object.keys(badgesMapBySetID).length > 0) {
             return;
         }
 
-        getBadges();
-    }, [badgesMapBySetID, getBadges]);
+        getBadges(currentUser.id);
+    }, [badgesMapBySetID, currentUser, getBadges]);
 
     return {
         badgesMapBySetID

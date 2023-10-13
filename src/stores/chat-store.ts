@@ -15,13 +15,19 @@ class ChatStore {
         });
     }
 
-    getBadges = () => {
-        apiHelix.getBadges().then(({ data }) => {
-            runInAction(() => {
-                this.badges = data;
-                this.badgesMapBySetID = data.reduce((acc, next) => ({ ...acc, [next.set_id]: { versions: next.versions[0], set_id: next.set_id } }), {});
+    getBadges = (userID: string) => {
+        Promise
+            .all([apiHelix.getChanngelBadges({ broadcaster_id: userID }), apiHelix.getBadges()])
+            .then((response) => {
+                const [channelBadges, globalBadges] = response;
+                const allBadges = [...channelBadges.data, ...globalBadges.data];
+
+                runInAction(() => {
+                    this.badges = allBadges;
+                    this.badgesMapBySetID = allBadges
+                        .reduce((acc, next) => ({ ...acc, [next.set_id]: { versions: next.versions[0], set_id: next.set_id } }), {});
+                });
             });
-        });
     };
 }
 

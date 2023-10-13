@@ -12,7 +12,8 @@ import {
     GetChatSettingsOut,
     UpdateChatSettingsIn,
     UpdateChatSettingsOut,
-    GetBadgesOut
+    GetBadgesOut,
+    GetBadgesIn
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -26,11 +27,12 @@ interface IApiHelix {
     getChatSettings(params: GetChatSettingsIn): Promise<GetChatSettingsOut>;
     updateChatSettings(body: UpdateChatSettingsIn): Promise<UpdateChatSettingsOut>
     getBadges(): Promise<GetBadgesOut>
+    getChanngelBadges(params: GetBadgesIn): Promise<GetBadgesOut>
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut> {
-        const headers = params?.accessToken ? { 'Authorization': params.accessToken } : undefined;
+        const headers = params?.accessToken ? { 'Authorization': `Bearer ${params.accessToken}` } : undefined;
         return this.provider.get('/users', { params, headers });
     }
 
@@ -61,6 +63,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     getBadges(): Promise<GetBadgesOut> {
         return this.provider.get('/chat/badges/global');
+    }
+
+    getChanngelBadges(params: GetBadgesIn): Promise<GetBadgesOut> {
+        return this.provider.get('/chat/badges', { params });
     }
 }
 
