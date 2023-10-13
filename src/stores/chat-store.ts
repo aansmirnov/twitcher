@@ -1,17 +1,22 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
-import { Badges, BadgesMapBySetID } from 'src/types';
+import { Badges, BadgesMapBySetID, Emote, EmotesMapById } from 'src/types';
 
 class ChatStore {
     badges: Badges[] = [];
     badgesMapBySetID: BadgesMapBySetID = {};
+    emotes: Emote[] = [];
+    emotesMapByID: EmotesMapById = {};
 
     constructor() {
         makeObservable(this, {
             badges: observable,
             badgesMapBySetID: observable,
-            getBadges: action
+            emotes: observable,
+            emotesMapByID: observable,
+            getBadges: action,
+            getEmotes: action,
         });
     }
 
@@ -26,6 +31,21 @@ class ChatStore {
                     this.badges = allBadges;
                     this.badgesMapBySetID = allBadges
                         .reduce((acc, next) => ({ ...acc, [next.set_id]: { versions: next.versions[0], set_id: next.set_id } }), {});
+                });
+            });
+    };
+
+    getEmotes = (userID: string) => {
+        Promise
+            .all([apiHelix.getChannelEmotes({ broadcaster_id: userID }), apiHelix.getEmotes()])
+            .then((response) => {
+                const [channelEmotes, globalEmotes] = response;
+                const allEmotes = [...channelEmotes.data, ...globalEmotes.data];
+
+                runInAction(() => {
+                    this.emotes = allEmotes;
+                    this.emotesMapByID = allEmotes
+                        .reduce((acc, next) => ({ ...acc, [next.id]: next }), {});
                 });
             });
     };

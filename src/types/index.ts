@@ -8,3 +8,4 @@ export * from './chat';
 export * from './result';
 export * from './twitch-irc-message';
 export * from './badges';
+export * from './emotes';
