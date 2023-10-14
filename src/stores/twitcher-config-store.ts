@@ -22,9 +22,9 @@ class TwitcherConfigStore {
         this.getConfigFromLocalStorage();
     }
 
-    getCurrentUser = (accessToken?: string, cb?: VoidFunction) => {
+    getCurrentUser = (cb?: VoidFunction) => {
         apiHelix
-            .getUsers({ accessToken })
+            .getUsers()
             .then(({ data }) => {
                 runInAction(() => {
                     const [user] = data;
@@ -78,10 +78,9 @@ class TwitcherConfigStore {
                 grant_type: 'refresh_token',
                 refresh_token: token
             })
-            .then((config) => {
-                this.getCurrentUser(config.access_token, () => {
-                    this.updateConfigState(config);
-                });
+            .then(this.updateConfigState)
+            .then(() => {
+                this.getCurrentUser();
             });
     };
 

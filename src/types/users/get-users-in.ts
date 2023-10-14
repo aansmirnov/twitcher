@@ -10,6 +10,4 @@ export type GetUsersIn = {
      * The maximum number of login names you may specify is 100.
      */
     login?: string[];
-
-    accessToken?: string;
 }
