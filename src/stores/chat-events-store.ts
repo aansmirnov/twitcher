@@ -58,8 +58,8 @@ class ChatEventsStore {
                     return;
                 }
 
-                // TODO: Handle "Notice" case.
                 switch (parsedMessage.command?.command) {
+                    case 'NOTICE':
                     case 'PRIVMSG': {
                         runInAction(() => {
                             this.messages.unshift(parsedMessage);

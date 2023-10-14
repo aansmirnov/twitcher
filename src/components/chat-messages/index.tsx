@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { observer } from 'mobx-react';
 import { useChatEventsStoreContext } from 'src/stores';
 import { useChat } from './use-chat';
@@ -15,8 +15,10 @@ export const ChatMessages = observer(() => {
     return (
         <Flex py={2} flexDirection='column-reverse' gap={2} overflowY='scroll' height='100%'>
             { messages.map((it, index) => {
-                if (it.command?.command === 'NOTICE') {
-                    // TODO: Handle it.
+                if (it.command?.command === 'NOTICE' && it.parameters) {
+                    return (
+                        <Text px={4} color='gray.300' key={`${it.parameters}-${index}`}>{it.parameters}</Text>
+                    );
                 }
 
                 const badges = Object.keys(it.tags?.badges || {});
