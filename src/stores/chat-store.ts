@@ -43,7 +43,7 @@ class ChatStore {
             return null;
         }
 
-        const parsedData = JSON.parse(dataFromLocalStorage) as unknown as LocalStorageData<T>;
+        const parsedData = JSON.parse(dataFromLocalStorage) as LocalStorageData<T>;
         if (Date.now() > parsedData.expired_at) {
             return null;
         }
