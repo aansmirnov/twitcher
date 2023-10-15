@@ -18,14 +18,14 @@ class ChatStore {
     badges: Badges[] = [];
     badgesMapBySetID: BadgesMapBySetID = {};
     emotes: Emote[] = [];
-    emotesMapByID: EmotesMapById = {};
+    emotesMapByName: EmotesMapById = {};
 
     constructor() {
         makeObservable(this, {
             badges: observable,
             badgesMapBySetID: observable,
             emotes: observable,
-            emotesMapByID: observable,
+            emotesMapByName: observable,
             getBadges: action,
             getEmotes: action,
         });
@@ -81,7 +81,7 @@ class ChatStore {
 
         if (emotes) {
             this.emotes = emotes.data;
-            this.emotesMapByID = emotes.map;
+            this.emotesMapByName = emotes.map;
             return;
         }
 
@@ -93,11 +93,11 @@ class ChatStore {
 
                 runInAction(() => {
                     this.emotes = allEmotes;
-                    this.emotesMapByID = allEmotes
-                        .reduce((acc, next) => ({ ...acc, [next.id]: next }), {});
+                    this.emotesMapByName = allEmotes
+                        .reduce((acc, next) => ({ ...acc, [next.name]: next }), {});
                 });
 
-                this.setChatDataToLocalStorage(TWITCHER_EMOTES, { data: this.emotes, map: this.emotesMapByID });
+                this.setChatDataToLocalStorage(TWITCHER_EMOTES, { data: this.emotes, map: this.emotesMapByName });
             });
     };
 }
