@@ -4,7 +4,7 @@ import { BadgesMapBySetID, EmotesMapById } from 'src/types';
 
 type UseChatReturnType = {
     badgesMapBySetID: BadgesMapBySetID;
-    emotesMapByID: EmotesMapById;
+    emotesMapByName: EmotesMapById;
 }
 
 export const useChat = (): UseChatReturnType => {
@@ -13,7 +13,7 @@ export const useChat = (): UseChatReturnType => {
         getBadges,
         badgesMapBySetID,
         getEmotes,
-        emotesMapByID
+        emotesMapByName
     } = useChatStoreContext();
 
     useEffect(() => {
@@ -25,15 +25,15 @@ export const useChat = (): UseChatReturnType => {
     }, [badgesMapBySetID, currentUser, getBadges]);
 
     useEffect(() => {
-        if (!currentUser || Object.keys(emotesMapByID).length > 0) {
+        if (!currentUser || Object.keys(emotesMapByName).length > 0) {
             return;
         }
 
         getEmotes(currentUser.id);
-    }, [currentUser, emotesMapByID, getEmotes]);
+    }, [currentUser, emotesMapByName, getEmotes]);
 
     return {
         badgesMapBySetID,
-        emotesMapByID
+        emotesMapByName
     };
 };
