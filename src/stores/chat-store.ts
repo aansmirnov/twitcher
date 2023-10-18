@@ -89,7 +89,9 @@ class ChatStore {
             .all([apiHelix.getChannelEmotes({ broadcaster_id: userID }), apiHelix.getEmotes()])
             .then((response) => {
                 const [channelEmotes, globalEmotes] = response;
-                const allEmotes = [...channelEmotes.data, ...globalEmotes.data];
+                const allEmotes = [...channelEmotes.data, ...globalEmotes.data].filter((it, index, array) => {
+                    return array.findIndex((emote) => emote.name === it.name) === index;
+                });
 
                 runInAction(() => {
                     this.emotes = allEmotes;
