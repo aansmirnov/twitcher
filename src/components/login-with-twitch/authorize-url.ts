@@ -19,6 +19,8 @@ export const authorizeUrl = () => {
         'moderator:manage:banned_users',
         'moderator:manage:chat_messages',
         'channel:manage:broadcast',
+        'channel:manage:moderators',
+        'channel:manage:vips'
     ].join(' '));
     path += `&scope=${scope}`;
 

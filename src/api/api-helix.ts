@@ -16,7 +16,8 @@ import {
     GetBadgesIn,
     GetEmotesIn,
     GetEmotesOut,
-    DeleteChatIn
+    DeleteChatIn,
+    ManageUserChatIn
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -34,6 +35,10 @@ interface IApiHelix {
     getChannelEmotes(params: GetEmotesIn): Promise<GetEmotesOut>;
     getEmotes(): Promise<GetEmotesOut>;
     deleteChatMessage(params: DeleteChatIn): Promise<void>;
+    addChannelModerator(params: ManageUserChatIn): Promise<void>;
+    removeChannelModerator(params: ManageUserChatIn): Promise<void>;
+    addChannelVip(params: ManageUserChatIn): Promise<void>;
+    removeChannelVip(params: ManageUserChatIn): Promise<void>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -84,6 +89,22 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     deleteChatMessage(params: DeleteChatIn): Promise<void> {
         return this.provider.delete('/moderation/chat', { params });
+    }
+
+    addChannelModerator(params: ManageUserChatIn): Promise<void> {
+        return this.provider.post('/moderation/moderators', {}, { params });
+    }
+
+    removeChannelModerator(params: ManageUserChatIn): Promise<void> {
+        return this.provider.delete('/moderation/moderators', { params });
+    }
+
+    addChannelVip(params: ManageUserChatIn): Promise<void> {
+        return this.provider.post('/channels/vips', {}, { params });
+    }
+
+    removeChannelVip(params: ManageUserChatIn): Promise<void> {
+        return this.provider.delete('/channels/vips', { params });
     }
 }
 
