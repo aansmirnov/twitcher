@@ -4,7 +4,7 @@ import { TwitcherView } from 'src/components';
 export const App = () => {
     return (
         <ChakraProvider>
-            <Box bg='gray.800' w='100%' h='100vh'>
+            <Box bg='gray.800' w='100%' h='100vh' overflowY='hidden'>
                 <TwitcherView />
             </Box>
         </ChakraProvider>

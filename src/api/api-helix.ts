@@ -15,7 +15,8 @@ import {
     GetBadgesOut,
     GetBadgesIn,
     GetEmotesIn,
-    GetEmotesOut
+    GetEmotesOut,
+    DeleteChatIn
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -32,6 +33,7 @@ interface IApiHelix {
     getChanngelBadges(params: GetBadgesIn): Promise<GetBadgesOut>
     getChannelEmotes(params: GetEmotesIn): Promise<GetEmotesOut>;
     getEmotes(): Promise<GetEmotesOut>;
+    deleteChatMessage(params: DeleteChatIn): Promise<void>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -78,6 +80,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     getEmotes(): Promise<GetEmotesOut> {
         return this.provider.get('/chat/emotes/global');
+    }
+
+    deleteChatMessage(params: DeleteChatIn): Promise<void> {
+        return this.provider.delete('/moderation/chat', { params });
     }
 }
 

@@ -1,7 +1,8 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
+import { apiHelix } from 'src/api';
 import { TWITCHER_ACCESS_TOKEN } from 'src/consts';
-import { TwitchIrcMessage } from 'src/types';
+import { DeleteChatIn, TwitchIrcMessage } from 'src/types';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 class ChatEventsStore {
@@ -18,6 +19,7 @@ class ChatEventsStore {
             messages: observable,
             createConnection: action,
             connectToChat: action,
+            deleteChatMessage: action,
         });
     }
 
@@ -80,6 +82,21 @@ class ChatEventsStore {
                 }
             });
         };
+    };
+
+    deleteChatMessage = (params: DeleteChatIn) => {
+        apiHelix.deleteChatMessage(params)
+            .then(() => {
+                const copy = JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
+                const index = copy.findIndex((it) => it.tags?.id === params.message_id);
+
+                if (index !== -1) {
+                    copy[index] = { ...copy[index], parameters: '<Message Deleted>', tags: { ...copy[index].tags, emotes: {} } };
+                    runInAction(() => {
+                        this.messages = copy;
+                    });
+                }
+            });
     };
 }
 

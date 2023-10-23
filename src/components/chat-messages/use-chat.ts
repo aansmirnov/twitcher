@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useChatStoreContext, useTwitcherConfigStoreContext } from 'src/stores';
+import { useChatEventsStoreContext, useChatStoreContext, useTwitcherConfigStoreContext } from 'src/stores';
 import { BadgesMapBySetID, EmotesMapById } from 'src/types';
 
 type UseChatReturnType = {
     badgesMapBySetID: BadgesMapBySetID;
     emotesMapByName: EmotesMapById;
+    deleteChatMessage: (messageID: string) => void;
 }
 
 export const useChat = (): UseChatReturnType => {
@@ -13,8 +14,17 @@ export const useChat = (): UseChatReturnType => {
         getBadges,
         badgesMapBySetID,
         getEmotes,
-        emotesMapByName
+        emotesMapByName,
     } = useChatStoreContext();
+    const { deleteChatMessage: deleteMessage } = useChatEventsStoreContext();
+
+    const deleteChatMessage = (messageID: string) => {
+        if (!currentUser) {
+            return;
+        }
+
+        deleteMessage({ broadcaster_id: currentUser.id, moderator_id: currentUser.id, message_id: messageID });
+    };
 
     useEffect(() => {
         if (!currentUser || Object.keys(badgesMapBySetID).length > 0) {
@@ -34,6 +44,7 @@ export const useChat = (): UseChatReturnType => {
 
     return {
         badgesMapBySetID,
-        emotesMapByName
+        emotesMapByName,
+        deleteChatMessage
     };
 };
