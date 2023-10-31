@@ -110,8 +110,8 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         return this.provider.delete('/channels/vips', { params });
     }
 
-    banUser({ data, params }: BanUserIn): Promise<BanUserOut> {
-        return this.provider.post('/moderation/bans', data, { params });
+    banUser(body: BanUserIn): Promise<BanUserOut> {
+        return this.provider.post('/moderation/bans', { data: body.data }, { params: body.params });
     }
 }
 

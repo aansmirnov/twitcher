@@ -2,7 +2,7 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { TWITCHER_ACCESS_TOKEN } from 'src/consts';
-import { DeleteChatMessageIn, TwitchIrcMessage } from 'src/types';
+import { BanUserIn, DeleteChatMessageIn, TwitchIrcMessage } from 'src/types';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 class ChatEventsStore {
@@ -20,6 +20,7 @@ class ChatEventsStore {
             createConnection: action,
             connectToChat: action,
             deleteChatMessage: action,
+            banUser: action,
         });
     }
 
@@ -73,6 +74,10 @@ class ChatEventsStore {
                         break;
                     }
                     case 'CLEARCHAT': {
+                        if (parsedMessage.tags?.targetUserId) {
+                            break;
+                        }
+
                         runInAction(() => {
                             this.messages = [];
                         });
@@ -97,6 +102,32 @@ class ChatEventsStore {
                     });
                 }
             });
+    };
+
+    banUser = (body: BanUserIn) => {
+        apiHelix.banUser(body)
+            .then(() => {
+                const copy = JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
+                const updatedMessagesArray = copy.map((it) => {
+                    if (it.tags?.userID === body.data.user_id) {
+                        return {
+                            ...it,
+                            tags: {
+                                ...it.tags,
+                                emotes: {}
+                            },
+                            parameters: '<Message Deleted>'
+                        };
+                    }
+
+                    return it;
+                });
+
+                runInAction(() => {
+                    this.messages = updatedMessagesArray;
+                });
+            }
+            );
     };
 }
 

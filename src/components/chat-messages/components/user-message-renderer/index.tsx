@@ -16,7 +16,7 @@ const ICON_PROPS = {
 };
 
 export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRendererProps) => {
-    const { emotesMapByName, deleteChatMessage } = useChat();
+    const { emotesMapByName, deleteChatMessage, banUser } = useChat();
     const { currentUser } = useTwitcherConfigStoreContext();
     const hasBadges = badgesURL.length > 0;
     const isCurrentUserMessage = currentUser?.id === message.tags?.userID;
@@ -29,6 +29,15 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
     const onDeleteMessage = () => {
         if (message.tags?.id) {
             deleteChatMessage(message.tags.id);
+        }
+    };
+
+    const onBanUser = (duration?: number) => {
+        if (message.tags?.userID) {
+            banUser({
+                user_id: message.tags.userID,
+                duration
+            });
         }
     };
 
@@ -55,10 +64,10 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
             { shouldShowActionIcons && (
                 <Flex gap={2} mr={2}>
                     <Tooltip borderRadius='lg' placement='top' label={`Ban ${message.tags?.displayName}`}>
-                        <NotAllowedIcon {...ICON_PROPS} />
+                        <NotAllowedIcon onClick={() => onBanUser()} {...ICON_PROPS} />
                     </Tooltip>
                     <Tooltip borderRadius='lg' placement='top' label={`Timeout ${message.tags?.displayName}`}>
-                        <TimeIcon {...ICON_PROPS} />
+                        <TimeIcon {...ICON_PROPS} onClick={() => onBanUser(600)} />
                     </Tooltip>
                     <Tooltip borderRadius='lg' placement='top' label='Delete message'>
                         <DeleteIcon {...ICON_PROPS} onClick={onDeleteMessage} />

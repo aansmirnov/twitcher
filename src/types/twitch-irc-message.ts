@@ -14,6 +14,7 @@ export type Tags = {
     id?: string | null;
     color?: string | null;
     displayName?: string | null;
+    targetUserId?: string | null;
     [x: string]: unknown;
 }
 
