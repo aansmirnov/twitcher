@@ -1,15 +1,26 @@
-import { Flex, Image, Menu, MenuButton, MenuItem, MenuList, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Image, Text, Tooltip } from '@chakra-ui/react';
 import { TwitchIrcMessage } from 'src/types';
 import { useChat } from 'src/components/chat-messages/use-chat';
+import { useTwitcherConfigStoreContext } from 'src/stores';
+import { DeleteIcon, NotAllowedIcon, TimeIcon } from '@chakra-ui/icons';
 
 type UserMessageRendererProps = {
     message: TwitchIrcMessage;
     badgesURL?: Array<{ name?: string; url?: string }>;
 }
 
+const ICON_PROPS = {
+    fontSize: 'xs',
+    color: 'white',
+    cursor: 'pointer'
+};
+
 export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRendererProps) => {
     const { emotesMapByName, deleteChatMessage } = useChat();
+    const { currentUser } = useTwitcherConfigStoreContext();
     const hasBadges = badgesURL.length > 0;
+    const isCurrentUserMessage = currentUser?.id === message.tags?.userID;
+    const shouldShowActionIcons = !isCurrentUserMessage && message.parameters !== '<Message Deleted>';
 
     if (!message.parameters) {
         return null;
@@ -41,6 +52,19 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
 
     return (
         <Flex px={4} alignItems='center'>
+            { shouldShowActionIcons && (
+                <Flex gap={2} mr={2}>
+                    <Tooltip borderRadius='lg' placement='top' label={`Ban ${message.tags?.displayName}`}>
+                        <NotAllowedIcon {...ICON_PROPS} />
+                    </Tooltip>
+                    <Tooltip borderRadius='lg' placement='top' label={`Timeout ${message.tags?.displayName}`}>
+                        <TimeIcon {...ICON_PROPS} />
+                    </Tooltip>
+                    <Tooltip borderRadius='lg' placement='top' label='Delete message'>
+                        <DeleteIcon {...ICON_PROPS} onClick={onDeleteMessage} />
+                    </Tooltip>
+                </Flex>
+            )}
             { hasBadges && badgesURL.map((it) => (
                 <Flex key={it.url} gap={1}>
                     <Tooltip borderRadius='lg' placement='top' label={it.name}>
@@ -48,14 +72,7 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
                     </Tooltip>
                 </Flex>
             )) }
-            <Menu placement='top-start'>
-                <MenuButton>
-                    <Text ml={hasBadges ? '2' : '0'} color={message.tags?.color ?? 'gray.300'}>{message.tags?.displayName}</Text>
-                </MenuButton>
-                <MenuList>
-                    <MenuItem onClick={onDeleteMessage}>Delete message</MenuItem>
-                </MenuList>
-            </Menu>
+            <Text ml={hasBadges ? '2' : '0'} color={message.tags?.color ?? 'gray.300'}>{message.tags?.displayName}</Text>
             <Text color='white' mr={2}>:</Text>
             {currentMessage}
         </Flex>
