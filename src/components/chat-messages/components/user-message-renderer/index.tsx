@@ -7,8 +7,9 @@ type UserMessageRendererProps = {
     badgesURL?: Array<{ name?: string; url?: string }>;
 }
 
-export const UserMessageRenderer = ({ message, badgesURL }: UserMessageRendererProps) => {
+export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRendererProps) => {
     const { emotesMapByName, deleteChatMessage } = useChat();
+    const hasBadges = badgesURL.length > 0;
 
     if (!message.parameters) {
         return null;
@@ -39,24 +40,24 @@ export const UserMessageRenderer = ({ message, badgesURL }: UserMessageRendererP
     );
 
     return (
-        <Menu placement='top-start'>
-            <MenuButton>
-                <Flex px={4} alignItems='center'>
-                    { badgesURL && badgesURL.map((it) => (
-                        <Flex key={it.url} gap={1}>
-                            <Tooltip borderRadius='lg' placement='top' label={it.name}>
-                                <Image src={it.url} />
-                            </Tooltip>
-                        </Flex>
-                    )) }
-                    <Text ml={badgesURL ? '2' : '0'} color={message.tags?.color ?? 'gray.300'}>{message.tags?.displayName}</Text>
-                    <Text color='white' mr={2}>:</Text>
-                    {currentMessage}
+        <Flex px={4} alignItems='center'>
+            { hasBadges && badgesURL.map((it) => (
+                <Flex key={it.url} gap={1}>
+                    <Tooltip borderRadius='lg' placement='top' label={it.name}>
+                        <Image src={it.url} />
+                    </Tooltip>
                 </Flex>
-            </MenuButton>
-            <MenuList>
-                <MenuItem onClick={onDeleteMessage}>Delete message</MenuItem>
-            </MenuList>
-        </Menu>
+            )) }
+            <Menu placement='top-start'>
+                <MenuButton>
+                    <Text ml={hasBadges ? '2' : '0'} color={message.tags?.color ?? 'gray.300'}>{message.tags?.displayName}</Text>
+                </MenuButton>
+                <MenuList>
+                    <MenuItem onClick={onDeleteMessage}>Delete message</MenuItem>
+                </MenuList>
+            </Menu>
+            <Text color='white' mr={2}>:</Text>
+            {currentMessage}
+        </Flex>
     );
 };
