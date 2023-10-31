@@ -17,7 +17,9 @@ import {
     GetEmotesIn,
     GetEmotesOut,
     DeleteChatMessageIn,
-    ManageUserChatIn
+    ManageUserChatIn,
+    BanUserIn,
+    BanUserOut
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -39,6 +41,7 @@ interface IApiHelix {
     removeChannelModerator(params: ManageUserChatIn): Promise<void>;
     addChannelVip(params: ManageUserChatIn): Promise<void>;
     removeChannelVip(params: ManageUserChatIn): Promise<void>;
+    banUser(body: BanUserIn): Promise<BanUserOut>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -105,6 +108,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     removeChannelVip(params: ManageUserChatIn): Promise<void> {
         return this.provider.delete('/channels/vips', { params });
+    }
+
+    banUser({ data, params }: BanUserIn): Promise<BanUserOut> {
+        return this.provider.post('/moderation/bans', data, { params });
     }
 }
 
