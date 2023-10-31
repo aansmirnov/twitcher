@@ -16,7 +16,7 @@ import {
     GetBadgesIn,
     GetEmotesIn,
     GetEmotesOut,
-    DeleteChatIn,
+    DeleteChatMessageIn,
     ManageUserChatIn
 } from 'src/types';
 import { ApiRequest } from './api-request';
@@ -34,7 +34,7 @@ interface IApiHelix {
     getChanngelBadges(params: GetBadgesIn): Promise<GetBadgesOut>
     getChannelEmotes(params: GetEmotesIn): Promise<GetEmotesOut>;
     getEmotes(): Promise<GetEmotesOut>;
-    deleteChatMessage(params: DeleteChatIn): Promise<void>;
+    deleteChatMessage(params: DeleteChatMessageIn): Promise<void>;
     addChannelModerator(params: ManageUserChatIn): Promise<void>;
     removeChannelModerator(params: ManageUserChatIn): Promise<void>;
     addChannelVip(params: ManageUserChatIn): Promise<void>;
@@ -87,7 +87,7 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         return this.provider.get('/chat/emotes/global');
     }
 
-    deleteChatMessage(params: DeleteChatIn): Promise<void> {
+    deleteChatMessage(params: DeleteChatMessageIn): Promise<void> {
         return this.provider.delete('/moderation/chat', { params });
     }
 

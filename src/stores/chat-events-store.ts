@@ -2,7 +2,7 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { TWITCHER_ACCESS_TOKEN } from 'src/consts';
-import { DeleteChatIn, TwitchIrcMessage } from 'src/types';
+import { DeleteChatMessageIn, TwitchIrcMessage } from 'src/types';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 class ChatEventsStore {
@@ -84,7 +84,7 @@ class ChatEventsStore {
         };
     };
 
-    deleteChatMessage = (params: DeleteChatIn) => {
+    deleteChatMessage = (params: DeleteChatMessageIn) => {
         apiHelix.deleteChatMessage(params)
             .then(() => {
                 const copy = JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
