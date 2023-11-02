@@ -2,7 +2,7 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { TWITCHER_ACCESS_TOKEN } from 'src/consts';
-import { BanUserIn, DeleteChatMessageIn, TwitchIrcMessage } from 'src/types';
+import { BanUserIn, DeleteChatMessageIn, ManageUserChatIn, TwitchIrcMessage } from 'src/types';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 class ChatEventsStore {
@@ -21,7 +21,12 @@ class ChatEventsStore {
             connectToChat: action,
             deleteChatMessage: action,
             banUser: action,
+            toggleChatUserMod: action,
         });
+    }
+
+    private get copyMessages() {
+        return JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
     }
 
     createConnection = (userLogin: string, shouldListenMessages = false) => {
@@ -92,7 +97,7 @@ class ChatEventsStore {
     deleteChatMessage = (params: DeleteChatMessageIn) => {
         apiHelix.deleteChatMessage(params)
             .then(() => {
-                const copy = JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
+                const copy = this.copyMessages;
                 const index = copy.findIndex((it) => it.tags?.id === params.message_id);
 
                 if (index !== -1) {
@@ -107,7 +112,7 @@ class ChatEventsStore {
     banUser = (body: BanUserIn) => {
         apiHelix.banUser(body)
             .then(() => {
-                const copy = JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
+                const copy = this.copyMessages;
                 const updatedMessagesArray = copy.map((it) => {
                     if (it.tags?.userID === body.data.user_id) {
                         return {
@@ -128,6 +133,10 @@ class ChatEventsStore {
                 });
             }
             );
+    };
+
+    toggleChatUserMod = (body: ManageUserChatIn, isMod: boolean) => {
+        isMod ? apiHelix.removeChannelModerator(body) : apiHelix.addChannelModerator(body);
     };
 }
 

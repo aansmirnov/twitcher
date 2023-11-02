@@ -34,6 +34,7 @@ export const ChatMessages = observer(() => {
                         url: currentBadge.versions.image_url_1x,
                     };
                 });
+
                 return (
                     <UserMessageRenderer key={`${it.parameters}-${index}`} message={it} badgesURL={badgesURL} />
                 );

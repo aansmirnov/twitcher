@@ -3,6 +3,7 @@ import { TwitchIrcMessage } from 'src/types';
 import { useChat } from 'src/components/chat-messages/use-chat';
 import { useTwitcherConfigStoreContext } from 'src/stores';
 import { DeleteIcon, NotAllowedIcon, TimeIcon } from '@chakra-ui/icons';
+import { UserInfoName } from './user-info-name';
 
 type UserMessageRendererProps = {
     message: TwitchIrcMessage;
@@ -16,11 +17,13 @@ const ICON_PROPS = {
 };
 
 export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRendererProps) => {
-    const { emotesMapByName, deleteChatMessage, banUser } = useChat();
+    const { emotesMapByName, deleteChatMessage, banUser, toggleUserMode } = useChat();
     const { currentUser } = useTwitcherConfigStoreContext();
     const hasBadges = badgesURL.length > 0;
     const isCurrentUserMessage = currentUser?.id === message.tags?.userID;
     const shouldShowActionIcons = !isCurrentUserMessage && message.parameters !== '<Message Deleted>';
+    const isMod = Boolean(message.tags?.badges?.['moderator']);
+    const isVip = Boolean(message.tags?.badges?.['vip']);
 
     if (!message.parameters) {
         return null;
@@ -38,6 +41,12 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
                 user_id: message.tags.userID,
                 duration
             });
+        }
+    };
+
+    const onToggleUser = () => {
+        if (message.tags?.userID) {
+            toggleUserMode(message.tags.userID, isMod);
         }
     };
 
@@ -81,7 +90,16 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
                     </Tooltip>
                 </Flex>
             )) }
-            <Text ml={hasBadges ? '2' : '0'} color={message.tags?.color ?? 'gray.300'}>{message.tags?.displayName}</Text>
+            { message.tags?.displayName && (
+                <UserInfoName
+                    onClickMod={onToggleUser}
+                    amICurrentUser={isCurrentUserMessage}
+                    ml={hasBadges ? '2' : '0'}
+                    isMod={isMod}
+                    isVip={isVip}
+                    userName={message.tags.displayName}
+                    userColor={message.tags?.color ?? 'gray.300'} />
+            ) }
             <Text color='white' mr={2}>:</Text>
             {currentMessage}
         </Flex>
