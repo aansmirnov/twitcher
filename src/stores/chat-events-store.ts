@@ -22,6 +22,7 @@ class ChatEventsStore {
             deleteChatMessage: action,
             banUser: action,
             toggleChatUserMod: action,
+            toggleChatVip: action,
         });
     }
 
@@ -137,6 +138,10 @@ class ChatEventsStore {
 
     toggleChatUserMod = (body: ManageUserChatIn, isMod: boolean) => {
         isMod ? apiHelix.removeChannelModerator(body) : apiHelix.addChannelModerator(body);
+    };
+
+    toggleChatVip = (body: ManageUserChatIn, isVip: boolean) => {
+        isVip ? apiHelix.removeChannelVip(body) : apiHelix.addChannelVip(body);
     };
 }
 

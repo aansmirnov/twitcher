@@ -8,9 +8,10 @@ type UserInfoNameProps = {
     userColor: string;
     ml: string;
     onClickMod: VoidFunction;
+    onClickVip: VoidFunction;
 }
 
-export const UserInfoName = ({ userName, isMod, isVip, amICurrentUser, userColor, ml, onClickMod }: UserInfoNameProps) => {
+export const UserInfoName = ({ userName, isMod, isVip, amICurrentUser, userColor, ml, onClickMod, onClickVip }: UserInfoNameProps) => {
     if (amICurrentUser) {
         return (
             <Text ml={ml} color={userColor}>{userName}</Text>
@@ -24,7 +25,7 @@ export const UserInfoName = ({ userName, isMod, isVip, amICurrentUser, userColor
             </MenuButton>
             <MenuList>
                 <MenuItem onClick={onClickMod}>{isMod ? 'Unmod' : 'Mod'} {userName}</MenuItem>
-                <MenuItem>{isVip ? 'Unvip' : 'Vip'} {userName}</MenuItem>
+                <MenuItem onClick={onClickVip}>{isVip ? 'Unvip' : 'Vip'} {userName}</MenuItem>
             </MenuList>
         </Menu>
     );

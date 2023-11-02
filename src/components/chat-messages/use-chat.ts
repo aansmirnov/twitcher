@@ -8,6 +8,7 @@ type UseChatReturnType = {
     deleteChatMessage: (messageID: string) => void;
     banUser: (body: BanUserRequestBody) => void;
     toggleUserMode:(userID: string, isMod: boolean) => void;
+    toggleUserVip:(userID: string, isVip: boolean) => void;
 }
 
 export const useChat = (): UseChatReturnType => {
@@ -18,7 +19,7 @@ export const useChat = (): UseChatReturnType => {
         getEmotes,
         emotesMapByName,
     } = useChatStoreContext();
-    const { deleteChatMessage: deleteMessage, banUser: ban, toggleChatUserMod } = useChatEventsStoreContext();
+    const { deleteChatMessage: deleteMessage, banUser: ban, toggleChatUserMod, toggleChatVip } = useChatEventsStoreContext();
 
     const deleteChatMessage = (messageID: string) => {
         if (!currentUser) {
@@ -44,6 +45,14 @@ export const useChat = (): UseChatReturnType => {
         toggleChatUserMod({ user_id: userID, broadcaster_id: currentUser.id }, isMod);
     };
 
+    const toggleUserVip = (userID: string, isVip: boolean) => {
+        if (!currentUser) {
+            return;
+        }
+
+        toggleChatVip({ user_id: userID, broadcaster_id: currentUser.id }, isVip);
+    };
+
     useEffect(() => {
         if (!currentUser || Object.keys(badgesMapBySetID).length > 0) {
             return;
@@ -66,5 +75,6 @@ export const useChat = (): UseChatReturnType => {
         deleteChatMessage,
         banUser,
         toggleUserMode,
+        toggleUserVip,
     };
 };

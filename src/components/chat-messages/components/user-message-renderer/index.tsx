@@ -17,7 +17,7 @@ const ICON_PROPS = {
 };
 
 export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRendererProps) => {
-    const { emotesMapByName, deleteChatMessage, banUser, toggleUserMode } = useChat();
+    const { emotesMapByName, deleteChatMessage, banUser, toggleUserMode, toggleUserVip } = useChat();
     const { currentUser } = useTwitcherConfigStoreContext();
     const hasBadges = badgesURL.length > 0;
     const isCurrentUserMessage = currentUser?.id === message.tags?.userID;
@@ -44,9 +44,15 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
         }
     };
 
-    const onToggleUser = () => {
+    const onToggleUserMode = () => {
         if (message.tags?.userID) {
             toggleUserMode(message.tags.userID, isMod);
+        }
+    };
+
+    const onToggleUserVip = () => {
+        if (message.tags?.userID) {
+            toggleUserVip(message.tags.userID, isVip);
         }
     };
 
@@ -92,7 +98,8 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
             )) }
             { message.tags?.displayName && (
                 <UserInfoName
-                    onClickMod={onToggleUser}
+                    onClickMod={onToggleUserMode}
+                    onClickVip={onToggleUserVip}
                     amICurrentUser={isCurrentUserMessage}
                     ml={hasBadges ? '2' : '0'}
                     isMod={isMod}
