@@ -19,7 +19,9 @@ import {
     DeleteChatMessageIn,
     ManageUserChatIn,
     BanUserIn,
-    BanUserOut
+    BanUserOut,
+    GetUserChatColorIn,
+    GetUserChatColorOut
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -42,6 +44,7 @@ interface IApiHelix {
     addChannelVip(params: ManageUserChatIn): Promise<void>;
     removeChannelVip(params: ManageUserChatIn): Promise<void>;
     banUser(body: BanUserIn): Promise<BanUserOut>;
+    getUserChatColor(params: GetUserChatColorIn): Promise<GetUserChatColorOut>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -112,6 +115,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     banUser(body: BanUserIn): Promise<BanUserOut> {
         return this.provider.post('/moderation/bans', { data: body.data }, { params: body.params });
+    }
+
+    getUserChatColor(params: GetUserChatColorIn): Promise<GetUserChatColorOut> {
+        return this.provider.get('/chat/color', { params });
     }
 }
 
