@@ -22,18 +22,15 @@ $ pnpm run start:dev
 
 ### Stack
 
-```console
 - Electron;
 - TypeScript;
 - React;
 - MobX;
 - Chakra UI;
 - Axios and Websockets;
-```
 
 ### Features
 
-```console
 - Edit stream title, category and tags;
 - Edit chat settings (emote mode, slowmode and etc);
 - Read chat;
@@ -45,14 +42,11 @@ $ pnpm run start:dev
 - Timeout user;
 - Delete user message;
 - Clear chat;
-```
 
 ### Future plans
 
-```console
 - Show real count of viewers;
 - Notification when user follow / subscribe to a channel;
 - Display a channel moderators and vips;
 - Unban users;
 - Build for Windows / MacOS / Linux;
-```
