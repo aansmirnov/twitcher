@@ -68,9 +68,6 @@ class TwitcherConfigStore {
     };
 
     refreshToken = (token: string) => {
-        localStorage.removeItem(TWITCHER_ACCESS_TOKEN);
-        localStorage.removeItem(TWITCHER_CONFIG);
-
         apiAuth
             .refreshToken({
                 client_id: CLIENT_ID,
@@ -80,7 +77,11 @@ class TwitcherConfigStore {
             })
             .then(this.updateConfigState)
             .then(() => {
-                this.getCurrentUser();
+                // It's a hack.
+                // @ToDo: fix this.
+                setTimeout(() => {
+                    this.getCurrentUser();
+                }, 1000);
             });
     };
 
