@@ -2,7 +2,12 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { TWITCHER_ACCESS_TOKEN } from 'src/consts';
-import { BanUserIn, DeleteChatMessageIn, ManageUserChatIn, TwitchIrcMessage } from 'src/types';
+import {
+    BanUserIn,
+    DeleteChatMessageIn,
+    ManageUserChatIn,
+    TwitchIrcMessage,
+} from 'src/types';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 class ChatEventsStore {
@@ -52,14 +57,18 @@ class ChatEventsStore {
 
     connectToChat = (websocket: WebSocket) => {
         websocket.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
-        websocket.send(`PASS oauth:${localStorage.getItem(TWITCHER_ACCESS_TOKEN)}`);
+        websocket.send(
+            `PASS oauth:${localStorage.getItem(TWITCHER_ACCESS_TOKEN)}`,
+        );
         websocket.send(`NICK ${this.userLogin}`);
         websocket.send(`JOIN #${this.userLogin}`);
     };
 
     listenMessages = (websocket: WebSocket) => {
         websocket.onmessage = (event) => {
-            const message = (event.data as string).split('\r\n').filter((it): it is string => it.length > 0);
+            const message = (event.data as string)
+                .split('\r\n')
+                .filter((it): it is string => it.length > 0);
             message.forEach((it) => {
                 const parsedMessage = parseTwitchIrcMessage(it);
 
@@ -89,55 +98,62 @@ class ChatEventsStore {
                         });
                         break;
                     }
-                    default: { break; }
+                    default: {
+                        break;
+                    }
                 }
             });
         };
     };
 
     deleteChatMessage = (params: DeleteChatMessageIn) => {
-        apiHelix.deleteChatMessage(params)
-            .then(() => {
-                const copy = this.copyMessages;
-                const index = copy.findIndex((it) => it.tags?.id === params.message_id);
+        apiHelix.deleteChatMessage(params).then(() => {
+            const copy = this.copyMessages;
+            const index = copy.findIndex(
+                (it) => it.tags?.id === params.message_id,
+            );
 
-                if (index !== -1) {
-                    copy[index] = { ...copy[index], parameters: '<Message Deleted>', tags: { ...copy[index].tags, emotes: {} } };
-                    runInAction(() => {
-                        this.messages = copy;
-                    });
-                }
-            });
+            if (index !== -1) {
+                copy[index] = {
+                    ...copy[index],
+                    parameters: '<Message Deleted>',
+                    tags: { ...copy[index].tags, emotes: {} },
+                };
+                runInAction(() => {
+                    this.messages = copy;
+                });
+            }
+        });
     };
 
     banUser = (body: BanUserIn) => {
-        apiHelix.banUser(body)
-            .then(() => {
-                const copy = this.copyMessages;
-                const updatedMessagesArray = copy.map((it) => {
-                    if (it.tags?.userID === body.data.user_id) {
-                        return {
-                            ...it,
-                            tags: {
-                                ...it.tags,
-                                emotes: {}
-                            },
-                            parameters: '<Message Deleted>'
-                        };
-                    }
+        apiHelix.banUser(body).then(() => {
+            const copy = this.copyMessages;
+            const updatedMessagesArray = copy.map((it) => {
+                if (it.tags?.userID === body.data.user_id) {
+                    return {
+                        ...it,
+                        tags: {
+                            ...it.tags,
+                            emotes: {},
+                        },
+                        parameters: '<Message Deleted>',
+                    };
+                }
 
-                    return it;
-                });
+                return it;
+            });
 
-                runInAction(() => {
-                    this.messages = updatedMessagesArray;
-                });
-            }
-            );
+            runInAction(() => {
+                this.messages = updatedMessagesArray;
+            });
+        });
     };
 
     toggleChatUserMod = (body: ManageUserChatIn, isMod: boolean) => {
-        isMod ? apiHelix.removeChannelModerator(body) : apiHelix.addChannelModerator(body);
+        isMod
+            ? apiHelix.removeChannelModerator(body)
+            : apiHelix.addChannelModerator(body);
     };
 
     toggleChatVip = (body: ManageUserChatIn, isVip: boolean) => {

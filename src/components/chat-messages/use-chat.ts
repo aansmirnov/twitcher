@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
-import { useChatEventsStoreContext, useChatStoreContext, useTwitcherConfigStoreContext } from 'src/stores';
+import {
+    useChatEventsStoreContext,
+    useChatStoreContext,
+    useTwitcherConfigStoreContext,
+} from 'src/stores';
 import { BadgesMapBySetID, BanUserRequestBody, EmotesMapById } from 'src/types';
 
 type UseChatReturnType = {
@@ -7,26 +11,31 @@ type UseChatReturnType = {
     emotesMapByName: EmotesMapById;
     deleteChatMessage: (messageID: string) => void;
     banUser: (body: BanUserRequestBody) => void;
-    toggleUserMode:(userID: string, isMod: boolean) => void;
-    toggleUserVip:(userID: string, isVip: boolean) => void;
-}
+    toggleUserMode: (userID: string, isMod: boolean) => void;
+    toggleUserVip: (userID: string, isVip: boolean) => void;
+};
 
 export const useChat = (): UseChatReturnType => {
     const { currentUser } = useTwitcherConfigStoreContext();
+    const { getBadges, badgesMapBySetID, getEmotes, emotesMapByName } =
+        useChatStoreContext();
     const {
-        getBadges,
-        badgesMapBySetID,
-        getEmotes,
-        emotesMapByName,
-    } = useChatStoreContext();
-    const { deleteChatMessage: deleteMessage, banUser: ban, toggleChatUserMod, toggleChatVip } = useChatEventsStoreContext();
+        deleteChatMessage: deleteMessage,
+        banUser: ban,
+        toggleChatUserMod,
+        toggleChatVip,
+    } = useChatEventsStoreContext();
 
     const deleteChatMessage = (messageID: string) => {
         if (!currentUser) {
             return;
         }
 
-        deleteMessage({ broadcaster_id: currentUser.id, moderator_id: currentUser.id, message_id: messageID });
+        deleteMessage({
+            broadcaster_id: currentUser.id,
+            moderator_id: currentUser.id,
+            message_id: messageID,
+        });
     };
 
     const banUser = (body: BanUserRequestBody) => {
@@ -34,7 +43,13 @@ export const useChat = (): UseChatReturnType => {
             return;
         }
 
-        ban({ data: body, params: { broadcaster_id: currentUser.id, moderator_id: currentUser.id } });
+        ban({
+            data: body,
+            params: {
+                broadcaster_id: currentUser.id,
+                moderator_id: currentUser.id,
+            },
+        });
     };
 
     const toggleUserMode = (userID: string, isMod: boolean) => {
@@ -42,7 +57,10 @@ export const useChat = (): UseChatReturnType => {
             return;
         }
 
-        toggleChatUserMod({ user_id: userID, broadcaster_id: currentUser.id }, isMod);
+        toggleChatUserMod(
+            { user_id: userID, broadcaster_id: currentUser.id },
+            isMod,
+        );
     };
 
     const toggleUserVip = (userID: string, isVip: boolean) => {
@@ -50,7 +68,10 @@ export const useChat = (): UseChatReturnType => {
             return;
         }
 
-        toggleChatVip({ user_id: userID, broadcaster_id: currentUser.id }, isVip);
+        toggleChatVip(
+            { user_id: userID, broadcaster_id: currentUser.id },
+            isVip,
+        );
     };
 
     useEffect(() => {

@@ -16,23 +16,22 @@ export type Tags = {
     displayName?: string | null;
     targetUserId?: string | null;
     [x: string]: unknown;
-}
+};
 
 export type Source = {
     nick: string | null;
     host: string | null;
-}
+};
 
 export type Command = {
     command?: string | null;
     channel?: string | null;
     [x: string]: unknown;
-
-}
+};
 
 export type TwitchIrcMessage = {
     tags: Tags | null;
     source: Source | null;
     command: Command | null;
     parameters: string | null;
-}
+};

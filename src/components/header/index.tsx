@@ -8,8 +8,13 @@ type HeaderProps = {
     channelInformation: ChannelInformation;
 } & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>;
 
-export const Header = ({ currentUser, channelInformation, updateChannelInformation }: HeaderProps) => {
-    const [isHeaderVisible, { show: showHeader, hide: hideHeader }] = useVisibilityState(true);
+export const Header = ({
+    currentUser,
+    channelInformation,
+    updateChannelInformation,
+}: HeaderProps) => {
+    const [isHeaderVisible, { show: showHeader, hide: hideHeader }] =
+        useVisibilityState(true);
 
     if (!isHeaderVisible) {
         return (

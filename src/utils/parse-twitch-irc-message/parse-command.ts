@@ -1,7 +1,9 @@
 import { Command } from 'src/types';
 
 // Parses the command component of the IRC message.
-export function parseCommand(rawCommandComponent: string | null): Command | null {
+export function parseCommand(
+    rawCommandComponent: string | null,
+): Command | null {
     if (!rawCommandComponent) {
         return null;
     }
@@ -18,12 +20,12 @@ export function parseCommand(rawCommandComponent: string | null): Command | null
         case 'PRIVMSG':
             parsedCommand = {
                 command: commandParts[0],
-                channel: commandParts[1]
+                channel: commandParts[1],
             };
             break;
         case 'PING':
             parsedCommand = {
-                command: commandParts[0]
+                command: commandParts[0],
             };
             break;
         case 'CAP':
@@ -37,19 +39,19 @@ export function parseCommand(rawCommandComponent: string | null): Command | null
         case 'GLOBALUSERSTATE': // Included only if you request the /commands capability.
             // But it has no meaning without also including the /tags capability.
             parsedCommand = {
-                command: commandParts[0]
+                command: commandParts[0],
             };
             break;
         case 'USERSTATE': // Included only if you request the /commands capability.
         case 'ROOMSTATE': // But it has no meaning without also including the /tags capabilities.
             parsedCommand = {
                 command: commandParts[0],
-                channel: commandParts[1]
+                channel: commandParts[1],
             };
             break;
         case 'RECONNECT':
             parsedCommand = {
-                command: commandParts[0]
+                command: commandParts[0],
             };
             break;
         case '421':
@@ -57,7 +59,7 @@ export function parseCommand(rawCommandComponent: string | null): Command | null
         case '001': // Logged in (successfully authenticated).
             parsedCommand = {
                 command: commandParts[0],
-                channel: commandParts[1]
+                channel: commandParts[1],
             };
             break;
         case '002': // Ignoring all other numeric messages.

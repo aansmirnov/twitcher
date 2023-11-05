@@ -12,7 +12,7 @@ export type BanUserRequestBody = {
      * The text is user defined and is limited to a maximum of 500 characters.
      */
     reason?: string;
-}
+};
 
 type BanUserQuery = {
     /**
@@ -23,9 +23,9 @@ type BanUserQuery = {
      * The ID of the broadcaster or a user that has permission to moderate the broadcaster’s chat room.
      */
     moderator_id: string;
-}
+};
 
 export type BanUserIn = {
     data: BanUserRequestBody;
     params: BanUserQuery;
-}
+};

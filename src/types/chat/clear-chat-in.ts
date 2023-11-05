@@ -12,4 +12,4 @@ export type ClearChatIn = {
      * The ID of the message to remove.
      */
     message_id?: string;
-}
+};

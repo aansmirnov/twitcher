@@ -12,4 +12,4 @@ export type DeleteChatMessageIn = {
      * The ID of the message to remove.
      */
     message_id?: string;
-}
+};

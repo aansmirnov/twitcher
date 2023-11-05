@@ -11,4 +11,4 @@ export type Category = {
      * An ID that uniquely identifies the game or category.
      */
     id: string;
-}
+};

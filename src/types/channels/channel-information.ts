@@ -43,4 +43,4 @@ export type ChannelInformation = {
      * Boolean flag indicating if the channel has branded content.
      */
     is_branded_content: boolean;
-}
+};

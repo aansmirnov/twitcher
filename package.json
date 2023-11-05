@@ -1,64 +1,66 @@
 {
-  "name": "twitcher",
-  "productName": "twitcher",
-  "version": "1.0.0",
-  "description": "Twitch Client",
-  "main": "electron/index.js",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "publish": "electron-forge publish",
-    "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
-  },
-  "keywords": [],
-  "author": {
-    "name": "Alexander Smirnov",
-    "email": "aansmrnv@gmail.com"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/react": "^2.8.1",
-    "axios": "^1.4.0",
-    "chakra-react-select": "^4.7.2",
-    "dotenv": "^16.3.1",
-    "electron-squirrel-startup": "^1.0.0",
-    "mobx": "^6.10.2",
-    "mobx-react": "^9.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "*"
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "^6.2.1",
-    "@electron-forge/maker-deb": "^6.2.1",
-    "@electron-forge/maker-rpm": "^6.2.1",
-    "@electron-forge/maker-squirrel": "^6.2.1",
-    "@electron-forge/maker-zip": "^6.2.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "concurrently": "^8.2.0",
-    "cross-env": "^7.0.3",
-    "electron": "25.2.0",
-    "eslint": "^8.0.1",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.32.2",
-    "wait-on": "^7.0.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "twitcher",
+    "productName": "twitcher",
+    "version": "1.0.0",
+    "description": "Twitch Client",
+    "main": "electron/index.js",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "publish": "electron-forge publish",
+        "start:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+        "format": "prettier --write ./src"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Alexander Smirnov",
+        "email": "aansmrnv@gmail.com"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@chakra-ui/icons": "^2.1.1",
+        "@chakra-ui/react": "^2.8.1",
+        "axios": "^1.4.0",
+        "chakra-react-select": "^4.7.2",
+        "dotenv": "^16.3.1",
+        "electron-squirrel-startup": "^1.0.0",
+        "mobx": "^6.10.2",
+        "mobx-react": "^9.0.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-scripts": "^5.0.1",
+        "typescript": "*"
+    },
+    "devDependencies": {
+        "@electron-forge/cli": "^6.2.1",
+        "@electron-forge/maker-deb": "^6.2.1",
+        "@electron-forge/maker-rpm": "^6.2.1",
+        "@electron-forge/maker-squirrel": "^6.2.1",
+        "@electron-forge/maker-zip": "^6.2.1",
+        "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
+        "@types/react": "^18.2.14",
+        "@types/react-dom": "^18.2.6",
+        "@typescript-eslint/eslint-plugin": "^5.50.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "concurrently": "^8.2.0",
+        "cross-env": "^7.0.3",
+        "electron": "25.2.0",
+        "eslint": "^8.0.1",
+        "eslint-plugin-jsx-a11y": "^6.7.1",
+        "eslint-plugin-react": "^7.32.2",
+        "prettier": "^3.0.3",
+        "wait-on": "^7.0.1"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }

@@ -9,12 +9,14 @@ import { parseParameters } from './parse-parameters';
 // Expects the caller to pass a single message. (Remember, the Twitch
 // IRC server may send one or more IRC messages in a single message.)
 
-export function parseTwitchIrcMessage(message: string): TwitchIrcMessage | null {
+export function parseTwitchIrcMessage(
+    message: string,
+): TwitchIrcMessage | null {
     const parsedMessage: TwitchIrcMessage = {
         tags: null,
         source: null,
         command: null,
-        parameters: null
+        parameters: null,
     }; // Contains the component parts.
 
     let index = 0; // The start index. Increments as we parse the IRC message.
@@ -25,7 +27,8 @@ export function parseTwitchIrcMessage(message: string): TwitchIrcMessage | null 
     let rawParametersComponent = null;
 
     // If the message includes tags, get the tags component of the IRC message.
-    if (message[index] === '@') { // The message includes tags.
+    if (message[index] === '@') {
+        // The message includes tags.
         const endIndex = message.indexOf(' ');
         rawTagsComponent = message.slice(1, endIndex);
         index = endIndex + 1; // Should now point to source colon (:).
@@ -42,14 +45,16 @@ export function parseTwitchIrcMessage(message: string): TwitchIrcMessage | null 
 
     // Get the command component of the IRC message.
     let endIndex = message.indexOf(':', index); // Looking for the parameters part of the message.
-    if (endIndex === -1) { // But not all messages include the parameters part.
+    if (endIndex === -1) {
+        // But not all messages include the parameters part.
         endIndex = message.length;
     }
 
     rawCommandComponent = message.slice(index, endIndex).trim();
 
     // Get the parameters component of the IRC message.
-    if (endIndex !== message.length) { // Check if the IRC message contains a parameters component.
+    if (endIndex !== message.length) {
+        // Check if the IRC message contains a parameters component.
         index = endIndex + 1; // Should point to the parameters part of the message.
         rawParametersComponent = message.slice(index);
     }
@@ -63,7 +68,8 @@ export function parseTwitchIrcMessage(message: string): TwitchIrcMessage | null 
         return null;
     }
 
-    if (rawTagsComponent) { // The IRC message contains tags.
+    if (rawTagsComponent) {
+        // The IRC message contains tags.
         parsedMessage.tags = parseTags(rawTagsComponent);
     }
 
@@ -72,7 +78,10 @@ export function parseTwitchIrcMessage(message: string): TwitchIrcMessage | null 
     parsedMessage.parameters = rawParametersComponent;
     if (rawParametersComponent && rawParametersComponent[0] === '!') {
         // The user entered a bot command in the chat window.
-        parsedMessage.command = parseParameters(rawParametersComponent, parsedMessage.command);
+        parsedMessage.command = parseParameters(
+            rawParametersComponent,
+            parsedMessage.command,
+        );
     }
 
     return parsedMessage;

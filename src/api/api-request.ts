@@ -10,10 +10,13 @@ export class ApiRequest {
             return request;
         });
 
-        this.provider.interceptors.response.use((response: AxiosResponse) => {
-            return response.data;
-        }, (error: AxiosError) => {
-            throw new Error(error.message);
-        });
+        this.provider.interceptors.response.use(
+            (response: AxiosResponse) => {
+                return response.data;
+            },
+            (error: AxiosError) => {
+                throw new Error(error.message);
+            },
+        );
     }
 }

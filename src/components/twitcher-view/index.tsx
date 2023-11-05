@@ -4,15 +4,24 @@ import {
     Header,
     CenteredWrapper,
     Footer,
-    ChatMessages
+    ChatMessages,
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
 import { useTwitcherConfigStoreContext } from 'src/stores';
 import { useChannelInformation, useChatEvents } from 'src/hooks';
 
 export const TwitcherView = observer(() => {
-    const { loading: configLoading, config, getAccessToken, currentUser } = useTwitcherConfigStoreContext();
-    const { loading: channelInfoLoading, channelInformation, updateChannelInformation } = useChannelInformation();
+    const {
+        loading: configLoading,
+        config,
+        getAccessToken,
+        currentUser,
+    } = useTwitcherConfigStoreContext();
+    const {
+        loading: channelInfoLoading,
+        channelInformation,
+        updateChannelInformation,
+    } = useChannelInformation();
     const { loading: chatEventsLoading } = useChatEvents();
     const isLoading = configLoading || channelInfoLoading || chatEventsLoading;
 
@@ -37,7 +46,11 @@ export const TwitcherView = observer(() => {
     }
 
     return (
-        <Flex height='inherit' flexDirection='column' justifyContent='space-between'>
+        <Flex
+            height='inherit'
+            flexDirection='column'
+            justifyContent='space-between'
+        >
             <Header
                 currentUser={currentUser}
                 channelInformation={channelInformation}

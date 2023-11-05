@@ -19,4 +19,4 @@ export type GetAccessTokenIn = {
      * App registered redirect URI
      */
     redirect_uri: string;
-}
+};

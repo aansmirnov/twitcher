@@ -1,3 +1,3 @@
 import { Emote } from './emote';
 
-export type EmotesMapById = Record<string, Emote>
+export type EmotesMapById = Record<string, Emote>;

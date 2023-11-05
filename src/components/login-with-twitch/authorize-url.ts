@@ -11,17 +11,19 @@ export const authorizeUrl = () => {
     // A space-delimited list of scopes.
     // The APIs that you’re calling will identify the scopes you must list.
     // You must URL encode the list.
-    const scope = encodeURIComponent([
-        'openid',
-        'chat:read',
-        'chat:edit',
-        'moderator:manage:chat_settings',
-        'moderator:manage:banned_users',
-        'moderator:manage:chat_messages',
-        'channel:manage:broadcast',
-        'channel:manage:moderators',
-        'channel:manage:vips'
-    ].join(' '));
+    const scope = encodeURIComponent(
+        [
+            'openid',
+            'chat:read',
+            'chat:edit',
+            'moderator:manage:chat_settings',
+            'moderator:manage:banned_users',
+            'moderator:manage:chat_messages',
+            'channel:manage:broadcast',
+            'channel:manage:moderators',
+            'channel:manage:vips',
+        ].join(' '),
+    );
     path += `&scope=${scope}`;
 
     return path;

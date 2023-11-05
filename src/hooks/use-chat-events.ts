@@ -1,14 +1,18 @@
 import { useEffect } from 'react';
-import { useChatEventsStoreContext, useTwitcherConfigStoreContext } from 'src/stores';
+import {
+    useChatEventsStoreContext,
+    useTwitcherConfigStoreContext,
+} from 'src/stores';
 
 type UseChatEventsReturnType = {
     isInitialized: boolean;
     loading: boolean;
-}
+};
 
 export const useChatEvents = (): UseChatEventsReturnType => {
     const { currentUser } = useTwitcherConfigStoreContext();
-    const { createConnection, isInitialized, loading } = useChatEventsStoreContext();
+    const { createConnection, isInitialized, loading } =
+        useChatEventsStoreContext();
 
     useEffect(() => {
         if (!isInitialized && currentUser) {
@@ -18,6 +22,6 @@ export const useChatEvents = (): UseChatEventsReturnType => {
 
     return {
         isInitialized,
-        loading
+        loading,
     };
 };

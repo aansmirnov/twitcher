@@ -1,9 +1,13 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
 import { apiAuth, apiHelix } from 'src/api';
-import { CLIENT_ID, CLIENT_SECRET, TWITCHER_ACCESS_TOKEN, TWITCHER_CONFIG } from 'src/consts';
+import {
+    CLIENT_ID,
+    CLIENT_SECRET,
+    TWITCHER_ACCESS_TOKEN,
+    TWITCHER_CONFIG,
+} from 'src/consts';
 import { Config, User } from 'src/types';
-
 
 class TwitcherConfigStore {
     config: Config | undefined = undefined;
@@ -15,7 +19,7 @@ class TwitcherConfigStore {
             config: observable,
             currentUser: observable,
             loading: observable,
-            getAccessToken: action
+            getAccessToken: action,
         });
 
         this.loading = true;
@@ -41,7 +45,10 @@ class TwitcherConfigStore {
     };
 
     updateConfigState = (config: Config) => {
-        const newConfig = { ...config, expired_at: new Date().setSeconds(config.expires_in) };
+        const newConfig = {
+            ...config,
+            expired_at: new Date().setSeconds(config.expires_in),
+        };
         runInAction(() => {
             this.config = newConfig;
         });
@@ -58,7 +65,7 @@ class TwitcherConfigStore {
                 grant_type: 'authorization_code',
                 redirect_uri: 'http://localhost:3000',
                 client_id: CLIENT_ID,
-                client_secret: CLIENT_SECRET
+                client_secret: CLIENT_SECRET,
             })
             .then((config) => {
                 this.updateConfigState(config);
@@ -73,7 +80,7 @@ class TwitcherConfigStore {
                 client_id: CLIENT_ID,
                 client_secret: CLIENT_SECRET,
                 grant_type: 'refresh_token',
-                refresh_token: token
+                refresh_token: token,
             })
             .then(this.updateConfigState)
             .then(() => {

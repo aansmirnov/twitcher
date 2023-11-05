@@ -8,11 +8,11 @@ const THREE_DAYS = 259200000;
 type LocalStorageData<T> = {
     data: T;
     expired_at: number;
-}
+};
 type ChatData<T, U> = {
     data: T;
     map: U;
-}
+};
 
 class ChatStore {
     badges: Badges[] = [];
@@ -32,7 +32,10 @@ class ChatStore {
     }
 
     private setChatDataToLocalStorage = <T>(key: string, data: T) => {
-        const object: LocalStorageData<T> = { data, expired_at: Date.now() + THREE_DAYS };
+        const object: LocalStorageData<T> = {
+            data,
+            expired_at: Date.now() + THREE_DAYS,
+        };
         localStorage.setItem(key, JSON.stringify(object));
     };
 
@@ -43,7 +46,9 @@ class ChatStore {
             return null;
         }
 
-        const parsedData = JSON.parse(dataFromLocalStorage) as LocalStorageData<T>;
+        const parsedData = JSON.parse(
+            dataFromLocalStorage,
+        ) as LocalStorageData<T>;
         if (Date.now() > parsedData.expired_at) {
             return null;
         }
@@ -52,7 +57,10 @@ class ChatStore {
     };
 
     getBadges = (userID: string) => {
-        const badges = this.getChatDataFromLocalStorage<ChatData<Badges[], BadgesMapBySetID>>(TWITCHER_BADGES);
+        const badges =
+            this.getChatDataFromLocalStorage<
+                ChatData<Badges[], BadgesMapBySetID>
+            >(TWITCHER_BADGES);
 
         if (badges) {
             this.badges = badges.data;
@@ -60,24 +68,39 @@ class ChatStore {
             return;
         }
 
-        Promise
-            .all([apiHelix.getChanngelBadges({ broadcaster_id: userID }), apiHelix.getBadges()])
-            .then((response) => {
-                const [channelBadges, globalBadges] = response;
-                const allBadges = [...channelBadges.data, ...globalBadges.data];
+        Promise.all([
+            apiHelix.getChanngelBadges({ broadcaster_id: userID }),
+            apiHelix.getBadges(),
+        ]).then((response) => {
+            const [channelBadges, globalBadges] = response;
+            const allBadges = [...channelBadges.data, ...globalBadges.data];
 
-                runInAction(() => {
-                    this.badges = allBadges;
-                    this.badgesMapBySetID = allBadges
-                        .reduce((acc, next) => ({ ...acc, [next.set_id]: { versions: next.versions[0], set_id: next.set_id } }), {});
-                });
-
-                this.setChatDataToLocalStorage(TWITCHER_BADGES, { data: this.badges, map: this.badgesMapBySetID });
+            runInAction(() => {
+                this.badges = allBadges;
+                this.badgesMapBySetID = allBadges.reduce(
+                    (acc, next) => ({
+                        ...acc,
+                        [next.set_id]: {
+                            versions: next.versions[0],
+                            set_id: next.set_id,
+                        },
+                    }),
+                    {},
+                );
             });
+
+            this.setChatDataToLocalStorage(TWITCHER_BADGES, {
+                data: this.badges,
+                map: this.badgesMapBySetID,
+            });
+        });
     };
 
     getEmotes = (userID: string) => {
-        const emotes = this.getChatDataFromLocalStorage<ChatData<Emote[], EmotesMapById>>(TWITCHER_EMOTES);
+        const emotes =
+            this.getChatDataFromLocalStorage<ChatData<Emote[], EmotesMapById>>(
+                TWITCHER_EMOTES,
+            );
 
         if (emotes) {
             this.emotes = emotes.data;
@@ -85,22 +108,33 @@ class ChatStore {
             return;
         }
 
-        Promise
-            .all([apiHelix.getChannelEmotes({ broadcaster_id: userID }), apiHelix.getEmotes()])
-            .then((response) => {
-                const [channelEmotes, globalEmotes] = response;
-                const allEmotes = [...channelEmotes.data, ...globalEmotes.data].filter((it, index, array) => {
-                    return array.findIndex((emote) => emote.name === it.name) === index;
-                });
-
-                runInAction(() => {
-                    this.emotes = allEmotes;
-                    this.emotesMapByName = allEmotes
-                        .reduce((acc, next) => ({ ...acc, [next.name]: next }), {});
-                });
-
-                this.setChatDataToLocalStorage(TWITCHER_EMOTES, { data: this.emotes, map: this.emotesMapByName });
+        Promise.all([
+            apiHelix.getChannelEmotes({ broadcaster_id: userID }),
+            apiHelix.getEmotes(),
+        ]).then((response) => {
+            const [channelEmotes, globalEmotes] = response;
+            const allEmotes = [
+                ...channelEmotes.data,
+                ...globalEmotes.data,
+            ].filter((it, index, array) => {
+                return (
+                    array.findIndex((emote) => emote.name === it.name) === index
+                );
             });
+
+            runInAction(() => {
+                this.emotes = allEmotes;
+                this.emotesMapByName = allEmotes.reduce(
+                    (acc, next) => ({ ...acc, [next.name]: next }),
+                    {},
+                );
+            });
+
+            this.setChatDataToLocalStorage(TWITCHER_EMOTES, {
+                data: this.emotes,
+                map: this.emotesMapByName,
+            });
+        });
     };
 }
 

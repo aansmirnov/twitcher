@@ -12,7 +12,7 @@ class ChannelInformationStore {
             loading: observable,
             channelInformation: observable,
             getChannelInformation: action,
-            updateChannelInformation: action
+            updateChannelInformation: action,
         });
     }
 
@@ -34,15 +34,19 @@ class ChannelInformationStore {
             });
     };
 
-    updateChannelInformation = (body: UpdateChannelInformationIn, callback: VoidFunction) => {
-        apiHelix
-            .updateChannelInformation(body)
-            .then(() => {
-                runInAction(() => {
-                    this.channelInformation = { ...this.channelInformation as ChannelInformation, ...body };
-                });
-                callback();
+    updateChannelInformation = (
+        body: UpdateChannelInformationIn,
+        callback: VoidFunction,
+    ) => {
+        apiHelix.updateChannelInformation(body).then(() => {
+            runInAction(() => {
+                this.channelInformation = {
+                    ...(this.channelInformation as ChannelInformation),
+                    ...body,
+                };
             });
+            callback();
+        });
     };
 }
 

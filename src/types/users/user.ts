@@ -51,4 +51,4 @@ export type User = {
      * The timestamp is in RFC3339 format.
      */
     created_at: string;
-}
+};

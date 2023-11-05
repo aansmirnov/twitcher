@@ -10,4 +10,4 @@ export type UpdateChatSettingsIn = {
      * Request body
      */
     body: Partial<Omit<ChatSettings, 'broadcaster_id' | 'moderator_id'>>;
-}
+};

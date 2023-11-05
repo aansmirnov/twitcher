@@ -26,14 +26,18 @@ import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
 
 interface IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut>;
-    getChannelsInformation(params: GetChannelsInformationIn): Promise<GetChannelsInformationOut>;
+    getChannelsInformation(
+        params: GetChannelsInformationIn,
+    ): Promise<GetChannelsInformationOut>;
     updateChannelInformation(params: UpdateChannelInformationIn): Promise<void>;
     getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut>;
     clearChat(params: ClearChatIn): Promise<void>;
     getChatSettings(params: GetChatSettingsIn): Promise<GetChatSettingsOut>;
-    updateChatSettings(body: UpdateChatSettingsIn): Promise<UpdateChatSettingsOut>
-    getBadges(): Promise<GetBadgesOut>
-    getChanngelBadges(params: GetBadgesIn): Promise<GetBadgesOut>
+    updateChatSettings(
+        body: UpdateChatSettingsIn,
+    ): Promise<UpdateChatSettingsOut>;
+    getBadges(): Promise<GetBadgesOut>;
+    getChanngelBadges(params: GetBadgesIn): Promise<GetBadgesOut>;
     getChannelEmotes(params: GetEmotesIn): Promise<GetEmotesOut>;
     getEmotes(): Promise<GetEmotesOut>;
     deleteChatMessage(params: DeleteChatMessageIn): Promise<void>;
@@ -49,13 +53,19 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         return this.provider.get('/users', { params });
     }
 
-    getChannelsInformation(params: GetChannelsInformationIn): Promise<GetChannelsInformationOut> {
+    getChannelsInformation(
+        params: GetChannelsInformationIn,
+    ): Promise<GetChannelsInformationOut> {
         return this.provider.get('/channels', { params });
     }
 
-    updateChannelInformation(params: UpdateChannelInformationIn): Promise<void> {
+    updateChannelInformation(
+        params: UpdateChannelInformationIn,
+    ): Promise<void> {
         const { broadcaster_id, ...body } = params;
-        return this.provider.patch('/channels', body, { params: { broadcaster_id } } );
+        return this.provider.patch('/channels', body, {
+            params: { broadcaster_id },
+        });
     }
 
     getCategories(params: GetCategoriesIn): Promise<GetCategoriesOut> {
@@ -70,8 +80,11 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         return this.provider.get('/chat/settings', { params });
     }
 
-    updateChatSettings({ params, body }: UpdateChatSettingsIn): Promise<GetChatSettingsOut> {
-        return this.provider.patch('/chat/settings', body , { params });
+    updateChatSettings({
+        params,
+        body,
+    }: UpdateChatSettingsIn): Promise<GetChatSettingsOut> {
+        return this.provider.patch('/chat/settings', body, { params });
     }
 
     getBadges(): Promise<GetBadgesOut> {
@@ -111,7 +124,11 @@ class ApiHelix extends ApiRequest implements IApiHelix {
     }
 
     banUser(body: BanUserIn): Promise<BanUserOut> {
-        return this.provider.post('/moderation/bans', { data: body.data }, { params: body.params });
+        return this.provider.post(
+            '/moderation/bans',
+            { data: body.data },
+            { params: body.params },
+        );
     }
 }
 
@@ -119,9 +136,11 @@ export const apiHelix = new ApiHelix(
     axios.create({
         baseURL: TWITCH_HELIX_URL,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem(TWITCHER_ACCESS_TOKEN)}`,
+            Authorization: `Bearer ${localStorage.getItem(
+                TWITCHER_ACCESS_TOKEN,
+            )}`,
             'Client-Id': CLIENT_ID,
-            'Content-Type': 'application/json'
-        }
-    })
+            'Content-Type': 'application/json',
+        },
+    }),
 );

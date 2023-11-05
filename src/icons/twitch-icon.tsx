@@ -10,5 +10,5 @@ export const TwitchIcon = createIcon({
             clipRule='evenodd'
             fill='currentColor'
         />
-    )
+    ),
 });

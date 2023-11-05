@@ -8,20 +8,30 @@ import { UserInfoName } from './user-info-name';
 type UserMessageRendererProps = {
     message: TwitchIrcMessage;
     badgesURL?: Array<{ name?: string; url?: string }>;
-}
+};
 
 const ICON_PROPS = {
     fontSize: 'xs',
     color: 'white',
-    cursor: 'pointer'
+    cursor: 'pointer',
 };
 
-export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRendererProps) => {
-    const { emotesMapByName, deleteChatMessage, banUser, toggleUserMode, toggleUserVip } = useChat();
+export const UserMessageRenderer = ({
+    message,
+    badgesURL = [],
+}: UserMessageRendererProps) => {
+    const {
+        emotesMapByName,
+        deleteChatMessage,
+        banUser,
+        toggleUserMode,
+        toggleUserVip,
+    } = useChat();
     const { currentUser } = useTwitcherConfigStoreContext();
     const hasBadges = badgesURL.length > 0;
     const isCurrentUserMessage = currentUser?.id === message.tags?.userID;
-    const shouldShowActionIcons = !isCurrentUserMessage && message.parameters !== '<Message Deleted>';
+    const shouldShowActionIcons =
+        !isCurrentUserMessage && message.parameters !== '<Message Deleted>';
     const isMod = Boolean(message.tags?.badges?.['moderator']);
     const isVip = Boolean(message.tags?.badges?.['vip']);
 
@@ -39,7 +49,7 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
         if (message.tags?.userID) {
             banUser({
                 user_id: message.tags.userID,
-                duration
+                duration,
             });
         }
     };
@@ -62,11 +72,18 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
                 const emote = emotesMapByName[message];
 
                 if (!emote) {
-                    return <Text color='white' key={`${message}-${index}`}>{message}</Text>;
+                    return (
+                        <Text color='white' key={`${message}-${index}`}>
+                            {message}
+                        </Text>
+                    );
                 }
 
                 return (
-                    <Image key={`${emote.name}-${index}`} src={emote.images.url_1x} />
+                    <Image
+                        key={`${emote.name}-${index}`}
+                        src={emote.images.url_1x}
+                    />
                 );
             })}
         </Flex>
@@ -76,27 +93,50 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
 
     return (
         <Flex px={4} alignItems='center'>
-            { shouldShowActionIcons && (
+            {shouldShowActionIcons && (
                 <Flex gap={2} mr={2}>
-                    <Tooltip borderRadius='lg' placement='top' label={`Ban ${message.tags?.displayName}`}>
-                        <NotAllowedIcon onClick={() => onBanUser()} {...ICON_PROPS} />
+                    <Tooltip
+                        borderRadius='lg'
+                        placement='top'
+                        label={`Ban ${message.tags?.displayName}`}
+                    >
+                        <NotAllowedIcon
+                            onClick={() => onBanUser()}
+                            {...ICON_PROPS}
+                        />
                     </Tooltip>
-                    <Tooltip borderRadius='lg' placement='top' label={`Timeout ${message.tags?.displayName}`}>
-                        <TimeIcon {...ICON_PROPS} onClick={() => onBanUser(600)} />
+                    <Tooltip
+                        borderRadius='lg'
+                        placement='top'
+                        label={`Timeout ${message.tags?.displayName}`}
+                    >
+                        <TimeIcon
+                            {...ICON_PROPS}
+                            onClick={() => onBanUser(600)}
+                        />
                     </Tooltip>
-                    <Tooltip borderRadius='lg' placement='top' label='Delete message'>
+                    <Tooltip
+                        borderRadius='lg'
+                        placement='top'
+                        label='Delete message'
+                    >
                         <DeleteIcon {...ICON_PROPS} onClick={onDeleteMessage} />
                     </Tooltip>
                 </Flex>
             )}
-            { hasBadges && badgesURL.map((it) => (
-                <Flex key={it.url} gap={1}>
-                    <Tooltip borderRadius='lg' placement='top' label={it.name}>
-                        <Image src={it.url} />
-                    </Tooltip>
-                </Flex>
-            )) }
-            { message.tags?.displayName && (
+            {hasBadges &&
+                badgesURL.map((it) => (
+                    <Flex key={it.url} gap={1}>
+                        <Tooltip
+                            borderRadius='lg'
+                            placement='top'
+                            label={it.name}
+                        >
+                            <Image src={it.url} />
+                        </Tooltip>
+                    </Flex>
+                ))}
+            {message.tags?.displayName && (
                 <UserInfoName
                     onClickMod={onToggleUserMode}
                     onClickVip={onToggleUserVip}
@@ -105,9 +145,12 @@ export const UserMessageRenderer = ({ message, badgesURL = [] }: UserMessageRend
                     isMod={isMod}
                     isVip={isVip}
                     userName={message.tags.displayName}
-                    userColor={message.tags?.color ?? 'gray.300'} />
-            ) }
-            <Text color='white' mr={2}>:</Text>
+                    userColor={message.tags?.color ?? 'gray.300'}
+                />
+            )}
+            <Text color='white' mr={2}>
+                :
+            </Text>
             {currentMessage}
         </Flex>
     );

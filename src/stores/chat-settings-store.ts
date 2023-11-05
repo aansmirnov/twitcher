@@ -12,7 +12,7 @@ class ChatSettingsStore {
             loading: observable,
             chatSettings: observable,
             getChatSettings: action,
-            updateChatSettings: action
+            updateChatSettings: action,
         });
     }
 
@@ -27,14 +27,17 @@ class ChatSettingsStore {
                     this.chatSettings = chatSettings;
                 });
             })
-            .finally(() => this.loading = false);
+            .finally(() => (this.loading = false));
     };
 
-    updateChatSettings = (userID: string, body: UpdateChatSettingsIn['body']) => {
+    updateChatSettings = (
+        userID: string,
+        body: UpdateChatSettingsIn['body'],
+    ) => {
         apiHelix
             .updateChatSettings({
                 params: { broadcaster_id: userID, moderator_id: userID },
-                body
+                body,
             })
             .then(({ data }) => {
                 runInAction(() => {

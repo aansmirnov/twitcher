@@ -43,4 +43,4 @@ export type ChatSettings = {
      * A Boolean value that determines whether the broadcaster requires users to post only unique messages in the chat room.
      */
     unique_chat_mode: boolean;
-}
+};

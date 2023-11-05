@@ -11,7 +11,7 @@ type Image = {
      * A URL to the large version (112px x 112px) of the emote.
      */
     url_4x: string;
-}
+};
 
 export type Emote = {
     /**
@@ -61,4 +61,4 @@ export type Emote = {
         - light
      */
     theme_mode: string[];
-}
+};

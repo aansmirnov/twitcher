@@ -23,7 +23,7 @@ export type Versions = {
      * The description of the badge.
      */
     description: string;
-}
+};
 
 export type Badges = {
     /**
@@ -34,4 +34,4 @@ export type Badges = {
      * The list of chat badges in this set.
      */
     versions: Versions[];
-}
+};

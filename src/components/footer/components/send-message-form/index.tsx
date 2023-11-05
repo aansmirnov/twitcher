@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Button, Flex, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import {
+    Button,
+    Flex,
+    Input,
+    InputGroup,
+    InputRightElement,
+} from '@chakra-ui/react';
 import { useSendMessage } from './use-send-message';
 import { EmoteList } from './components';
 
@@ -46,7 +52,14 @@ export const SendMessageForm = () => {
                     <EmoteList onSelectEmote={onSelecteEmote} />
                 </InputRightElement>
             </InputGroup>
-            <Button isDisabled={isDisabled} size='sm' colorScheme='purple' onClick={handleSendMessage}>Chat</Button>
+            <Button
+                isDisabled={isDisabled}
+                size='sm'
+                colorScheme='purple'
+                onClick={handleSendMessage}
+            >
+                Chat
+            </Button>
         </Flex>
     );
 };

@@ -15,4 +15,4 @@ export type GetCategoriesIn = {
      * https://dev.twitch.tv/docs/api/guide/#pagination
      */
     after?: string;
-}
+};

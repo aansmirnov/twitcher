@@ -1,20 +1,26 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useChatEventsStoreContext, useTwitcherConfigStoreContext } from 'src/stores';
+import {
+    useChatEventsStoreContext,
+    useTwitcherConfigStoreContext,
+} from 'src/stores';
 import { parseTwitchIrcMessage } from 'src/utils';
 
 type UseSendMessageReturnType = {
     sendMessage: (message: string) => void;
-}
+};
 
 export const useSendMessage = (): UseSendMessageReturnType => {
-    const [isConnectionInitialized, setIsConnectionInitialized] = useState(false);
+    const [isConnectionInitialized, setIsConnectionInitialized] =
+        useState(false);
     const [websocket, setWebsockt] = useState<WebSocket>();
     const { createConnection, connectToChat } = useChatEventsStoreContext();
     const { currentUser } = useTwitcherConfigStoreContext();
 
     const listenMessages = useCallback((socket: WebSocket) => {
         socket.onmessage = (event) => {
-            const message = (event.data as string).split('\r\n').filter((it): it is string => it.length > 0);
+            const message = (event.data as string)
+                .split('\r\n')
+                .filter((it): it is string => it.length > 0);
             message.forEach((it) => {
                 const parsedMessage = parseTwitchIrcMessage(it);
 
@@ -49,9 +55,15 @@ export const useSendMessage = (): UseSendMessageReturnType => {
 
             listenMessages(socket);
         }
-    }, [connectToChat, createConnection, currentUser, isConnectionInitialized, listenMessages]);
+    }, [
+        connectToChat,
+        createConnection,
+        currentUser,
+        isConnectionInitialized,
+        listenMessages,
+    ]);
 
     return {
-        sendMessage
+        sendMessage,
     };
 };

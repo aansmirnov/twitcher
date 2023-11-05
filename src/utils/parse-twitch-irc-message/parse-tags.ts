@@ -2,18 +2,21 @@ import { Positions, Tags } from 'src/types';
 
 // Parses the tags component of the IRC message.
 export function parseTags(tags: string): Tags | null {
-    const tagsToIgnore: Record<string, null> = { // List of tags to ignore.
+    const tagsToIgnore: Record<string, null> = {
+        // List of tags to ignore.
         'client-nonce': null,
-        'flags': null
+        flags: null,
     };
-    const dictParsedTags: Tags = {};// Holds the parsed list of tags.
+    const dictParsedTags: Tags = {}; // Holds the parsed list of tags.
     const parsedTags = tags.split(';'); // The key is the tag's name (e.g., color).
 
     parsedTags.forEach((tag) => {
         const parsedTag = tag.split('='); // Tags are key/value pairs.
-        const tagValue = (parsedTag[1] === '') ? null : parsedTag[1];
+        const tagValue = parsedTag[1] === '' ? null : parsedTag[1];
 
-        switch (parsedTag[0]) { // Switch on tag name
+        switch (
+            parsedTag[0] // Switch on tag name
+        ) {
             case 'badges':
             case 'badge-info': {
                 const key = parsedTag[0] === 'badges' ? 'badges' : 'badgesInfo';
@@ -52,7 +55,7 @@ export function parseTags(tags: string): Tags | null {
                             const positionParts = position.split('-');
                             textPositions.push({
                                 startPosition: Number(positionParts[0]),
-                                endPosition: Number(positionParts[1])
+                                endPosition: Number(positionParts[1]),
                             });
                         });
 

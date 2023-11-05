@@ -5,7 +5,7 @@ import { TwitchIcon } from 'src/icons';
 
 type LoginWithTwitchProps = {
     getAccessToken: (authCode: string) => void;
-}
+};
 
 export const LoginWithTwitch = ({ getAccessToken }: LoginWithTwitchProps) => {
     const queryCode = useMemo(() => {
@@ -23,7 +23,6 @@ export const LoginWithTwitch = ({ getAccessToken }: LoginWithTwitchProps) => {
             getAccessToken(queryCode);
         }
     }, [getAccessToken, queryCode]);
-
 
     return (
         <Button colorScheme='purple' onClick={goToAuthPath}>

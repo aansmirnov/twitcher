@@ -11,15 +11,17 @@ type UseSearchCategoryReturnType = {
     state: CategoriesAsOption;
     hasCategories: boolean;
     categories: CategoriesAsOption[];
-}
+};
 
-export const useSearchCategory = (category: CategoriesAsOption): UseSearchCategoryReturnType => {
+export const useSearchCategory = (
+    category: CategoriesAsOption,
+): UseSearchCategoryReturnType => {
     const [state, setState] = useState(category);
     const [searchValue, setSearchValue] = useState('');
     const [categories, setCategories] = useState<Category[]>([]);
     const debouncedValue = useDebounce({
         value: searchValue,
-        delay: 500
+        delay: 500,
     });
 
     const handleChangeTitle = (value: string) => {
@@ -43,6 +45,10 @@ export const useSearchCategory = (category: CategoriesAsOption): UseSearchCatego
         handleChange,
         state,
         hasCategories: categories.length > 0,
-        categories: categories.map((it) => ({ value: it.id, label: it.name, image: it.box_art_url })),
+        categories: categories.map((it) => ({
+            value: it.id,
+            label: it.name,
+            image: it.box_art_url,
+        })),
     };
 };

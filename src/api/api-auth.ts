@@ -23,6 +23,6 @@ export const apiAuth = new ApiAuth(
         baseURL: TWITCH_TOKEN_URL,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-        }
-    })
+        },
+    }),
 );

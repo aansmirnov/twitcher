@@ -22,6 +22,6 @@ type BanUserResponse = {
      * Is null if the user was banned instead of being put in a timeout.
      */
     end_time: string | null;
-}
+};
 
 export type BanUserOut = Result<BanUserResponse[]>;

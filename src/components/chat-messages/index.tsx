@@ -13,11 +13,23 @@ export const ChatMessages = observer(() => {
     }
 
     return (
-        <Flex py={2} flexDirection='column-reverse' gap={2} overflowY='scroll' height='100%'>
-            { messages.map((it, index) => {
+        <Flex
+            py={2}
+            flexDirection='column-reverse'
+            gap={2}
+            overflowY='scroll'
+            height='100%'
+        >
+            {messages.map((it, index) => {
                 if (it.command?.command === 'NOTICE' && it.parameters) {
                     return (
-                        <Text px={4} color='gray.300' key={`${it.parameters}-${index}`}>{it.parameters}</Text>
+                        <Text
+                            px={4}
+                            color='gray.300'
+                            key={`${it.parameters}-${index}`}
+                        >
+                            {it.parameters}
+                        </Text>
                     );
                 }
 
@@ -36,9 +48,13 @@ export const ChatMessages = observer(() => {
                 });
 
                 return (
-                    <UserMessageRenderer key={`${it.parameters}-${index}`} message={it} badgesURL={badgesURL} />
+                    <UserMessageRenderer
+                        key={`${it.parameters}-${index}`}
+                        message={it}
+                        badgesURL={badgesURL}
+                    />
                 );
-            }) }
+            })}
         </Flex>
     );
 });

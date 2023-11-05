@@ -9,9 +9,13 @@ import { Flex, Tooltip } from '@chakra-ui/react';
 type ChannelActionsProps = {
     onHideHeader: VoidFunction;
     currentUserChannelInfo: ChannelInformation;
-} & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>
+} & Pick<UseChannelInformationReturnType, 'updateChannelInformation'>;
 
-export const ChannelActions = ({ onHideHeader, currentUserChannelInfo, updateChannelInformation }: ChannelActionsProps) => {
+export const ChannelActions = ({
+    onHideHeader,
+    currentUserChannelInfo,
+    updateChannelInformation,
+}: ChannelActionsProps) => {
     const [isEditPopupVisible, { show, hide }] = useVisibilityState();
 
     return (
@@ -20,14 +24,24 @@ export const ChannelActions = ({ onHideHeader, currentUserChannelInfo, updateCha
                 <ChannelViewers />
                 <Flex alignItems='center' gap={4}>
                     <Tooltip borderRadius='lg' placement='bottom' label='Edit'>
-                        <EditIcon cursor='pointer' _hover={{ color: 'gray.300' }} color='white' onClick={show} />
+                        <EditIcon
+                            cursor='pointer'
+                            _hover={{ color: 'gray.300' }}
+                            color='white'
+                            onClick={show}
+                        />
                     </Tooltip>
                     <Tooltip borderRadius='lg' placement='bottom' label='Hide'>
-                        <UpDownIcon cursor='pointer' _hover={{ color: 'gray.300' }} color='white' onClick={onHideHeader} />
+                        <UpDownIcon
+                            cursor='pointer'
+                            _hover={{ color: 'gray.300' }}
+                            color='white'
+                            onClick={onHideHeader}
+                        />
                     </Tooltip>
                 </Flex>
             </Flex>
-            { isEditPopupVisible && (
+            {isEditPopupVisible && (
                 <EditPopup
                     updateChannelInformation={updateChannelInformation}
                     isOpen={isEditPopupVisible}
