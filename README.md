@@ -27,7 +27,7 @@ $ pnpm run start:dev
 - React;
 - MobX;
 - Chakra UI;
-- Axios and Websockets;
+- Axios and Websockets.
 
 ### Features
 
@@ -41,7 +41,7 @@ $ pnpm run start:dev
 - Ban user;
 - Timeout user;
 - Delete user message;
-- Clear chat;
+- Clear chat.
 
 ### Future plans
 
@@ -49,4 +49,4 @@ $ pnpm run start:dev
 - Notification when user follow / subscribe to a channel;
 - Display a channel moderators and vips;
 - Unban users;
-- Build for Windows / MacOS / Linux;
+- Build for Windows / MacOS / Linux.
