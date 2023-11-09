@@ -8,6 +8,7 @@ import {
 import { EditCategoryPopup, EditTitlePopup } from './components';
 import { Avatar, Flex, Tag, Text } from '@chakra-ui/react';
 import { VerifiedPartnerIcon } from 'src/icons';
+import { useStreamStoreContext } from 'src/stores';
 
 type UserInfoViewProps = {
     currentUser: User;
@@ -21,6 +22,7 @@ export const UserInfoView = ({
 }: UserInfoViewProps) => {
     const { profile_image_url, display_name, broadcaster_type } = currentUser;
     const { tags, title, game_name, game_id } = currentUserChannelInfo;
+    const { isOwnStreamLive } = useStreamStoreContext();
     const hasTags = tags.length > 0;
 
     const [
@@ -42,13 +44,12 @@ export const UserInfoView = ({
     return (
         <Fragment>
             <Flex gap={3}>
-                {/** TODO: When stream goes live, change ring color to accent. */}
                 <Avatar
                     name={display_name}
                     src={profile_image_url}
                     size='xl'
                     borderWidth='3px'
-                    borderColor='gray.400'
+                    borderColor={`${isOwnStreamLive ? 'blue.400' : 'gray.400'}`}
                 />
                 <Flex direction='column'>
                     <Flex gap={1} mb={2}>
