@@ -134,7 +134,7 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         );
     }
 
-    getStreams(params: GetStreamIn) {
+    getStreams(params: GetStreamIn): Promise<GetStreamsOut> {
         return this.provider.get('/streams', { params });
     }
 }
