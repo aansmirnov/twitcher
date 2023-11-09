@@ -41,11 +41,11 @@ $ pnpm run start:dev
 - Ban user;
 - Timeout user;
 - Delete user message;
+- Display viewers count;
 - Clear chat.
 
 ### Future plans
 
-- Show real count of viewers;
 - Notification when user follow / subscribe to a channel;
 - Display a channel moderators and vips;
 - Unban users;
