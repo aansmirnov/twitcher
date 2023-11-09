@@ -20,6 +20,8 @@ import {
     ManageUserChatIn,
     BanUserIn,
     BanUserOut,
+    GetSteamIn,
+    GetStreamsOut,
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -46,6 +48,7 @@ interface IApiHelix {
     addChannelVip(params: ManageUserChatIn): Promise<void>;
     removeChannelVip(params: ManageUserChatIn): Promise<void>;
     banUser(body: BanUserIn): Promise<BanUserOut>;
+    getStream(params: GetSteamIn): Promise<GetStreamsOut>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -129,6 +132,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
             { data: body.data },
             { params: body.params },
         );
+    }
+
+    getStream(params: GetSteamIn) {
+        return this.provider.get('/strema', { params });
     }
 }
 
