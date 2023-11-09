@@ -20,7 +20,7 @@ import {
     ManageUserChatIn,
     BanUserIn,
     BanUserOut,
-    GetSteamIn,
+    GetStreamIn,
     GetStreamsOut,
 } from 'src/types';
 import { ApiRequest } from './api-request';
@@ -48,7 +48,7 @@ interface IApiHelix {
     addChannelVip(params: ManageUserChatIn): Promise<void>;
     removeChannelVip(params: ManageUserChatIn): Promise<void>;
     banUser(body: BanUserIn): Promise<BanUserOut>;
-    getStream(params: GetSteamIn): Promise<GetStreamsOut>;
+    getStreams(params: GetStreamIn): Promise<GetStreamsOut>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -134,8 +134,8 @@ class ApiHelix extends ApiRequest implements IApiHelix {
         );
     }
 
-    getStream(params: GetSteamIn) {
-        return this.provider.get('/strema', { params });
+    getStreams(params: GetStreamIn) {
+        return this.provider.get('/streams', { params });
     }
 }
 

@@ -1,6 +1,6 @@
 import { StreamType } from './stream-type';
 
-export type GetSteamIn = {
+export type GetStreamIn = {
     /**
      * A user ID used to filter the list of streams.
      */
