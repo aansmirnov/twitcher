@@ -44,9 +44,9 @@ $ pnpm run start:dev
 - Display viewers count;
 - Clear chat.
 
-### Future plans
+### Future Plans
 
-- Notification when user follow / subscribe to a channel;
-- Display a channel moderators and vips;
+- Fix 401 error when refreshed token;
 - Unban users;
+- Notification when user follow, subscribe to a channel and etc;
 - Build for Windows / MacOS / Linux.
