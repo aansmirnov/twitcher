@@ -42,7 +42,9 @@ class StreamStore {
                 });
             })
             .finally(() => {
-                this.isSendRequest = true;
+                runInAction(() => {
+                    this.isSendRequest = true;
+                });
             });
     };
 }
