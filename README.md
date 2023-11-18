@@ -15,7 +15,7 @@
 
 ```console
 $ git clone https://github.com/aansmirnov/twitcher.git && cd twitcher
-$ create .env file
+$ touch .env
 $ pnpm i 
 $ pnpm run start:dev
 ```
