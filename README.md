@@ -31,22 +31,22 @@ $ pnpm run start:dev
 
 ### Features
 
-📝 Update Stream Title & Category<br />
-🔧 Adjust Chat Settings (Emote Mode, Slow Mode, etc.)<br />
-📖 Read Chat<br />
-✉️ Send Messages to Chat<br />
-🛡️ Support Channel and Global Badges and Emotes<br />
-➕ Add and Remove User Mods<br />
-✨ Add and Remove User VIPs<br />
-🚫 Ban Users<br />
-⏱️ Timeout Users<br />
-🗑️ Delete User Messages<br />
-👥 Display Viewer Count<br />
-🧹 Clear Chat
+- Update Stream Title & Category
+- Adjust Chat Settings (Emote Mode, Slow Mode, etc.)
+- Read Chat
+- Send Messages to Chat
+- Support Channel and Global Badges and Emotes
+- Add and Remove User Mods
+- Add and Remove User VIPs
+- Ban Users
+- Timeout Users
+- Delete User Messages
+- Display Viewer Count
+- Clear Chat
 
 ### Future Plans
 
-🔨 Fix 401 Error When Refreshing Token<br />
-🚫 Unban Users<br />
-🔔 Notifications for User Follows, Channel Subscriptions, etc.<br />
-🖥️ Build for Windows / MacOS / Linux
+- Fix 401 Error When Refreshing Token
+- Unban Users
+- Notifications for User Follows, Channel Subscriptions, etc.
+- Build for Windows / MacOS / Linux- 
