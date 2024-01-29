@@ -8,22 +8,22 @@ import {
 } from 'src/components';
 import { Flex, Spinner } from '@chakra-ui/react';
 import { useTwitcherConfigStoreContext } from 'src/stores';
-import { useChannelInformation, useChatEvents } from 'src/hooks';
+import { useChannelInformation, useChatEvents, useCurrentUser } from 'src/hooks';
 
 export const TwitcherView = observer(() => {
     const {
         loading: configLoading,
         config,
         getAccessToken,
-        currentUser,
     } = useTwitcherConfigStoreContext();
+    const { currentUser, currentUserLoading } = useCurrentUser();
     const {
         loading: channelInfoLoading,
         channelInformation,
         updateChannelInformation,
     } = useChannelInformation();
     const { loading: chatEventsLoading } = useChatEvents();
-    const isLoading = configLoading || channelInfoLoading || chatEventsLoading;
+    const isLoading = configLoading || currentUserLoading || channelInfoLoading || chatEventsLoading;
 
     if (isLoading) {
         return (

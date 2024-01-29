@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import {
     useChatEventsStoreContext,
-    useTwitcherConfigStoreContext,
+    useCurrentUserStoreContext,
 } from 'src/stores';
 
 type UseChatEventsReturnType = {
@@ -10,7 +10,7 @@ type UseChatEventsReturnType = {
 };
 
 export const useChatEvents = (): UseChatEventsReturnType => {
-    const { currentUser } = useTwitcherConfigStoreContext();
+    const { currentUser } = useCurrentUserStoreContext();
     const { createConnection, isInitialized, loading } =
         useChatEventsStoreContext();
 

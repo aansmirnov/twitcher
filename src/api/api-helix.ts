@@ -25,6 +25,7 @@ import {
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
+import { getItemFromLocalStorage } from 'src/utils';
 
 interface IApiHelix {
     getUsers(params?: GetUsersIn): Promise<GetUsersOut>;
@@ -143,7 +144,7 @@ export const apiHelix = new ApiHelix(
     axios.create({
         baseURL: TWITCH_HELIX_URL,
         headers: {
-            Authorization: `Bearer ${localStorage.getItem(
+            Authorization: `Bearer ${getItemFromLocalStorage<string>(
                 TWITCHER_ACCESS_TOKEN,
             )}`,
             'Client-Id': CLIENT_ID,

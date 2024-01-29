@@ -1,23 +1,22 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createContext, useContext } from 'react';
-import { apiAuth, apiHelix } from 'src/api';
+import { apiAuth } from 'src/api';
 import {
     CLIENT_ID,
     CLIENT_SECRET,
     TWITCHER_ACCESS_TOKEN,
     TWITCHER_CONFIG,
 } from 'src/consts';
-import { Config, User } from 'src/types';
+import { Config } from 'src/types';
+import { getItemFromLocalStorage, setItemToLocalStorage } from 'src/utils';
 
 class TwitcherConfigStore {
     config: Config | undefined = undefined;
-    currentUser: User | undefined = undefined;
     loading = false;
 
     constructor() {
         makeObservable(this, {
             config: observable,
-            currentUser: observable,
             loading: observable,
             getAccessToken: action,
         });
@@ -25,24 +24,6 @@ class TwitcherConfigStore {
         this.loading = true;
         this.getConfigFromLocalStorage();
     }
-
-    getCurrentUser = (cb?: VoidFunction) => {
-        apiHelix
-            .getUsers()
-            .then(({ data }) => {
-                runInAction(() => {
-                    const [user] = data;
-                    this.currentUser = user;
-                });
-
-                cb?.();
-            })
-            .finally(() => {
-                runInAction(() => {
-                    this.loading = false;
-                });
-            });
-    };
 
     updateConfigState = (config: Config) => {
         const newConfig = {
@@ -53,8 +34,8 @@ class TwitcherConfigStore {
             this.config = newConfig;
         });
 
-        localStorage.setItem(TWITCHER_CONFIG, JSON.stringify(newConfig));
-        localStorage.setItem(TWITCHER_ACCESS_TOKEN, newConfig.access_token);
+        setItemToLocalStorage(TWITCHER_CONFIG, newConfig);
+        setItemToLocalStorage(TWITCHER_ACCESS_TOKEN, newConfig.access_token);
     };
 
     getAccessToken = (authCode: string) => {
@@ -69,8 +50,11 @@ class TwitcherConfigStore {
             })
             .then((config) => {
                 this.updateConfigState(config);
-                this.getCurrentUser();
                 window.location.href = 'http://localhost:3000';
+
+                runInAction(() => {
+                    this.loading = false;
+                });
             });
     };
 
@@ -82,32 +66,28 @@ class TwitcherConfigStore {
                 grant_type: 'refresh_token',
                 refresh_token: token,
             })
-            .then(this.updateConfigState)
-            .then(() => {
-                // It's a hack.
-                // @ToDo: fix this.
-                setTimeout(() => {
-                    this.getCurrentUser();
-                }, 1000);
+            .then((config) => {
+                this.updateConfigState(config);
+
+                runInAction(() => {
+                    this.loading = false;
+                });
             });
     };
 
     getConfigFromLocalStorage = () => {
-        const config = localStorage.getItem(TWITCHER_CONFIG);
+        const config = getItemFromLocalStorage<Config>(TWITCHER_CONFIG);
 
         if (config) {
-            const parsedConfig = JSON.parse(config) as Config;
-
-            if (Date.now() > parsedConfig.expired_at) {
-                this.refreshToken(parsedConfig.refresh_token);
+            if (Date.now() > config.expired_at) {
+                this.refreshToken(config.refresh_token);
                 return;
             }
 
             runInAction(() => {
-                this.config = parsedConfig;
+                this.config = config;
+                this.loading = false;
             });
-
-            this.getCurrentUser();
         } else {
             runInAction(() => {
                 this.loading = false;

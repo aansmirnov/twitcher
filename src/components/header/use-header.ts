@@ -1,13 +1,10 @@
 import { useCallback, useEffect } from 'react';
-import {
-    useStreamStoreContext,
-    useTwitcherConfigStoreContext,
-} from 'src/stores';
+import { useStreamStoreContext, useCurrentUserStoreContext } from 'src/stores';
 
 const ONE_MINUTE = 60000;
 
 export const useHeader = () => {
-    const { currentUser } = useTwitcherConfigStoreContext();
+    const { currentUser } = useCurrentUserStoreContext();
     const { getStream, isSendRequest } = useStreamStoreContext();
     const sendRequest = useCallback(
         (userID: string) => {

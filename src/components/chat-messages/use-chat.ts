@@ -1,9 +1,5 @@
 import { useEffect } from 'react';
-import {
-    useChatEventsStoreContext,
-    useChatStoreContext,
-    useTwitcherConfigStoreContext,
-} from 'src/stores';
+import { useChatEventsStoreContext, useChatStoreContext, useCurrentUserStoreContext } from 'src/stores';
 import { BadgesMapBySetID, BanUserRequestBody, EmotesMapById } from 'src/types';
 
 type UseChatReturnType = {
@@ -16,7 +12,7 @@ type UseChatReturnType = {
 };
 
 export const useChat = (): UseChatReturnType => {
-    const { currentUser } = useTwitcherConfigStoreContext();
+    const { currentUser } = useCurrentUserStoreContext();
     const { getBadges, badgesMapBySetID, getEmotes, emotesMapByName } =
         useChatStoreContext();
     const {

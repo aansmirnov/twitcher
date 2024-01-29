@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { ChannelInformation, UpdateChannelInformationIn } from 'src/types';
 import {
-    useTwitcherConfigStoreContext,
     useChannelInforamtionStoreContext,
+    useCurrentUserStoreContext,
 } from 'src/stores';
 
 export type UseChannelInformationReturnType = {
@@ -15,7 +15,7 @@ export type UseChannelInformationReturnType = {
 };
 
 export const useChannelInformation = (): UseChannelInformationReturnType => {
-    const { currentUser } = useTwitcherConfigStoreContext();
+    const { currentUser } = useCurrentUserStoreContext();
     const {
         getChannelInformation,
         loading,

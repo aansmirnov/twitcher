@@ -3,6 +3,7 @@ import { createContext, useContext } from 'react';
 import { apiHelix } from 'src/api';
 import { TWITCHER_BADGES, TWITCHER_EMOTES } from 'src/consts';
 import { Badges, BadgesMapBySetID, Emote, EmotesMapById } from 'src/types';
+import { getItemFromLocalStorage, setItemToLocalStorage } from 'src/utils';
 
 const THREE_DAYS = 259200000;
 type LocalStorageData<T> = {
@@ -36,24 +37,23 @@ class ChatStore {
             data,
             expired_at: Date.now() + THREE_DAYS,
         };
-        localStorage.setItem(key, JSON.stringify(object));
+
+        setItemToLocalStorage(key, object);
     };
 
     private getChatDataFromLocalStorage = <T>(key: string) => {
-        const dataFromLocalStorage = localStorage.getItem(key);
+        const dataFromLocalStorage =
+            getItemFromLocalStorage<LocalStorageData<T>>(key);
 
         if (!dataFromLocalStorage) {
             return null;
         }
 
-        const parsedData = JSON.parse(
-            dataFromLocalStorage,
-        ) as LocalStorageData<T>;
-        if (Date.now() > parsedData.expired_at) {
+        if (Date.now() > dataFromLocalStorage.expired_at) {
             return null;
         }
 
-        return parsedData.data;
+        return dataFromLocalStorage.data;
     };
 
     getBadges = (userID: string) => {

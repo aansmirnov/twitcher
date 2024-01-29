@@ -1,10 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback, useEffect } from 'react';
 import { apiHelix } from 'src/api';
-import {
-    useChatSettingsStoreContext,
-    useTwitcherConfigStoreContext,
-} from 'src/stores';
+import { useChatSettingsStoreContext, useCurrentUserStoreContext } from 'src/stores';
 import { ChatSettings, UpdateChatSettingsIn } from 'src/types';
 
 type UseChatActionsReturnType = {
@@ -16,7 +13,7 @@ type UseChatActionsReturnType = {
 
 export const useChatActions = (): UseChatActionsReturnType => {
     const toast = useToast();
-    const { currentUser } = useTwitcherConfigStoreContext();
+    const { currentUser } = useCurrentUserStoreContext();
     const { chatSettings, getChatSettings, updateChatSettings } =
         useChatSettingsStoreContext();
 

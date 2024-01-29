@@ -1,9 +1,9 @@
 import { Flex, Image, Text, Tooltip } from '@chakra-ui/react';
 import { TwitchIrcMessage } from 'src/types';
 import { useChat } from 'src/components/chat-messages/use-chat';
-import { useTwitcherConfigStoreContext } from 'src/stores';
 import { DeleteIcon, NotAllowedIcon, TimeIcon } from '@chakra-ui/icons';
 import { UserInfoName } from './user-info-name';
+import { useCurrentUserStoreContext } from 'src/stores';
 
 type UserMessageRendererProps = {
     message: TwitchIrcMessage;
@@ -27,7 +27,7 @@ export const UserMessageRenderer = ({
         toggleUserMode,
         toggleUserVip,
     } = useChat();
-    const { currentUser } = useTwitcherConfigStoreContext();
+    const { currentUser } = useCurrentUserStoreContext();
     const hasBadges = badgesURL.length > 0;
     const isCurrentUserMessage = currentUser?.id === message.tags?.userID;
     const shouldShowActionIcons =
