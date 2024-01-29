@@ -46,7 +46,6 @@ $ pnpm run start:dev
 
 ### Future Plans
 
-- Fix 401 Error When Refreshing Token;
 - Unban Users;
 - Notifications for User Follows, Channel Subscriptions, etc;
 - Build for Windows / MacOS / Linux.
