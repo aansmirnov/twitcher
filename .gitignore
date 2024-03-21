@@ -88,3 +88,5 @@ out/
 
 # Build folder
 build/
+
+dist/

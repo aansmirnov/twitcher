@@ -1,4 +1,5 @@
 /electron
 /public
 /build
+/dist
 forge.config.js
