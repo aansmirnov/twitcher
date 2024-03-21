@@ -2,4 +2,5 @@
 /public
 /build
 /dist
+server.js
 forge.config.js

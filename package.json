@@ -10,7 +10,7 @@
         "build:app": "electron-builder",
         "publish": "electron-forge publish",
         "electron": "electron .",
-        "start:dev": "concurrently \"BROWSER=none pnpm start\" \"wait-on http://localhost:3000 && pnpm electron\"",
+        "start:dev": "export NODE_ENV=development && concurrently \"BROWSER=none pnpm start\" \"wait-on tcp:127.0.0.1:3000 && pnpm electron\"",
         "format": "prettier --write .",
         "eslint": "eslint .",
         "eslint:fix": "eslint --fix"
@@ -30,6 +30,7 @@
         "electron-squirrel-startup": "^1.0.0",
         "mobx": "^6.10.2",
         "mobx-react": "^9.0.1",
+        "node-static": "^0.7.11",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-scripts": "^5.0.1",
@@ -72,7 +73,7 @@
         "appId": "twitcher",
         "files": [
             "./build/**/*",
-            "./electron/index.js"
+            "./electron/*.js"
         ],
         "extends": null
     }

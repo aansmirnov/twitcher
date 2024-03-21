@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const { fork } = require('child_process')
 const path = require('path');
 require('dotenv').config();
 
@@ -21,6 +22,7 @@ const createWindow = () => {
       mainWindow.loadURL('http://localhost:3000/index.html');
    } else {
       mainWindow.loadURL(`file://${path.resolve(__dirname, '../build/', 'index.html')}`);
+      fork('server.js')
    }
 
    // @ToDo: Add only for development mode.
