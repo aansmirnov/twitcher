@@ -1,5 +1,6 @@
 /electron
 /public
+/build
 forge.config.js
 pnpm-lock.yaml
 README.md
