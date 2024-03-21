@@ -8,7 +8,8 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "publish": "electron-forge publish",
-        "start:dev": "concurrently \"BROWSER=none pnpm start\" \"wait-on http://localhost:3000 && electron .\"",
+        "electron": "electron .",
+        "start:dev": "concurrently \"BROWSER=none pnpm start\" \"wait-on http://localhost:3000 && pnpm electron\"",
         "format": "prettier --write .",
         "eslint": "eslint .",
         "eslint:fix": "eslint --fix"
