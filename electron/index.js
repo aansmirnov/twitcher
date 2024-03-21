@@ -17,14 +17,14 @@ const createWindow = () => {
       },
    });
 
-   if (app.isPackaged) {
-      // 'build/index.html'
-      mainWindow.loadURL(`${__dirname}/../public/index.html`);
-   } else {
+   if (process.env.NODE_ENV === 'development') {
       mainWindow.loadURL('http://localhost:3000/index.html');
-      // Open the DevTools.
-      mainWindow.webContents.openDevTools();
+   } else {
+      mainWindow.loadURL(`file://${path.resolve(__dirname, '../build/', 'index.html')}`);
    }
+
+   // @ToDo: Add only for development mode.
+   mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
