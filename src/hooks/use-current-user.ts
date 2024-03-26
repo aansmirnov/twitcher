@@ -15,11 +15,11 @@ type UseCurrentUserReturnType = {
 export const useCurrentUser = (): UseCurrentUserReturnType => {
     const { currentUser, currentUserLoading, getCurrentUser } =
         useCurrentUserStoreContext();
-    const { config } = useTwitcherConfigStoreContext();
+    const { config, loading } = useTwitcherConfigStoreContext();
     const accessToken = getItemFromLocalStorage<string>(TWITCHER_ACCESS_TOKEN);
 
     useEffect(() => {
-        if (!config || currentUser) {
+        if (!config || currentUser || loading) {
             return;
         }
 
@@ -28,7 +28,7 @@ export const useCurrentUser = (): UseCurrentUserReturnType => {
         }
 
         getCurrentUser();
-    }, [accessToken, config, currentUser, getCurrentUser]);
+    }, [accessToken, config, currentUser, getCurrentUser, loading]);
 
     return {
         currentUserLoading,
