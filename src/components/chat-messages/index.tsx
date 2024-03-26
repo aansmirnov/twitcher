@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { useChatEventsStoreContext } from 'src/stores';
 import { useChat } from './use-chat';
 import { UserMessageRenderer } from './components';
+import styles from './styles.module.css';
 
 export const ChatMessages = observer(() => {
     const { messages } = useChatEventsStoreContext();
@@ -14,6 +15,7 @@ export const ChatMessages = observer(() => {
 
     return (
         <Flex
+            className={styles.scroll}
             py={2}
             flexDirection='column-reverse'
             gap={2}
