@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "description": "Twitch Client",
     "main": "electron/index.js",
+    "homepage": "./",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
