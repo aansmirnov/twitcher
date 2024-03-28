@@ -2,5 +2,8 @@
 /public
 /build
 /dist
+/dist-electron
 server.js
 forge.config.js
+vite.config.ts
+index.html

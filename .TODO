@@ -1,0 +1,7 @@
+[] - fix CORS for prebuild & build
+[] - hot reload for development
+[] - do I need node-static?
+[] - do I need dotenv?
+[] - github workflow
+[] - vitest for tests ?
+[] - README

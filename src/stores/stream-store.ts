@@ -10,7 +10,7 @@ import { apiHelix } from 'src/api';
 import { Stream } from 'src/types';
 
 class StreamStore {
-    ownStream: Stream | undefined;
+    ownStream: Stream | undefined = undefined;
     isSendRequest = false;
 
     constructor() {

@@ -5,7 +5,7 @@ import { ChatSettings, UpdateChatSettingsIn } from 'src/types';
 
 class ChatSettingsStore {
     loading = false;
-    chatSettings: ChatSettings | undefined;
+    chatSettings: ChatSettings | undefined = undefined;
 
     constructor() {
         makeObservable(this, {

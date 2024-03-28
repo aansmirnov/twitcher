@@ -5,7 +5,7 @@ import { ChannelInformation, UpdateChannelInformationIn } from 'src/types';
 
 class ChannelInformationStore {
     loading = false;
-    channelInformation: ChannelInformation | undefined;
+    channelInformation: ChannelInformation | undefined = undefined;
 
     constructor() {
         makeObservable(this, {

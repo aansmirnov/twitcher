@@ -1,17 +1,13 @@
 {
     "name": "twitcher",
-    "productName": "twitcher",
+    "productName": "Twitcher",
     "version": "1.0.0",
     "description": "Twitch Client",
-    "main": "electron/index.js",
-    "homepage": "./",
+    "main": "dist-electron/index.js",
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "build:app": "electron-builder",
-        "publish": "electron-forge publish",
-        "electron": "electron .",
-        "start:dev": "export NODE_ENV=development && concurrently \"BROWSER=none pnpm start\" \"wait-on tcp:127.0.0.1:3000 && pnpm electron\"",
+        "dev": "vite",
+        "prebuild": "vite build",
+        "build": "electron-builder",
         "format": "prettier --write .",
         "eslint": "eslint .",
         "eslint:fix": "eslint --fix"
@@ -34,7 +30,6 @@
         "node-static": "^0.7.11",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-scripts": "^5.0.1",
         "typescript": "*"
     },
     "devDependencies": {
@@ -48,6 +43,7 @@
         "@types/react-dom": "^18.2.6",
         "@typescript-eslint/eslint-plugin": "^5.50.0",
         "@typescript-eslint/parser": "^6.0.0",
+        "@vitejs/plugin-react": "^4.2.1",
         "concurrently": "^8.2.0",
         "cross-env": "^7.0.3",
         "electron": "25.2.0",
@@ -56,6 +52,8 @@
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0",
         "prettier": "^3.0.3",
+        "vite": "^5.2.6",
+        "vite-plugin-electron": "^0.28.4",
         "wait-on": "^7.0.1"
     },
     "browserslist": {
@@ -73,8 +71,7 @@
     "build": {
         "appId": "twitcher",
         "files": [
-            "./build/**/*",
-            "./electron/*.js"
+            "./dist-electron/*.js"
         ],
         "extends": null
     }
