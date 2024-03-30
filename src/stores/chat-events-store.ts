@@ -58,7 +58,9 @@ class ChatEventsStore {
     connectToChat = (websocket: WebSocket) => {
         websocket.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
         websocket.send(
-            `PASS oauth:${getItemFromLocalStorage<string>(TWITCHER_ACCESS_TOKEN)}`,
+            `PASS oauth:${getItemFromLocalStorage<string>(
+                TWITCHER_ACCESS_TOKEN,
+            )}`,
         );
         websocket.send(`NICK ${this.userLogin}`);
         websocket.send(`JOIN #${this.userLogin}`);

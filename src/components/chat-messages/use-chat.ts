@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
-import { useChatEventsStoreContext, useChatStoreContext, useCurrentUserStoreContext } from 'src/stores';
+import {
+    useChatEventsStoreContext,
+    useChatStoreContext,
+    useCurrentUserStoreContext,
+} from 'src/stores';
 import { BadgesMapBySetID, BanUserRequestBody, EmotesMapById } from 'src/types';
 
 type UseChatReturnType = {
