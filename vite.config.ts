@@ -24,19 +24,3 @@ export default {
         port: 3000,
     },
 };
-
-/**
- *     react({
-      include: "** /*.tsx"
- */
-
-/**
- * export default defineConfig({
-  plugins: [react()],
-  server: {
-    watch: {
-      usePolling: true
-    }
-  }
-})
- */
