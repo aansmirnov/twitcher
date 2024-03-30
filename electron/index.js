@@ -14,9 +14,9 @@ const createWindow = () => {
    });
 
    if (appURL) {
-      mainWindow.loadURL(appURL)
+      mainWindow.loadURL(appURL);
    } else {
-      mainWindow.loadFile(path.join(__dirname, '../index.html'),)
+      mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
    }
 
    // @ToDo: Add only for development mode.

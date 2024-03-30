@@ -69,7 +69,8 @@
     "build": {
         "appId": "twitcher",
         "files": [
-            "./dist-electron/*.js"
+            "dist-electron",
+            "dist"
         ],
         "extends": null
     }
