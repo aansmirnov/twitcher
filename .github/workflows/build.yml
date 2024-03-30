@@ -7,10 +7,7 @@ jobs:
   build-lint:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out Git repository
     - uses: actions/checkout@v4
-
-    - name: Install node
     - uses: actions/setup-node@v4
 
     - name: Install dependencies
