@@ -4,7 +4,7 @@ import { apiHelix } from 'src/api';
 import { User } from 'src/types';
 
 class CurrentUserStore {
-    currentUser: User | undefined;
+    currentUser: User | undefined = undefined;
     currentUserLoading = false;
 
     constructor() {

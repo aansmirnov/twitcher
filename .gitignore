@@ -90,3 +90,4 @@ out/
 build/
 
 dist/
+dist-electron/

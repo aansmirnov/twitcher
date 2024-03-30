@@ -2,7 +2,9 @@
 /public
 /build
 /dist
+/dist-electron
 server.js
 forge.config.js
 pnpm-lock.yaml
 README.md
+index.html

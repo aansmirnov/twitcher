@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v4
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        run_install: false
+
+    - name: Install dependencies
+      run: pnpm i
+
+    - name: Run build
+      run: pnpm prebuild
+
+    - name: Run eslint
+      run: pnpm eslint

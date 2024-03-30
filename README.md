@@ -14,20 +14,23 @@
 ### Getting Started
 
 ```console
-$ git clone https://github.com/aansmirnov/twitcher.git && cd twitcher
-$ touch .env
+$ git clone https://github.com/aansmirnov/twitcher.git
+$ cd twitcher
+$ add .env entries
 $ pnpm i 
-$ pnpm run start:dev
+$ pnpm dev
 ```
 
-### Stack
+### Tech Stack
 
+- Vite;
 - Electron;
 - TypeScript;
 - React;
 - MobX;
 - Chakra UI;
-- Axios and Websockets.
+- Axios;
+- Websockets.
 
 ### Features
 
