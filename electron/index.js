@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const express = require('express');
 
 let mainWindow;
 const appURL = process.env.VITE_DEV_SERVER_URL;
@@ -16,7 +17,12 @@ const createWindow = () => {
    if (appURL) {
       mainWindow.loadURL(appURL);
    } else {
-      mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+      const expressApp = express();
+      expressApp.use(express.static(path.join(__dirname, '../dist/main')));
+
+      expressApp.listen(3000, () => {
+         mainWindow.loadFile(path.join(__dirname, '../dist/main/index.html'));
+      });
    }
 
    // @ToDo: Add only for development mode.

@@ -19,6 +19,9 @@ export default {
             },
         }),
     ],
+    build: {
+        outDir: 'dist/main'
+    },
     server: {
         host: 'localhost',
         port: 3000,
