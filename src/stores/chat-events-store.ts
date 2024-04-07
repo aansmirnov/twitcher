@@ -10,6 +10,9 @@ import {
 } from 'src/types';
 import { getItemFromLocalStorage, parseTwitchIrcMessage } from 'src/utils';
 
+const MAX_SIZE_MESSAGES_ARRAY = 100;
+const NUMBER_OF_ELEMENTS_TO_REMOVE = 20;
+
 class ChatEventsStore {
     isInitialized = false;
     loading = false;
@@ -82,7 +85,20 @@ class ChatEventsStore {
                     case 'NOTICE':
                     case 'PRIVMSG': {
                         runInAction(() => {
-                            this.messages.unshift(parsedMessage);
+                            if (
+                                this.messages.length === MAX_SIZE_MESSAGES_ARRAY
+                            ) {
+                                const slicedMessages = this.messages.slice(
+                                    0,
+                                    this.messages.length -
+                                        NUMBER_OF_ELEMENTS_TO_REMOVE,
+                                );
+                                this.messages = [parsedMessage].concat(
+                                    slicedMessages,
+                                );
+                            } else {
+                                this.messages.unshift(parsedMessage);
+                            }
                         });
                         break;
                     }
