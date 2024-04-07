@@ -23,11 +23,9 @@ export const useCurrentUser = (): UseCurrentUserReturnType => {
             return;
         }
 
-        if (config.access_token !== accessToken) {
-            return;
+        if (config.access_token === accessToken) {
+            getCurrentUser();
         }
-
-        getCurrentUser();
     }, [accessToken, config, currentUser, getCurrentUser, loading]);
 
     return {
