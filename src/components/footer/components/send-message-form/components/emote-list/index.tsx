@@ -21,7 +21,7 @@ export const EmoteList = ({ onSelectEmote }: EmoteListProps) => {
         <div className={styles.wrapper}>
             <Popover isLazy placement='top-start'>
                 <PopoverTrigger>
-                    <EmoteIcon pb={2} w={6} h={6} />
+                    <EmoteIcon pb='1.5' fontSize='28px' cursor='pointer' />
                 </PopoverTrigger>
                 <PopoverContent>
                     <Flex p={2} gap={4} wrap='wrap'>

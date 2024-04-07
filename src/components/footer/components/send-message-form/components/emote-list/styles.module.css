@@ -1,4 +1,4 @@
-.wrapper div {
+.wrapper > div {
     margin-bottom: 10px !important;
     border-radius: 10px;
     height: 400px;
