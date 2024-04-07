@@ -12,19 +12,15 @@ export const ChangeCategory = ({
     handleSelectCategory,
     currentCategory,
 }: ChangeCategoryProps) => {
-    const {
-        state,
-        handleChangeTitle,
-        categories,
-        hasCategories,
-        handleChange,
-    } = useSearchCategory(currentCategory);
+    const { state, handleChangeTitle, categories, loading, handleChange } =
+        useSearchCategory(currentCategory);
 
     return (
         <Select
             variant='filled'
             focusBorderColor='purple.500'
             value={state}
+            isLoading={loading}
             onInputChange={handleChangeTitle}
             onChange={(e): void => {
                 // '0' for delete category
@@ -39,7 +35,7 @@ export const ChangeCategory = ({
                 );
             }}
             noOptionsMessage={() =>
-                hasCategories ? 'Searching...' : 'No results found'
+                !loading && !categories.length && 'No results found'
             }
             options={categories}
             formatOptionLabel={(option) => (

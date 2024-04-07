@@ -9,7 +9,7 @@ type UseSearchCategoryReturnType = {
     handleChangeTitle: (value: string) => void;
     handleChange: (value: CategoriesAsOption) => void;
     state: CategoriesAsOption;
-    hasCategories: boolean;
+    loading: boolean;
     categories: CategoriesAsOption[];
 };
 
@@ -19,6 +19,7 @@ export const useSearchCategory = (
     const [state, setState] = useState(category);
     const [searchValue, setSearchValue] = useState('');
     const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState(false);
     const debouncedValue = useDebounce({
         value: searchValue,
         delay: 500,
@@ -35,16 +36,19 @@ export const useSearchCategory = (
             return;
         }
 
+        setLoading(true);
+
         apiHelix
             .getCategories({ query: debouncedValue })
-            .then(({ data }) => setCategories(data));
+            .then(({ data }) => setCategories(data))
+            .finally(() => setLoading(false));
     }, [debouncedValue]);
 
     return {
         handleChangeTitle,
         handleChange,
         state,
-        hasCategories: categories.length > 0,
+        loading,
         categories: categories.map((it) => ({
             value: it.id,
             label: it.name,
