@@ -11,7 +11,6 @@ type UserMessageRendererProps = {
 };
 
 const ICON_PROPS = {
-    fontSize: 'xs',
     color: 'white',
     cursor: 'pointer',
 };
@@ -94,7 +93,7 @@ export const UserMessageRenderer = ({
     return (
         <Flex px={4} alignItems='center'>
             {shouldShowActionIcons && (
-                <Flex gap={2} mr={2}>
+                <Flex gap={2} mr={2} alignItems='center'>
                     <Tooltip
                         borderRadius='lg'
                         placement='top'
@@ -102,6 +101,7 @@ export const UserMessageRenderer = ({
                     >
                         <NotAllowedIcon
                             onClick={() => onBanUser()}
+                            fontSize='16'
                             {...ICON_PROPS}
                         />
                     </Tooltip>
@@ -112,6 +112,7 @@ export const UserMessageRenderer = ({
                     >
                         <TimeIcon
                             {...ICON_PROPS}
+                            fontSize='14'
                             onClick={() => onBanUser(600)}
                         />
                     </Tooltip>
@@ -120,7 +121,11 @@ export const UserMessageRenderer = ({
                         placement='top'
                         label='Delete message'
                     >
-                        <DeleteIcon {...ICON_PROPS} onClick={onDeleteMessage} />
+                        <DeleteIcon
+                            {...ICON_PROPS}
+                            fontSize='14'
+                            onClick={onDeleteMessage}
+                        />
                     </Tooltip>
                 </Flex>
             )}
