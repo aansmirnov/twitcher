@@ -17,6 +17,7 @@ class ChatEventsStore {
     isInitialized = false;
     loading = false;
     messages: TwitchIrcMessage[] = [];
+    vipAndModUsersMap: Record<string, { isMod: boolean; isVip: boolean }> = {};
 
     private userLogin: string | undefined;
 
@@ -25,6 +26,7 @@ class ChatEventsStore {
             isInitialized: observable,
             loading: observable,
             messages: observable,
+            vipAndModUsersMap: observable.ref,
             createConnection: action,
             connectToChat: action,
             deleteChatMessage: action,
@@ -37,6 +39,35 @@ class ChatEventsStore {
     private get copyMessages() {
         return JSON.parse(JSON.stringify(this.messages)) as TwitchIrcMessage[];
     }
+
+    private getCorrectMessagesList = (newIrcMessage: TwitchIrcMessage) => {
+        const copy = this.copyMessages;
+
+        if (copy.length === MAX_SIZE_MESSAGES_ARRAY) {
+            const slicedMessages = copy.slice(
+                0,
+                copy.length - NUMBER_OF_ELEMENTS_TO_REMOVE,
+            );
+
+            return [newIrcMessage].concat(slicedMessages);
+        }
+
+        copy.unshift(newIrcMessage);
+        return copy;
+    };
+
+    private addVipOrModUserToMap = (
+        userID: string,
+        isVip: boolean,
+        isMod: boolean,
+    ) => {
+        runInAction(() => {
+            this.vipAndModUsersMap = {
+                ...this.vipAndModUsersMap,
+                [userID]: { isVip, isMod },
+            };
+        });
+    };
 
     createConnection = (userLogin: string, shouldListenMessages = false) => {
         this.loading = shouldListenMessages;
@@ -81,24 +112,25 @@ class ChatEventsStore {
                     return;
                 }
 
+                const userID = parsedMessage?.tags?.userID;
+
+                if (userID && !this.vipAndModUsersMap[userID]) {
+                    const isVip = Boolean(parsedMessage.tags?.badges?.['vip']);
+                    const isMod = Boolean(
+                        parsedMessage.tags?.badges?.['moderator'],
+                    );
+
+                    if (isVip || isMod) {
+                        this.addVipOrModUserToMap(userID, isVip, isMod);
+                    }
+                }
+
                 switch (parsedMessage.command?.command) {
                     case 'NOTICE':
                     case 'PRIVMSG': {
                         runInAction(() => {
-                            if (
-                                this.messages.length === MAX_SIZE_MESSAGES_ARRAY
-                            ) {
-                                const slicedMessages = this.messages.slice(
-                                    0,
-                                    this.messages.length -
-                                        NUMBER_OF_ELEMENTS_TO_REMOVE,
-                                );
-                                this.messages = [parsedMessage].concat(
-                                    slicedMessages,
-                                );
-                            } else {
-                                this.messages.unshift(parsedMessage);
-                            }
+                            this.messages =
+                                this.getCorrectMessagesList(parsedMessage);
                         });
                         break;
                     }
@@ -169,13 +201,25 @@ class ChatEventsStore {
     };
 
     toggleChatUserMod = (body: ManageUserChatIn, isMod: boolean) => {
-        isMod
+        const request = isMod
             ? apiHelix.removeChannelModerator(body)
             : apiHelix.addChannelModerator(body);
+
+        request.then(() => {
+            const isVip = this.vipAndModUsersMap[body.user_id]?.isVip || false;
+            this.addVipOrModUserToMap(body.user_id, isVip, !isMod);
+        });
     };
 
     toggleChatVip = (body: ManageUserChatIn, isVip: boolean) => {
-        isVip ? apiHelix.removeChannelVip(body) : apiHelix.addChannelVip(body);
+        const request = isVip
+            ? apiHelix.removeChannelVip(body)
+            : apiHelix.addChannelVip(body);
+
+        request.then(() => {
+            const isMod = this.vipAndModUsersMap[body.user_id]?.isMod || false;
+            this.addVipOrModUserToMap(body.user_id, !isVip, isMod);
+        });
     };
 }
 
