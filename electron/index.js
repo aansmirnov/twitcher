@@ -12,10 +12,12 @@ const createWindow = () => {
       webPreferences: {
          preload: path.join(__dirname, 'preload.js'),
       },
+      icon: path.join(__dirname, '../dist/main/macos-logo.icns'),
    });
 
    if (appURL) {
       mainWindow.loadURL(appURL);
+      mainWindow.webContents.openDevTools();
    } else {
       const expressApp = express();
       expressApp.use(express.static(path.join(__dirname, '../dist/main')));
@@ -24,9 +26,6 @@ const createWindow = () => {
          mainWindow.loadFile(path.join(__dirname, '../dist/main/index.html'));
       });
    }
-
-   // @ToDo: Add only for development mode.
-   mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(createWindow)

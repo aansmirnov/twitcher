@@ -73,6 +73,9 @@
             "dist-electron",
             "dist"
         ],
+        "mac": {
+            "icon": "dist/main/macos-logo.icns"
+        },
         "extends": null
     }
 }
