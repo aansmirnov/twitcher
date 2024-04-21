@@ -7,6 +7,8 @@ import {
     DeleteChatMessageIn,
     ManageUserChatIn,
     TwitchIrcMessage,
+    UnbanUserIn,
+    WithAdditionalParams,
 } from 'src/types';
 import { getItemFromLocalStorage, parseTwitchIrcMessage } from 'src/utils';
 
@@ -33,6 +35,7 @@ class ChatEventsStore {
             banUser: action,
             toggleChatUserMod: action,
             toggleChatVip: action,
+            unbanUser: action,
         });
     }
 
@@ -176,50 +179,79 @@ class ChatEventsStore {
         });
     };
 
-    banUser = (body: BanUserIn) => {
-        apiHelix.banUser(body).then(() => {
-            const copy = this.copyMessages;
-            const updatedMessagesArray = copy.map((it) => {
-                if (it.tags?.userID === body.data.user_id) {
-                    return {
-                        ...it,
-                        tags: {
-                            ...it.tags,
-                            emotes: {},
-                        },
-                        parameters: '<Message Deleted>',
-                    };
-                }
+    banUser = (body: BanUserIn & WithAdditionalParams) => {
+        const { onFailure, onSuccess, ...rest } = body;
+        apiHelix
+            .banUser(rest)
+            .then(() => {
+                const copy = this.copyMessages;
+                const updatedMessagesArray = copy.map((it) => {
+                    if (it.tags?.userID === body.data.user_id) {
+                        return {
+                            ...it,
+                            tags: {
+                                ...it.tags,
+                                emotes: {},
+                            },
+                            parameters: '<Message Deleted>',
+                        };
+                    }
 
-                return it;
-            });
+                    return it;
+                });
 
-            runInAction(() => {
-                this.messages = updatedMessagesArray;
-            });
-        });
+                runInAction(() => {
+                    this.messages = updatedMessagesArray;
+                });
+
+                onSuccess?.();
+            })
+            .catch(onFailure);
     };
 
-    toggleChatUserMod = (body: ManageUserChatIn, isMod: boolean) => {
+    toggleChatUserMod = (
+        body: ManageUserChatIn & WithAdditionalParams,
+        isMod: boolean,
+    ) => {
+        const { onFailure, onSuccess, ...rest } = body;
         const request = isMod
-            ? apiHelix.removeChannelModerator(body)
-            : apiHelix.addChannelModerator(body);
+            ? apiHelix.removeChannelModerator(rest)
+            : apiHelix.addChannelModerator(rest);
 
-        request.then(() => {
-            const isVip = this.vipAndModUsersMap[body.user_id]?.isVip || false;
-            this.addVipOrModUserToMap(body.user_id, isVip, !isMod);
-        });
+        request
+            .then(() => {
+                const isVip =
+                    this.vipAndModUsersMap[body.user_id]?.isVip || false;
+                this.addVipOrModUserToMap(body.user_id, isVip, !isMod);
+
+                onSuccess?.();
+            })
+            .catch(onFailure);
     };
 
-    toggleChatVip = (body: ManageUserChatIn, isVip: boolean) => {
+    toggleChatVip = (
+        body: ManageUserChatIn & WithAdditionalParams,
+        isVip: boolean,
+    ) => {
+        const { onFailure, onSuccess, ...rest } = body;
         const request = isVip
-            ? apiHelix.removeChannelVip(body)
-            : apiHelix.addChannelVip(body);
+            ? apiHelix.removeChannelVip(rest)
+            : apiHelix.addChannelVip(rest);
 
-        request.then(() => {
-            const isMod = this.vipAndModUsersMap[body.user_id]?.isMod || false;
-            this.addVipOrModUserToMap(body.user_id, !isVip, isMod);
-        });
+        request
+            .then(() => {
+                const isMod =
+                    this.vipAndModUsersMap[body.user_id]?.isMod || false;
+                this.addVipOrModUserToMap(body.user_id, !isVip, isMod);
+
+                onSuccess?.();
+            })
+            .catch(onFailure);
+    };
+
+    unbanUser = (params: UnbanUserIn & WithAdditionalParams) => {
+        const { onFailure, onSuccess, ...rest } = params;
+        apiHelix.unbanUser(rest).then(onSuccess).catch(onFailure);
     };
 }
 

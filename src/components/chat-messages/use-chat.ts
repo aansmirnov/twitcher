@@ -1,3 +1,4 @@
+import { RenderToastParams, useToast } from 'src/hooks';
 import { useEffect } from 'react';
 import {
     useChatEventsStoreContext,
@@ -10,9 +11,9 @@ type UseChatReturnType = {
     badgesMapBySetID: BadgesMapBySetID;
     emotesMapByName: EmotesMapById;
     deleteChatMessage: (messageID: string) => void;
-    banUser: (body: BanUserRequestBody) => void;
-    toggleUserMode: (userID: string, isMod: boolean) => void;
-    toggleUserVip: (userID: string, isVip: boolean) => void;
+    banUser: (body: BanUserRequestBody, userName?: string) => void;
+    toggleUserMode: (userID: string, isMod: boolean, userName?: string) => void;
+    toggleUserVip: (userID: string, isVip: boolean, userName?: string) => void;
 };
 
 export const useChat = (): UseChatReturnType => {
@@ -25,6 +26,7 @@ export const useChat = (): UseChatReturnType => {
         toggleChatUserMod,
         toggleChatVip,
     } = useChatEventsStoreContext();
+    const { renderToast } = useToast();
 
     const deleteChatMessage = (messageID: string) => {
         if (!currentUser) {
@@ -38,10 +40,16 @@ export const useChat = (): UseChatReturnType => {
         });
     };
 
-    const banUser = (body: BanUserRequestBody) => {
+    const banUser = (body: BanUserRequestBody, userName?: string) => {
         if (!currentUser) {
             return;
         }
+
+        const toastProps: RenderToastParams = {
+            type: 'ban',
+            action: 'add',
+            userName,
+        };
 
         ban({
             data: body,
@@ -49,27 +57,67 @@ export const useChat = (): UseChatReturnType => {
                 broadcaster_id: currentUser.id,
                 moderator_id: currentUser.id,
             },
+            onSuccess: () => renderToast(toastProps),
+            onFailure: () =>
+                renderToast({
+                    ...toastProps,
+                    success: false,
+                }),
         });
     };
 
-    const toggleUserMode = (userID: string, isMod: boolean) => {
+    const toggleUserMode = (
+        userID: string,
+        isMod: boolean,
+        userName?: string,
+    ) => {
         if (!currentUser) {
             return;
         }
 
+        const toastProps: RenderToastParams = {
+            type: 'mod',
+            action: isMod ? 'delete' : 'add',
+            userName,
+        };
+
         toggleChatUserMod(
-            { user_id: userID, broadcaster_id: currentUser.id },
+            {
+                user_id: userID,
+                broadcaster_id: currentUser.id,
+                onSuccess: () => renderToast(toastProps),
+                onFailure: () =>
+                    renderToast({
+                        ...toastProps,
+                        success: false,
+                    }),
+            },
             isMod,
         );
     };
 
-    const toggleUserVip = (userID: string, isVip: boolean) => {
+    const toggleUserVip = (
+        userID: string,
+        isVip: boolean,
+        userName?: string,
+    ) => {
         if (!currentUser) {
             return;
         }
 
+        const toastProps: RenderToastParams = {
+            type: 'vip',
+            action: isVip ? 'delete' : 'add',
+            userName,
+        };
+
         toggleChatVip(
-            { user_id: userID, broadcaster_id: currentUser.id },
+            {
+                user_id: userID,
+                broadcaster_id: currentUser.id,
+                onSuccess: () => renderToast(toastProps),
+                onFailure: () => renderToast({ ...toastProps, success: false }),
+            },
             isVip,
         );
     };

@@ -10,3 +10,4 @@ export * from './twitch-irc-message';
 export * from './badges';
 export * from './emotes';
 export * from './streams';
+export * from './with-additional-params';

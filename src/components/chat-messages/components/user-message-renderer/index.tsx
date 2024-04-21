@@ -38,6 +38,7 @@ export const UserMessageRenderer = observer(
         const permissions = vipAndModUsersMap[messageUserID];
         const isMod = permissions?.isMod || false;
         const isVip = permissions?.isVip || false;
+        const userName = message.tags?.displayName || '';
 
         if (!message.parameters) {
             return null;
@@ -51,22 +52,25 @@ export const UserMessageRenderer = observer(
 
         const onBanUser = (duration?: number) => {
             if (message.tags?.userID) {
-                banUser({
-                    user_id: message.tags.userID,
-                    duration,
-                });
+                banUser(
+                    {
+                        user_id: message.tags.userID,
+                        duration,
+                    },
+                    userName,
+                );
             }
         };
 
         const onToggleUserMode = () => {
             if (message.tags?.userID) {
-                toggleUserMode(message.tags.userID, isMod);
+                toggleUserMode(message.tags.userID, isMod, userName);
             }
         };
 
         const onToggleUserVip = () => {
             if (message.tags?.userID) {
-                toggleUserVip(message.tags.userID, isVip);
+                toggleUserVip(message.tags.userID, isVip, userName);
             }
         };
 
@@ -102,7 +106,7 @@ export const UserMessageRenderer = observer(
                         <Tooltip
                             borderRadius='lg'
                             placement='top'
-                            label={`Ban ${message.tags?.displayName}`}
+                            label={`Ban ${userName}`}
                         >
                             <NotAllowedIcon
                                 onClick={() => onBanUser()}
@@ -113,7 +117,7 @@ export const UserMessageRenderer = observer(
                         <Tooltip
                             borderRadius='lg'
                             placement='top'
-                            label={`Timeout ${message.tags?.displayName}`}
+                            label={`Timeout ${userName}`}
                         >
                             <TimeIcon
                                 {...ICON_PROPS}
@@ -146,7 +150,7 @@ export const UserMessageRenderer = observer(
                             </Tooltip>
                         </Flex>
                     ))}
-                {message.tags?.displayName && (
+                {userName && (
                     <UserInfoName
                         onClickMod={onToggleUserMode}
                         onClickVip={onToggleUserVip}
@@ -154,7 +158,7 @@ export const UserMessageRenderer = observer(
                         ml={hasBadges ? '2' : '0'}
                         isMod={isMod}
                         isVip={isVip}
-                        userName={message.tags.displayName}
+                        userName={userName}
                         userColor={message.tags?.color ?? 'gray.300'}
                     />
                 )}

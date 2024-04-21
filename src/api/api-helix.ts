@@ -22,6 +22,7 @@ import {
     BanUserOut,
     GetStreamIn,
     GetStreamsOut,
+    UnbanUserIn,
 } from 'src/types';
 import { ApiRequest } from './api-request';
 import { CLIENT_ID, TWITCHER_ACCESS_TOKEN, TWITCH_HELIX_URL } from 'src/consts';
@@ -50,6 +51,7 @@ interface IApiHelix {
     removeChannelVip(params: ManageUserChatIn): Promise<void>;
     banUser(body: BanUserIn): Promise<BanUserOut>;
     getStreams(params: GetStreamIn): Promise<GetStreamsOut>;
+    unbanUser(params: UnbanUserIn): Promise<void>;
 }
 
 class ApiHelix extends ApiRequest implements IApiHelix {
@@ -137,6 +139,10 @@ class ApiHelix extends ApiRequest implements IApiHelix {
 
     getStreams(params: GetStreamIn): Promise<GetStreamsOut> {
         return this.provider.get('/streams', { params });
+    }
+
+    unbanUser(params: UnbanUserIn): Promise<void> {
+        throw this.provider.delete('/moderation/bans', { params });
     }
 }
 
