@@ -1,54 +1,65 @@
 <p align="center">
+  <p align="center">
+   <img width="150" height="150" src="/assets/app-logo.svg" alt="Logo">
+  </p>
 	<h1 align="center"><b>Twitcher</b></h1>
 	<p align="center">
-		A desktop Twitch client.
+		A Desktop Twitch Client.
     <br />
-    <p align="center">
-        <img src="/assets/twitcher.png" alt="Logo">
-    </p>
-    <b>WARNING! This software is UNFINISHED! Use it at your own risk! In fact, it may never be useful for anybody.</b>
+    <b>Download for </b>
+    <a href="https://github.com/aansmirnov/twitcher/releases/tag/mac-1.0.0">macOS</a>.
+    <br />
   </p>
-  <br />
+</p>
+<p align="center">
+  <img src="/assets/twitcher.png" alt="Logo">
 </p>
 
 ### Getting Started
+* Clone a repository
+```bash
+git clone https://github.com/aansmirnov/twitcher.git
+```
 
-```console
-$ git clone https://github.com/aansmirnov/twitcher.git
-$ cd twitcher
-$ add .env entries
-$ pnpm i 
-$ pnpm dev
+* Install dependencies
+```bash
+pnpm install
+```
+
+* Edit `.env` entries:
+```ini
+VITE_CLIENT_ID='your client id'
+VITE_CLIENT_SECRET='your client secret'
+```
+
+* Start a project
+```bash
+pnpm dev
 ```
 
 ### Tech Stack
-
-- Vite;
-- Electron;
-- TypeScript;
-- React;
-- MobX;
-- Chakra UI;
-- Axios;
-- Websockets.
+```
+- Vite
+- Electron
+- TypeScript
+- React
+- MobX
+- Chakra UI
+```
 
 ### Features
-
-- Update Stream Title & Category;
-- Adjust Chat Settings (Emote Mode, Slow Mode, etc.);
-- Read Chat;
-- Send Messages to Chat;
-- Support Channel and Global Badges and Emotes;
-- Add and Remove User Mods;
-- Add and Remove User VIPs;
-- Ban Users;
-- Timeout Users;
-- Delete User Messages;
-- Display Viewer Count;
-- Clear Chat.
-
-### Future Plans
-
-- Unban Users;
-- Notifications for User Follows, Channel Subscriptions, etc;
-- Build for Windows / MacOS / Linux.
+```
+- Read chat
+- Send messages to chat
+- Display viewer count
+- Change stream title & category
+- Adjust chat settings (emote mode, slow mode, etc)
+- Support channel and global badges
+- Support channel and global emotes
+- Mod and unmod users
+- Vip and unvip users
+- Ban and unban users
+- Timeout users
+- Delete user messages
+- Clear chat
+```
