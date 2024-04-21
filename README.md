@@ -4,7 +4,7 @@
 		A desktop Twitch client.
     <br />
     <p align="center">
-        <img src="/assets/twicher.png" alt="Logo">
+        <img src="/assets/twitcher.png" alt="Logo">
     </p>
     <b>WARNING! This software is UNFINISHED! Use it at your own risk! In fact, it may never be useful for anybody.</b>
   </p>
