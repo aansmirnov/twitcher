@@ -25,7 +25,7 @@ export const UserMessageRenderer = observer(
             emotesMapByName,
             deleteChatMessage,
             banUser,
-            toggleUserMode,
+            toggleUserMod,
             toggleUserVip,
         } = useChat();
         const { currentUser } = useCurrentUserStoreContext();
@@ -64,7 +64,7 @@ export const UserMessageRenderer = observer(
 
         const onToggleUserMode = () => {
             if (message.tags?.userID) {
-                toggleUserMode(message.tags.userID, isMod, userName);
+                toggleUserMod(message.tags.userID, isMod, userName);
             }
         };
 

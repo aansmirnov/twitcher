@@ -12,7 +12,8 @@ type UseChatReturnType = {
     emotesMapByName: EmotesMapById;
     deleteChatMessage: (messageID: string) => void;
     banUser: (body: BanUserRequestBody, userName?: string) => void;
-    toggleUserMode: (userID: string, isMod: boolean, userName?: string) => void;
+    unbanUser: (userID: string, userName: string) => void;
+    toggleUserMod: (userID: string, isMod: boolean, userName?: string) => void;
     toggleUserVip: (userID: string, isVip: boolean, userName?: string) => void;
 };
 
@@ -23,6 +24,7 @@ export const useChat = (): UseChatReturnType => {
     const {
         deleteChatMessage: deleteMessage,
         banUser: ban,
+        unbanUser: unban,
         toggleChatUserMod,
         toggleChatVip,
     } = useChatEventsStoreContext();
@@ -66,7 +68,27 @@ export const useChat = (): UseChatReturnType => {
         });
     };
 
-    const toggleUserMode = (
+    const unbanUser = (userID: string, userName: string) => {
+        if (!currentUser) {
+            return;
+        }
+
+        const toastProps: RenderToastParams = {
+            type: 'ban',
+            action: 'delete',
+            userName,
+        };
+
+        unban({
+            user_id: userID,
+            broadcaster_id: currentUser.id,
+            moderator_id: currentUser.id,
+            onSuccess: () => renderToast(toastProps),
+            onFailure: () => renderToast({ ...toastProps, success: false }),
+        });
+    };
+
+    const toggleUserMod = (
         userID: string,
         isMod: boolean,
         userName?: string,
@@ -143,7 +165,8 @@ export const useChat = (): UseChatReturnType => {
         emotesMapByName,
         deleteChatMessage,
         banUser,
-        toggleUserMode,
+        unbanUser,
+        toggleUserMod,
         toggleUserVip,
     };
 };
